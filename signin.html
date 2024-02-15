@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In/Sign Up</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Sign In/Sign Up</h2>
+        <!-- Buttons to toggle between sign-in and sign-up -->
+        <button id="signInBtn" class="btn">Sign In</button>
+        <button id="signUpBtn" class="btn">Sign Up</button>
+
+        <!-- Sign-in form -->
+        <form id="signInForm" style="display: none;">
+            <h3>Sign In</h3>
+            <!-- Add input fields for email and password -->
+            <input type="email" placeholder="Email"><br>
+            <input type="password" placeholder="Password"><br>
+            <button type="submit" class="btn">Sign In</button>
+        </form>
+
+        <!-- Sign-up form -->
+        <form id="signUpForm" style="display: none;">
+            <h3>Sign Up</h3>
+            <!-- Add input fields for email, password, and any other required fields -->
+            <input type="email" placeholder="Email"><br>
+            <input type="password" placeholder="Password"><br>
+            <button type="submit" class="btn">Sign Up</button>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript code to toggle between sign-in and sign-up forms
+        const signInBtn = document.getElementById('signInBtn');
+        const signUpBtn = document.getElementById('signUpBtn');
+        const signInForm = document.getElementById('signInForm');
+        const signUpForm = document.getElementById('signUpForm');
+
+        signInBtn.addEventListener('click', () => {
+            signInForm.style.display = 'block';
+            signUpForm.style.display = 'none';
+        });
+
+        signUpBtn.addEventListener('click', () => {
+            signInForm.style.display = 'none';
+            signUpForm.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
