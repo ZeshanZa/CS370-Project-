@@ -1,7 +1,8 @@
 // pages/signin.js from the jsx earlier 
 "use client"; //had to use this to import react with useState
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+
 
 const Signin = () => {
   const [isSignIn, setIsSignIn] = useState(true); // State to track whether sign-in form is displayed
@@ -9,6 +10,16 @@ const Signin = () => {
   const [password, setPassword] = useState('');
   const router = useRouter(); // Use useRouter hook for navigation
 
+  useEffect(() => {
+    const originalBackgroundColor = document.body.style.backgroundColor;
+    document.body.style.backgroundColor = '#7393B3'; // Replace with your desired color
+    return () => {
+      document.body.style.backgroundColor = originalBackgroundColor;
+    };
+  }, []);
+  
+  
+  
   const toggleForm = () => { // Function to toggle between sign-in and sign-up forms
     setIsSignIn(!isSignIn);
   };
@@ -28,6 +39,7 @@ const Signin = () => {
   };
 
   return (
+    
     <div style={containerStyle}>
       <h2>Sign In / Sign Up</h2>
       <button style={btnStyle} onClick={toggleForm}>
@@ -55,23 +67,27 @@ const Signin = () => {
         </button>
       </form>
     </div>
+    
   );
 };
 
 // Inline styles
+
 const containerStyle = {
-  maxWidth: '400px',
+  maxWidth: '450px',
+  height: '450px',
   margin: '50px auto',
   padding: '20px',
   border: '1px solid #ccc',
   borderRadius: '15px',
   textAlign: 'center',
+  backgroundColor: 'grey',
 };
 
 const btnStyle = {
   display: 'inline-block',
   padding: '10px 20px',
-  margin: '10px',
+  margin: '30px',
   border: 'none',
   borderRadius: '5px',
   cursor: 'pointer',
@@ -84,10 +100,12 @@ const formStyle = {
 };
 
 const inputStyle = {
-  margin: '5px 0',
+  margin: '10px 0',
   padding: '10px',
   width: '100%',
   boxSizing: 'border-box',
+  border: '1px solid blue',
 };
+
 
 export default Signin;
