@@ -1,6 +1,7 @@
 import React from 'react';
 import Signin from './signin'; // Adjust the path as necessary
 
+
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
