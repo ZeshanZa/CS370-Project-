@@ -1,6 +1,6 @@
 import React from 'react';
 import Signin from './signin'; // Adjust the path as necessary
-import Setin from './setpage/setin'; // Adjust the path as necessary
+import Setin from './setpage/page'; // Adjust the path as necessary
 //<Signin /> {/* Render the Signin component */}
 //< Setin />{/* Render the Signin component */}
 export default function Home() {
