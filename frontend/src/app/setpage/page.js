@@ -5,9 +5,11 @@ import React from 'react';
 const setin = () =>{
   return (
     <div className="container mx-auto px-4 mb-28">
-      <div className="items-center justify-center mb-10">
-  <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile" className="w-30 h-30 rounded-full" />
-</div>
+      <div className="flex items-center justify-center ">
+      <div className='rounded-full bg-slate-800 items-center h-60 w-60 flex justify-center text-white'>
+    Profile Photo
+      </div>
+      </div>
     <div className="text-center">
       <h4 className="mb-">Last Name, First Name</h4>
       <p className="text-gray-600">
