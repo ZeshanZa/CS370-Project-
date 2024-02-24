@@ -1,8 +1,8 @@
-"use client";
+
 import React from 'react';
 
 
-const Setin = () => {
+const Setin = () =>{
   return (
     <div className="container mx-auto px-4">
       <div class="flex items-center justify-center h-screen">
@@ -45,16 +45,12 @@ const Setin = () => {
         </div>
 
         <div className="fixed inset-x-0 bottom-0 bg-gray-100">
-  <div className="flex justify-center space-x-4 py-2">
-    <a href="/" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Home</a>
-    <a href="/matches" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Matches</a>
-    <a href="/settings" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Settings</a>
-  </div>
-</div>
-
-
-        
-        
+         <div className="flex justify-center space-x-4 py-2">
+        <a href="/" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Home</a>
+         <a href="/matches" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Matches</a>
+        <a href="/settings" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Settings</a>
+        </div>
+        </div>
         <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
           Save Changes
         </button>
@@ -63,7 +59,6 @@ const Setin = () => {
   </div>
 );
 };
-
 
 export default Setin;
   

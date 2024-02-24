@@ -1,5 +1,6 @@
 // pages/signin.js from the jsx earlier 
-"use client"; //had to use this to import react with useState
+ //had to use this to import react with useState
+ "use client";
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
