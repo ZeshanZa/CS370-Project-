@@ -37,6 +37,7 @@ const signin = () => {
   const handleSubmit = (e) => { // Function to handle form submission
     e.preventDefault();
     console.log('Email:', email, 'Password:', password);
+    router.push('/mainpage'); // Replace with your desired route
     
   };
 
@@ -64,9 +65,11 @@ const signin = () => {
           value={password}
           onChange={handlePasswordChange}
         />
+       
         <button type="submit" style={btnStyle}>
           {isSignIn ? 'Sign In' : 'Sign Up'}
         </button>
+        
       </form>
     </div>
     

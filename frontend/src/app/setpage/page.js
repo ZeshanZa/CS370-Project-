@@ -47,9 +47,9 @@ const setin = () =>{
           Save Changes
         </button>
 
-        <div className="fixed inset-x-0 bottom-0 bg-gray-100" >
+        <div className="fixed inset-x-0 bottom-0 bg-gray-100 " >
          <div className="flex justify-center space-x-4 py-2">
-        <a href="/" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Home</a>
+        <a href="/mainpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Home</a>
          <a href="/matches" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Matches</a>
         <a href="/setpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Settings</a>
         </div>
