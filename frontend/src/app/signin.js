@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 
-const Signin = () => {
+const signin = () => {
   const [isSignIn, setIsSignIn] = useState(true); // State to track whether sign-in form is displayed
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -110,4 +110,4 @@ const inputStyle = {
 };
 
 
-export default Signin;
+export default signin;

@@ -2,7 +2,7 @@
 import React from 'react';
 
 
-const Setin = () =>{
+const setin = () =>{
   return (
     <div className="container mx-auto px-4">
       <div class="flex items-center justify-center h-screen">
@@ -60,5 +60,5 @@ const Setin = () =>{
 );
 };
 
-export default Setin;
+export default setin;
   
