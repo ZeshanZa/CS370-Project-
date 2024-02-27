@@ -44,14 +44,12 @@ Artificial intelligence, Natural Language Processing, and Data Science.
                                 Ruby
                             </div>
                         </div>
-                        <text className='underline font-light mt-3'> Edit profile </text>
-
-                        <div className="flex justify-center space-x-4 py-2">
-        <a href="/mainpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Home</a>
-         <a href="/matches" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Matches</a>
-         <a href="/profile" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Profile</a>
-        <a href="/setpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Settings</a>
-        </div>
+                    <div className="flex justify-center space-x-4 py-2">
+                <a href="/mainpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Home</a>
+                 <a href="/matches" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Matches</a>
+                 <a href="/profile" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Profile</a>
+                <a href="/setpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Settings</a>
+                </div>
 
                     </div>
                 </div>
