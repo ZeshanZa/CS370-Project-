@@ -5,4 +5,4 @@ If anything is added to the environment please update the requirements.txt with:
     Use pip install -r requirements.txt when updating the packages you need if you do not already have them.
 
 Generally, to do most things within django, just cd into the backend, use: python ./manage.py <django-admin command>
-to use commands otherwise accessible through django-admin such as runserver, etc.
+    to use commands otherwise accessible through django-admin such as runserver, etc.
