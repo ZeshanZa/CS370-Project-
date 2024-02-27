@@ -1,0 +1,8 @@
+This is just a quick-reference to how to operate within django to refer to and add to when needed.
+
+NOTE: It is important to use the venv created, do this by cd'ing into backend, then using: .\.venv\Scripts\activate to enter the environment.
+If anything is added to the environment please update the requirements.txt with: pip freeze > requirements.txt when needed.
+    Use pip install -r requirements.txt when updating the packages you need if you do not already have them.
+
+Generally, to do most things within django, just cd into the backend, use: python ./manage.py <django-admin command>
+to use commands otherwise accessible through django-admin such as runserver, etc.
