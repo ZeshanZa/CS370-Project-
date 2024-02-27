@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react";
 import "./App.css"; // Make sure to import the CSS for styling
 import Profile from "./Profile"; // Import your Profile component
