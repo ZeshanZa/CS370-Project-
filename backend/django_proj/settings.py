@@ -77,8 +77,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',  # The DB name you specified during the RDS setup
-        'USER': 'zeshan',  # 
-        'PASSWORD': 'Zeshan3112',  
+        'USER': 'dbuser',  # 
+        'PASSWORD': 'admin1',  
         'HOST': 'neazmedata.cjcqk8wsgzgd.us-east-2.rds.amazonaws.com',  # 
         'PORT': '5432',  # Default PostgreSQL port is 5432
     }
