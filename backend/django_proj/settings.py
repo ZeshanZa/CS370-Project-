@@ -75,14 +75,15 @@ WSGI_APPLICATION = "django_proj.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'userinfop', 
-        'USER': 'postgres',
-        'PASSWORD': 'admin1',
-        'HOST': '127.0.0.1', 
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',  # The DB name you specified during the RDS setup
+        'USER': 'zeshan',  # 
+        'PASSWORD': 'Zeshan3112',  
+        'HOST': 'neazmedata.cjcqk8wsgzgd.us-east-2.rds.amazonaws.com',  # 
+        'PORT': '5432',  # Default PostgreSQL port is 5432
     }
 }
+
 
 
 # Password validation
