@@ -46,7 +46,6 @@ function page() {
                                 Ruby
                             </div>
                         </div>
-                        <text className='underline font-light mt-3'> Edit profile </text>
                         <div className="flex justify-center space-x-4 py-2">
                         <a href="/mainpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Home</a>
                         <a href="/matches" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Matches</a>
@@ -56,49 +55,39 @@ function page() {
                     </div>
                 </div>
             </div>
-            <div className="userPersonalInfo" style={{ display: 'flex'}}>
-                <div style={{ flex: '1', marginRight: '40px' }}>
-                    <div style={{ marginBottom: "40px"}}>
+            <div className='w-7/12 flex h-[90dvh]' style={{marginTop:'0.5%'}}>
+                <div className='w-2/12 h-[90dvh]'>
+                    <div style={{marginBottom: '15%'}}>
                         <p>Full Name:</p>
-                        <input type="text" className='border 1px solid #ccc borderRadius 4px'/>
+                        <input type="text" className='rounded-lg border 1px solid #ccc borderRadius 4px'/>
                     </div > 
-                    <div style={{ marginBottom: "40px"}}>
+                    <div style={{marginBottom: '15%'}}>
                         <p>Username:</p>
-                        <input type="text" className='border 1px solid #ccc borderRadius 4px'/>
+                        <input type="text" className='rounded-lg border 1px solid #ccc borderRadius 4px'/>
                     </div>
-                    <div style={{ marginBottom: "40px"}}> 
+                    <div style={{marginBottom: '15%'}}> 
                         <p>Website URL:</p>
-                        <input type="text" className='border 1px solid #ccc borderRadius 4px'/>
+                        <input type="text" className='rounded-lg border 1px solid #ccc borderRadius 4px'/>
                     </div>
-                    <div style={{ marginBottom: "40px"}}>
+                    <div style={{marginBottom: '15%'}}>
                         <p>Major:</p>
-                        <input className='border 1px solid #ccc borderRadius 4px' type="text"/>
+                        <input className='rounded-lg border 1px solid #ccc borderRadius 4px' type="text"/>
                     </div>
-                    <div style={{ marginBottom: "40px"}}>
+                    <div style={{marginBottom: '1%'}}>
                         <p>Skills:</p>
-                        <input type="text" placeholder="Search for skills" className='border 1px solid #ccc borderRadius 4px mb-1'/>           
+                        <input type="text" placeholder="Search for skills" className='rounded-lg border 1px solid #ccc borderRadius 4px mb-1'/>           
                     </div>
+                    <input className='rounded-lg border 1px solid #ccc borderRadius 4px position absolute w-7/12' style={{height:'37%'}} type="text" placeholder="Your Skills"/> 
                 </div>
-                <div style={{ flex: '1', marginRight: "40px"}}>
-                    <div className="order-2" style={{ marginBottom: "40px" }}>
-                        <p>Email-Address</p>
-                        <input type="text" className='border 1px solid #ccc borderRadius 4px'/>
-                    </div>
-                    <div>
+                <div>
+                    <div className='ml-40'>
                         <p>Social Media Links</p>
                         <GitHubIcon />
                         <XIcon />
                     </div>
                 </div>
-                <div style={{ flex: '1', marginRight: "40px"}}>
-                    <div className='rounded-full bg-slate-800 items-center h-60 w-60 flex justify-center mt-10 text-white'>
-                        Profile Photo
-                    </div>
-                </div>
             </div>
-            <div style={{ position: 'absolute', bottom: '0', width: '50%'}}>
-                <input type="text" placeholder="Your Skills" className='border 1px solid #ccc borderRadius 4px' style={{ width: '99%', marginLeft: '360px', height: '270px'}}/>
-            </div>
+            
             <div className='w-2/12 p-2 h-[90dvh]'>
                 <div className='bg-slate-200 h-full rounded-lg'>
                     <div className='w-full text-xl font-bold bg-slate-600 rounded-t-lg p-3'>
@@ -106,15 +95,9 @@ function page() {
                     </div>
                     <div className='w-full'>
                         <div className='w-full flex flex-row border-b-2 border-gray-400 p-2'>
-                            <div className='w-2/3 flex flex-col'>
-                                <text className='text-xl font-bold'>New message</text>
-                                <text className='break-words font-light'> Hi Brian, your skills match well fo my project... </text>
-                            </div>
-                            <div className='w-1/3 flex flex-col items-center'>
-                                <div className='w-16 h-16 bg-slate-800 flex justify-center items-center rounded-full text-sm'>
-                                    photo
-                                </div>
-                                <text> Selene F. </text>
+                            <div className='flex flex-col'>
+                                <text className='text-xl font-bold'>Leetcode</text>
+                                <text className='break-words font-light'> Leetcode is an online platform for... </text>
                             </div>
                         </div>
                         <div className='w-full flex flex-col border-b-2 border-gray-400 p-2'>
