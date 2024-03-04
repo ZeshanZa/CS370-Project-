@@ -10,7 +10,12 @@ function Profile({ profile }) {
       <button
         onClick={() => alert(`Starting a conversation with ${profile.name}...`)}
       >
-        Start a Conversation
+        Accept Match
+      </button>
+      <button
+        onClick={() => alert(`Starting a conversation with ${profile.name}...`)}
+      >
+        Decline Match
       </button>
     </section>
   );

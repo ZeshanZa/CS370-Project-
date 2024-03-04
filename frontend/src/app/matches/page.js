@@ -56,16 +56,16 @@ function App() {
         <nav>
           <ul>
             <li>
-              <a href="#home">Home</a>
+              <a href="/mainpage">Home</a>
             </li>
             <li>
-              <a href="#matches">Matches</a>
+              <a href="/matches">Matches</a>
             </li>
             <li>
-              <a href="#messages">Messages</a>
+              <a href="/profile">Profile</a>
             </li>
             <li>
-              <a href="#settings">Settings</a>
+              <a href="/setpage">Settings</a>
             </li>
           </ul>
         </nav>
