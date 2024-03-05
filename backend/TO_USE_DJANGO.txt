@@ -6,3 +6,7 @@ If anything is added to the environment please update the requirements.txt with:
 
 Generally, to do most things within django, just cd into the backend, use: python ./manage.py <django-admin command>
     to use commands otherwise accessible through django-admin such as runserver, etc.
+
+
+To access user-creation/login, use http://localhost:8000/api/auth/register/
+(you can also use cURL and jq if you'd prefer)
