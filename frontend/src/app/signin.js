@@ -1,86 +1,99 @@
-// pages/signin.js from the jsx earlier 
- //had to use this to import react with useState
- "use client";
-import React, { useEffect, useState } from 'react';
+"use client";
+import React, { useState } from 'react';
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-
-const signin = () => {
-  const [isSignIn, setIsSignIn] = useState(true); // State to track whether sign-in form is displayed
+const AuthForm = () => {
+  const [formType, setFormType] = useState('signin'); // 'signin' or 'signup'
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter(); // Use useRouter hook for navigation
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const router = useRouter(); // Ensure correct import: import { useRouter } from 'next/router';
 
-  useEffect(() => {
-    const originalBackgroundColor = document.body.style.backgroundColor;
-    document.body.style.backgroundColor = '#7393B3'; // Replace with your desired color
-    return () => {
-      document.body.style.backgroundColor = originalBackgroundColor;
-    };
-  }, []);
- 
-  
-  
-  
-  const toggleForm = () => { // Function to toggle between sign-in and sign-up forms
-    setIsSignIn(!isSignIn);
+  const toggleFormType = () => {
+    setFormType(formType === 'signin' ? 'signup' : 'signin');
   };
 
-  const handleEmailChange = (e) => { // Function to handle email input change
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => { // Function to handle password input change
-    setPassword(e.target.value);
-  };
-
-  const handleSubmit = (e) => { // Function to handle form submission
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log('Email:', email, 'Password:', password);
-    router.push('/mainpage'); // Replace with your desired route
-    
+
+    // Prepare the payload based on form type because the django form we have has diff perameters
+    let payload;
+    if (formType === 'signup') {
+      payload = { username, email, password1: password, password2: confirmPassword };
+    } else {
+      // Adjusted for signin to include username
+      payload = { username, email, password };
+    }
+
+    // Determine the URL endpoint based on form type i made a private varible just text me and ill tell you how 
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/${formType === 'signup' ? 'register' : 'login'}/`;
+
+    try {
+      // Send a POST request to the backend with axios
+      const response = await axios.post(url, payload);
+
+      // Output for debugging
+      console.log(`${formType} successful`, response.data);
+
+      // Redirect user after successful operation
+      router.push('/mainpage'); // Adjust this to your needs
+    } catch (error) {
+      console.error(`${formType} error`, error.response?.data || error);
+    }
   };
 
   return (
-    
     <div style={containerStyle}>
-      <h2>Sign In / Sign Up</h2>
-      <button style={btnStyle} onClick={toggleForm}>
-        {isSignIn ? 'Switch to Sign Up' : 'Switch to Sign In'}
+      <h2>{formType === 'signin' ? 'Sign In' : 'Sign Up'}</h2>
+      <button onClick={toggleFormType} style={btnStyle}>
+        Switch to {formType === 'signin' ? 'Sign Up' : 'Sign In'}
       </button>
-
-      <form style={formStyle} onSubmit={handleSubmit}>
-        <h3>{isSignIn ? 'Sign In' : 'Sign Up'}</h3>
+      <form onSubmit={handleFormSubmit} style={formStyle}>
+        {/* Adjusted to show username input for both signin and signup I screwed up earlier and made them same */}
+        <input
+          style={inputStyle}
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
         <input
           style={inputStyle}
           type="email"
           placeholder="Email"
           value={email}
-          onChange={handleEmailChange}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input
           style={inputStyle}
           type="password"
           placeholder="Password"
           value={password}
-          onChange={handlePasswordChange}
+          onChange={(e) => setPassword(e.target.value)}
         />
-       
+        {formType === 'signup' && (
+          <input
+            style={inputStyle}
+            type="password"
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        )}
         <button type="submit" style={btnStyle}>
-          {isSignIn ? 'Sign In' : 'Sign Up'}
+          {formType === 'signin' ? 'Sign In' : 'Sign Up'}
         </button>
-        
       </form>
     </div>
-    
   );
 };
 
-// Inline styles
 
 const containerStyle = {
   maxWidth: '450px',
-  height: '450px',
+  height: 'auto', // Adjusted for dynamic content
   margin: '50px auto',
   padding: '20px',
   border: '1px solid #ccc',
@@ -92,7 +105,7 @@ const containerStyle = {
 const btnStyle = {
   display: 'inline-block',
   padding: '10px 20px',
-  margin: '30px',
+  margin: '10px 0 20px 0', // Adjusted for better spacing
   border: 'none',
   borderRadius: '5px',
   cursor: 'pointer',
@@ -101,16 +114,16 @@ const btnStyle = {
 };
 
 const formStyle = {
-  display: 'block',
+  display: 'flex',
+  flexDirection: 'column', // Changed for vertical layout
 };
 
 const inputStyle = {
   margin: '10px 0',
   padding: '10px',
-  width: '100%',
+  width: 'calc(100% - 20px)', // Adjusted for padding
   boxSizing: 'border-box',
   border: '1px solid blue',
 };
 
-
-export default signin;
+export default AuthForm;
