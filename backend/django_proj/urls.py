@@ -17,10 +17,16 @@ Including another URLconf
 from django.urls import include
 from django.contrib import admin
 from django.urls import path
+from skills import views
+from rest_framework.urlpatterns import format_suffix_patterns
 
 # Add Django site authentication urls (for login, logout, password management)
 
 urlpatterns = [
     path('api/auth/', include('authentication.urls')),
     path("admin/", admin.site.urls),
+    path('skills/', views.Skill_list),
+    path('skills/<int:id>', views.skill_detail)
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)

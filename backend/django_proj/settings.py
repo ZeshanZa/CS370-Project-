@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "corsheaders",
+    "skills"
 ]
 
 SITE_ID = 1  # make sure SITE_ID is set
@@ -105,7 +106,7 @@ WSGI_APPLICATION = "django_proj.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',  # The DB name you specified during the RDS setup
+        'NAME': 'postgres', #postgres # The DB name you specified during the RDS setup
         'USER': 'dbuser',  # 
         'PASSWORD': 'admin1',  
         'HOST': 'neazmedata.cjcqk8wsgzgd.us-east-2.rds.amazonaws.com',  # 
@@ -170,3 +171,5 @@ REST_AUTH = {
     "USE_JWT": True,
     "JWT_AUTH_HTTPONLY": False,
 }
+
+CORS_ALLOW_ALL_ORIGINS = True
