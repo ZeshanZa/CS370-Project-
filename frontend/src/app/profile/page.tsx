@@ -4,6 +4,7 @@ import TuneIcon from '@mui/icons-material/Tune';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import XIcon from '@mui/icons-material/X';
 
+// hook that fetches the state of skills from backend
 const useSkills = (): [any[], React.Dispatch<React.SetStateAction<any[]>>] => {
     const [skills, setSkills] = useState<any[]>([]);
   
@@ -23,26 +24,26 @@ function page() {
 
     const [skills, setSkills] = useSkills();
     const [selectedAcquiredSkills, setSelectedAcquiredSkills] = useState([]);
-  const [selectedSearchingSkills, setSelectedSearchingSkills] = useState([]);
-  const [isAcquiredDropdownOpen, setIsAcquiredDropdownOpen] = useState(false);
-  const [isSearchingDropdownOpen, setIsSearchingDropdownOpen] = useState(false);
+    const [selectedSearchingSkills, setSelectedSearchingSkills] = useState([]);
+    const [isAcquiredDropdownOpen, setIsAcquiredDropdownOpen] = useState(false);
+    const [isSearchingDropdownOpen, setIsSearchingDropdownOpen] = useState(false);
 
-    // When skills data is loaded, initialize the selected skills
+    // When skills data is loaded, initialize and track skills marked as acquired or searching
     useEffect(() => {
         setSelectedAcquiredSkills(skills.filter(skill => skill.acquired));
         setSelectedSearchingSkills(skills.filter(skill => skill.searching));
     }, [skills]);
 
-  // Function to toggle skill status and update in backend
-  const toggleSkillStatus = (skill, statusType) => {
+    // Function to toggle skill status and update in backend
+    const toggleSkillStatus = (skill, statusType) => {
     const updatedSkill = { ...skill, [statusType]: !skill[statusType] };
     fetch(`http://127.0.0.1:8000/skills/${skill.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedSkill),
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedSkill),
     })
-      .then(response => response.json())
-      .then(data => {
+        .then(response => response.json())
+        .then(data => {
         setSkills(skills.map(s => s.id === data.id ? data : s));
         // Update selected skills
         if(statusType === 'acquired') {
@@ -50,12 +51,12 @@ function page() {
         } else {
           setSelectedSearchingSkills(data[statusType] ? [...selectedSearchingSkills, data] : selectedSearchingSkills.filter(s => s.id !== data.id));
         }
-      })
-      .catch(error => console.error('Error updating skill:', error));
-  };
+        })
+        .catch(error => console.error('Error updating skill:', error));
+    };
 
-  // Dropdown component for skills
-  const SkillsDropdown = ({ isOpen, statusType }) => {
+    // Renders Dropdown component for skills
+    const SkillsDropdown = ({ isOpen, statusType }) => {
     return isOpen && (
         <div tabIndex={0} onBlur={() => statusType === 'acquired' ? setIsAcquiredDropdownOpen(false) : setIsSearchingDropdownOpen(false)}
         className="absolute z-10 mt-2 w-5/8 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
@@ -77,27 +78,29 @@ function page() {
             </div>
         </div>
     );
-};
+    };
 
-  const toggleAcquiredDropdown = () => {
-    setIsAcquiredDropdownOpen(!isAcquiredDropdownOpen);
-  };
+    // used to toggle state of acquired/searching dropdowns
+    const toggleAcquiredDropdown = () => {
+        setIsAcquiredDropdownOpen(!isAcquiredDropdownOpen);
+    };
 
-  const toggleSearchingDropdown = () => {
-    setIsSearchingDropdownOpen(!isSearchingDropdownOpen);
-  };
+    const toggleSearchingDropdown = () => {
+        setIsSearchingDropdownOpen(!isSearchingDropdownOpen);
+    };
 
-  const SkillBubbles = ({ skills }) => {
-    return (
-      <div className="flex flex-wrap gap-2 p-2">
-        {skills.map(skill => (
-          <span key={skill.id} className="flex items-center justify-center px-3 py-1 m-1 rounded-full bg-blue-500 text-white text-sm font-bold cursor-default hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-110">
-            {skill.name}
-          </span>
-        ))}
-      </div>
-    );
-  };
+    // renders the skill bubbles based on acquired/searching
+    const SkillBubbles = ({ skills }) => {
+        return (
+        <div className="flex flex-wrap gap-2 p-2">
+            {skills.map(skill => (
+            <span key={skill.id} className="flex items-center justify-center px-3 py-1 m-1 rounded-full bg-blue-500 text-white text-sm font-bold cursor-default hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-110">
+                {skill.name}
+            </span>
+            ))}
+        </div>
+        );
+    };
 
   return (
     <div className='w-full h-full'>
@@ -158,22 +161,19 @@ function page() {
                 </div>
                 <div className='w-5/12  mt-10'>
                     <div style={{marginBottom: '15%'}}>
-                    <button onClick={toggleAcquiredDropdown} className="px-4 py-2 bg-yellow-500 text-white font-semibold rounded hover:bg-blue-700">
-    Skills I Have
-</button>
-        <SkillsDropdown isOpen={isAcquiredDropdownOpen} statusType="acquired" />
-        <SkillBubbles skills={selectedAcquiredSkills} />
-                        
+                        <button onClick={toggleAcquiredDropdown} className="px-4 py-2 bg-yellow-500 text-white font-semibold rounded hover:bg-blue-700">
+                            Skills I Have
+                        </button>
+                        <SkillsDropdown isOpen={isAcquiredDropdownOpen} statusType="acquired" />
+                        <SkillBubbles skills={selectedAcquiredSkills} />      
                     </div>
                     <div style={{marginBottom: '15%'}}>
-                    <button onClick={toggleSearchingDropdown} className="px-4 py-2 bg-yellow-500  text-white font-semibold rounded hover:bg-green-700">
-    Skills I'm Searching For
-</button>
-        <SkillsDropdown isOpen={isSearchingDropdownOpen} statusType="searching" />
-        <SkillBubbles skills={selectedSearchingSkills} />
-                        
+                        <button onClick={toggleSearchingDropdown} className="px-4 py-2 bg-yellow-500  text-white font-semibold rounded hover:bg-green-700">
+                            Skills I'm Searching For
+                        </button>
+                        <SkillsDropdown isOpen={isSearchingDropdownOpen} statusType="searching" />
+                        <SkillBubbles skills={selectedSearchingSkills} />  
                     </div>
-                    
                 </div>
                 <div>
                     <div className='mt-10'>
