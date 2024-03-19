@@ -20,6 +20,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views 
 from authentication import views 
 
+
 # Add Django site authentication urls (for login, logout, password management)
 
 urlpatterns = [
