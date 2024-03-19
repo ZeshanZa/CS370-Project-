@@ -1,8 +1,35 @@
 
-import React from 'react';
+"use client"; 
+import React, { useState } from 'react';
+import axios from 'axios'; 
 
+const ChangePasswordForm = () => {
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
 
-const setin = () =>{
+    if (newPassword !== confirmNewPassword) {
+      alert('New passwords do not match.');
+      return;
+    }
+
+    const url = `${process.env.CHANGE_PASS_URL}/change/password/`;
+
+    try {
+      const response = await axios.post(url, {
+        old_password: oldPassword,
+        new_password: newPassword,
+      });
+      alert('Password changed successfully');
+    } catch (error) {
+      console.error('Error changing password:', error);
+      alert('Error changing password');
+    }
+  };
+  
   return (
     <div className="container mx-auto px-4 mb-28">
       <div className="flex items-center justify-center ">
@@ -18,7 +45,7 @@ const setin = () =>{
     </div>
     
     <div className="mt-5">
-      <form>
+      <form onSubmit={handlePasswordChange}>
         <div className="mb-4">
           <label htmlFor="firstname" className="block text-gray-700 text-sm font-bold mb-2">First Name</label>
           <input type="text" id="firstname" placeholder="Name" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
@@ -35,19 +62,20 @@ const setin = () =>{
 
         <div className="mb-4">
           <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">Old Password</label>
-          <input type="text" id="oldpassword" placeholder="Old Password" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+          <input onChange={(e) => setOldPassword(e.target.value)} type="text" id="oldpassword" placeholder="Old Password" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
         </div>
         <div className="mb-4">
           <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">New Password</label>
-          <input type="text" id="newpassword" placeholder="New Password" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+          <input onChange={(e) => setNewPassword(e.target.value)} type="text" id="newpassword" placeholder="New Password" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
         </div>
         <div className="mb-4">
           <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">Confirm Password</label>
-          <input type="text" id="confirmpassword" placeholder="Confirm New Password" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+          <input  onChange={(e) => setConfirmNewPassword(e.target.value)} type="text" id="confirmpassword" placeholder="Confirm New Password" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
         </div>
         <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
           Save Changes
         </button>
+        <p>passwords do not match!</p>
 
         <div className="fixed inset-x-0 bottom-0 bg-gray-100 " >
          <div className="flex justify-center space-x-4 py-2">
@@ -63,5 +91,5 @@ const setin = () =>{
 );
 };
 
-export default setin;
+export default ChangePasswordForm;
   

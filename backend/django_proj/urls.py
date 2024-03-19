@@ -17,10 +17,15 @@ Including another URLconf
 from django.urls import include
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth import views as auth_views 
+from authentication import views 
+
 
 # Add Django site authentication urls (for login, logout, password management)
 
 urlpatterns = [
     path('api/auth/', include('authentication.urls')),
     path("admin/", admin.site.urls),
+    path('password/change/', auth_views.PasswordChangeView.as_view()),
+   
 ]
