@@ -16,7 +16,7 @@ const ChangePasswordForm = () => {
       return;
     }
 
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/change/password/`;
+    const url = `${process.env.CHANGE_PASS_URL}/change/password/`;
 
     try {
       const response = await axios.post(url, {
