@@ -26,6 +26,5 @@ from authentication import views
 urlpatterns = [
     path('api/auth/', include('authentication.urls')),
     path("admin/", admin.site.urls),
-    path('password/change/', auth_views.PasswordChangeView.as_view()),
    
 ]
