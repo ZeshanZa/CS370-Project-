@@ -117,10 +117,6 @@ function page() {
                         <p>Full Name:</p>
                         <input type="text" className='rounded-lg border 1px solid #ccc borderRadius 4px'/>
                     </div > 
-                    <div style={{marginBottom: '15%'}}>
-                        <p>Username:</p>
-                        <input type="text" className='rounded-lg border 1px solid #ccc borderRadius 4px'/>
-                    </div>
                     <div style={{marginBottom: '15%'}}> 
                         <p>Website URL:</p>
                         <input type="text" className='rounded-lg border 1px solid #ccc borderRadius 4px'/>

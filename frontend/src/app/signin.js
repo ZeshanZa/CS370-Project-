@@ -1,7 +1,7 @@
-"use client";
+"use client"
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'; // Corrected import based on your comment
 
 const AuthForm = () => {
   const [formType, setFormType] = useState('signin'); // 'signin' or 'signup'
@@ -9,7 +9,7 @@ const AuthForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const router = useRouter(); // Ensure correct import: import { useRouter } from 'next/router';
+  const router = useRouter();
 
   const toggleFormType = () => {
     setFormType(formType === 'signin' ? 'signup' : 'signin');
@@ -17,32 +17,35 @@ const AuthForm = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-    // Prepare the payload based on form type because the django form we have has diff perameters
+  
     let payload;
     if (formType === 'signup') {
       payload = { username, email, password1: password, password2: confirmPassword };
     } else {
-      // Adjusted for signin to include username
-      payload = { username, email, password };
+      payload = { username, email, password }; // For signin
     }
-
-    // Determine the URL endpoint based on form type i made a private varible just text me and ill tell you how 
+  
     const url = `${process.env.NEXT_PUBLIC_API_URL}/${formType === 'signup' ? 'register' : 'login'}/`;
-
+  
     try {
-      // Send a POST request to the backend with axios
       const response = await axios.post(url, payload);
-
-      // Output for debugging
-      console.log(`${formType} successful`, response.data);
-
-      // Redirect user after successful operation
-      router.push('/mainpage'); // Adjust this to your needs
+  
+      if (formType === 'signin') {
+        // Assuming the token is returned under the key 'key' for sign-in
+        const { key } = response.data;
+        localStorage.setItem('access_token', key); // Storing the token correctly
+        console.log(`${formType} successful`, response.data);
+        router.push('/mainpage'); // Redirect after successful signin
+      } else if (formType === 'signup') {
+        console.log(`${formType} successful`, response.data);
+        // Optionally, handle post-signup logic here, like redirecting to a sign-in page
+      }
     } catch (error) {
       console.error(`${formType} error`, error.response?.data || error);
     }
   };
+  
+  
 
   return (
     <div style={containerStyle}>
