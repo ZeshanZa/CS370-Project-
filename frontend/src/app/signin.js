@@ -38,7 +38,7 @@ const AuthForm = () => {
         router.push('/mainpage'); // Redirect after successful signin
       } else if (formType === 'signup') {
         console.log(`${formType} successful`, response.data);
-        // Optionally, handle post-signup logic here, like redirecting to a sign-in page
+        // Optionally, handle post-signup logic here, like redirecting to a sign-in page I didnt do it so if one of yall could thatd be great 
       }
     } catch (error) {
       console.error(`${formType} error`, error.response?.data || error);

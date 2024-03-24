@@ -16,10 +16,10 @@ const ChangePasswordForm = () => {
     }
   
     const token = localStorage.getItem('access_token'); // Ensure this matches how you store the token
-    console.log(`Token being sent: '${token}'`); // Debugging only
+    console.log(`Token being sent: '${token}'`); // Debugging only to check token actually worked 
 
     const headers = {
-      'Authorization': `Token ${token}`, // Adjusted to match the required format
+      'Authorization': `Token ${token}`, // Adjusted to match the required format so guys DJANGO requires this format for its keys/tokens so keep that in ind
     };
   
     const payload = {
@@ -31,7 +31,7 @@ const ChangePasswordForm = () => {
       const response = await axios.post('http://localhost:8000/api/auth/password/change/', payload, { headers });
       console.log('Password changed successfully', response.data);
       alert('Password changed successfully');
-      // Optional: Redirect the user or force a logout here
+      // Optional: Redirect the user or force a logout here i didnt do it but need to make page refresh will work on that later 
     } catch (error) {
       console.error('Error changing password:', error.response?.data || error);
       alert('Error changing password');
