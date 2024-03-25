@@ -1,13 +1,14 @@
 "use client"
 
 import React from 'react'
-import SingInPageComponent from "../components/SingInPageComponent"
+import SingInPageComponent2 from "../components/SingInPageComponent2"
 import MainPageComponent from "../components/MainPageComponent"
 import MatchesPageComponent from "../components/MatchesPageComponent"
+import SignInPageComponent from "../components/SignInPageComponent"
 
 function page() {
   return (
-    <MainPageComponent />
+    <SignInPageComponent />
   )
 }
 

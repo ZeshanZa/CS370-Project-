@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-const SingInPageComponent = () => {
+const SingInPageComponent2 = () => {
   const [formType, setFormType] = useState('signin'); // 'signin' or 'signup'
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -122,4 +122,4 @@ const inputStyle = {
   border: '1px solid blue',
 };
 
-export default SingInPageComponent;
+export default SingInPageComponent2;
