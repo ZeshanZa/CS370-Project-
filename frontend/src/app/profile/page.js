@@ -45,17 +45,37 @@ function Page() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem('access_token');
+
+            const response = await axios.get('http://127.0.0.1:8000/api/auth/user/', {
+              headers: {
+                'Authorization': `Token ${token}`,
+              },
+            });
+        
+        const userId = response.data.pk; // Assuming you've stored the user's ID as 'user_id'
+    
+        const payload = {
+            user: userId, // Include the user ID in the payload
+            full_name: profile.fullName,
+            major: profile.major,
+            github_url: profile.githubUrl,
+            bio: profile.bio,
+        };
+    
         try {
-            await axios.put('http://127.0.0.1:8000/profile/', profile, {
+            await axios.put('http://127.0.0.1:8000/profile/', JSON.stringify(payload), {
                 headers: {
                     'Authorization': `Token ${token}`,
+                    'Content-Type': 'application/json',
                 },
             });
             alert('Profile updated successfully');
         } catch (error) {
-            console.error('Error updating profile:', error);
+            console.error('Error updating profile:', error.response ? error.response.data : error);
         }
     };
+    
+    
 
     return (
         <div className='w-full min-h-screen bg-gray-100 p-5'>

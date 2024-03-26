@@ -32,30 +32,38 @@ const ChangePasswordForm = () => {
     e.preventDefault();
 
     if (newPassword !== confirmNewPassword) {
-      alert('New passwords do not match.');
-      return;
+        alert('New passwords do not match.');
+        return;
+    }
+
+    // Retrieve the token within this function
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+        console.error('No token found');
+        alert('You are not logged in. Please log in and try again.');
+        return; // Exit the function if no token is found
     }
 
     const headers = {
-      'Authorization': `Token ${token}`, // Adjusted to match the required format
+        'Authorization': `Token ${token}`, // Use the token directly from localStorage
     };
 
     const payload = {
-      new_password1: newPassword,
-      new_password2: confirmNewPassword,
+        new_password1: newPassword,
+        new_password2: confirmNewPassword,
     };
 
     try {
-      const response = await axios.post('http://localhost:8000/api/auth/password/change/', payload, { headers });
-      console.log('Password changed successfully', response.data);
-      alert('Password changed successfully');
-      // Optional: Redirect the user or force a logout here
+        const response = await axios.post('http://localhost:8000/api/auth/password/change/', payload, { headers });
+        console.log('Password changed successfully', response.data);
+        alert('Password changed successfully');
+        // Optional: Redirect the user or force a logout here
     } catch (error) {
-      console.error('Error changing password:', error.response?.data || error);
-      alert('Error changing password');
+        console.error('Error changing password:', error.response?.data || error);
+        alert('Error changing password');
     }
-  };
-  
+};
+
   
   return (
     <div className="container mx-auto px-4 mb-28">
