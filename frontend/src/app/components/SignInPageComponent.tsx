@@ -1,10 +1,13 @@
 "use client"
 
-import { Button, Divider, TextField } from '@mui/material'
+import { TextField } from '@mui/material'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import { TypeAnimation } from 'react-type-animation';
 
 function SignInPageComponent() {
   const [signIn, setSignIn] = useState(true)
+  const router = useRouter()
 
   return (
     <div className='flex justify-center flex-row items-center w-screen h-[100dvh]'>
@@ -15,6 +18,24 @@ function SignInPageComponent() {
               <text className='text-6xl whitespace-pre-line'>Welcome to {'\n'} Emory Connect</text>
               <div className='w-1/2 border-4 border-blue-400 rounded-full my-6'></div>
               <text className='text-xl whitespace-pre-line'>A place where computer scientists {'\n'} connect and collaborate</text>
+              <div className='my-2'/>
+              <TypeAnimation
+              sequence={[
+                // Same substring at the start will only be typed out once, initially
+                'Connect',
+                1000, // wait 1s before replacing "Mice" with "Hamsters"
+                'Collaborate',
+                1000,
+                'Learn',
+                1000,
+                'Innovate',
+                1000
+              ]}
+              wrapper="span"
+              speed={50}
+              style={{ fontSize: '2em', display: 'inline-block' }}
+              repeat={Infinity}
+            />
             </div>
           </div>
         </div>
@@ -30,12 +51,14 @@ function SignInPageComponent() {
                   </div>
                   <text className='font-bold text-lg mt-4'> Username </text>
                   <span className='w-4/5'><TextField size='small' placeholder='username...' fullWidth/></span>
+                  <text className='font-bold text-lg mt-3'> Email </text>
+                  <span className='w-4/5'><TextField size='small' placeholder='email@example.com...' fullWidth/></span>
                   <div className='flex flex-row justify-between w-4/5 mt-3'>
                     <text className=' font-bold text-lg'> Password </text>
                     <button className='text-blue-400 font-light'> Forgot Password? </button>
                   </div>
                   <span className='w-4/5 mb-3'><TextField size='small' placeholder='password...' type='password' fullWidth/></span>
-                  <span className='w-5/12'><Button variant="contained" fullWidth> Sign In </Button></span>
+                  <span className='w-5/12'><button className='bg-blue-400 text-white w-full rounded-md mt-3 p-1 hover:bg-blue-600' onClick={() => {router.push('/test')}}> Sign In </button></span>
                 </> :
                 <>
                   <text className='text-6xl'> Sign up </text>
@@ -48,8 +71,10 @@ function SignInPageComponent() {
                   <text className='font-bold text-lg mt-3'> Email </text>
                   <span className='w-4/5'><TextField size='small' placeholder='email@example.com...' fullWidth/></span>
                   <text className=' font-bold text-lg mt-3'> Password </text>
+                  <span className='w-4/5'><TextField size='small' placeholder='password...' type='password' fullWidth/></span>
+                  <text className=' font-bold text-lg mt-3'> Confirm Password </text>
                   <span className='w-4/5 mb-3'><TextField size='small' placeholder='password...' type='password' fullWidth/></span>
-                  <span className='w-5/12'><Button variant="contained" fullWidth> Sign Up </Button></span>
+                  <span className='w-5/12'><button className='bg-blue-400 text-white w-full rounded-md mt-3 p-1 animate-pulse hover:bg-blue-600'> Sign Up </button></span>
                 </>
               }
             </div>
