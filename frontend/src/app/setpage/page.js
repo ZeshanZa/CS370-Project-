@@ -1,32 +1,50 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const ChangePasswordForm = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [username, setUsername] = useState(''); // State for storing username
+  const [email, setEmail] = useState(''); // State for storing email
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('access_token');
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/auth/user/', {
+          headers: {
+            'Authorization': `Token ${token}`,
+          },
+        });
+        setUsername(response.data.username);
+        setEmail(response.data.email);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        // Handle error (e.g., redirect to login page if unauthorized)
+      }
+    };
+
+    fetchUserData();
+  }, []); // The empty array ensures this effect runs only once after the initial render
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();
-   
 
     if (newPassword !== confirmNewPassword) {
       alert('New passwords do not match.');
       return;
     }
-  
-    const token = localStorage.getItem('access_token'); // Ensure this matches how you store the token
-    console.log(`Token being sent: '${token}'`); // Debugging only
 
     const headers = {
       'Authorization': `Token ${token}`, // Adjusted to match the required format
     };
-  
+
     const payload = {
       new_password1: newPassword,
       new_password2: confirmNewPassword,
     };
-  
+
     try {
       const response = await axios.post('http://localhost:8000/api/auth/password/change/', payload, { headers });
       console.log('Password changed successfully', response.data);
@@ -39,10 +57,6 @@ const ChangePasswordForm = () => {
   };
   
   
-  
-  
-  
-
   return (
     <div className="container mx-auto px-4 mb-28">
       <div className="flex items-center justify-center ">
@@ -50,14 +64,20 @@ const ChangePasswordForm = () => {
           Profile Photo
         </div>
       </div>
-      <div className="text-center">
-        <h4 className="mb-">First and Last Name</h4>
-        <p className="text-gray-600">
-          <span className="bg-gray-700 text-white py-1 px-3 rounded-full text-xs">Location</span>
-        </p>
-      </div>
-      
-      <div className="mt-5">
+      <div className="container mx-auto px-4 mt-10">
+  {/* User Information Display */}
+  <div className="bg-white shadow-md rounded-lg overflow-hidden">
+    <div className="bg-blue-500 p-4">
+      <h3 className="text-white text-lg font-semibold">Your Information</h3>
+    </div>
+    <div className="p-4">
+      <p className="text-gray-800 text-center"><span className="font-semibold">Username:</span> {username}</p>
+      <p className="text-gray-800 text-center"><span className="font-semibold">Email:</span> {email}</p>
+    </div>
+  </div>
+</div>
+
+      <div className="mt-10">
         <form onSubmit={handlePasswordChange}>
           <div className="mb-4">
             <label htmlFor="newpassword" className="block text-gray-700 text-sm font-bold mb-2">New Password</label>
