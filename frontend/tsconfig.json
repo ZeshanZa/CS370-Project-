@@ -24,6 +24,6 @@
     "**/*.ts",
     "**/*.tsx",
     "src/app/setpage/page.js"
-, "src/app/components/SingInPageComponent.jsx", "src/app/components/MatchesPageComponent.js"  ],
+, "src/app/components/SingInPageComponent.jsx", "src/app/components/MatchesPageComponent.js", "src/app/profile/page.js"  ],
   "exclude": ["node_modules"]
 }
