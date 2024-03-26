@@ -20,6 +20,8 @@ from django.urls import path
 from django.contrib.auth import views as auth_views 
 from authentication import views 
 from userProjects import views 
+from skills import views
+from rest_framework.urlpatterns import format_suffix_patterns
 
 
 # Add Django site authentication urls (for login, logout, password management)
@@ -27,6 +29,9 @@ from userProjects import views
 urlpatterns = [
     path('api/auth/', include('authentication.urls')),
     path("admin/", admin.site.urls),
-    path('', include('userProjects.urls'))
-   
+    path('', include('userProjects.urls')),
+    path('skills/', views.Skill_list),
+    path('skills/<int:id>', views.skill_detail),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)
