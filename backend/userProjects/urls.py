@@ -1,7 +1,6 @@
-from django.contrib import admin
-from django.urls import path, include 
-from .views import project_detail
+from django.urls import path
+from .views import ProjectCreateView
 
 urlpatterns = [ 
-    path('projects/', project_detail, name='projects' )            
+    path('projects/create/', ProjectCreateView.as_view(), name='project-create'),           
 ]
