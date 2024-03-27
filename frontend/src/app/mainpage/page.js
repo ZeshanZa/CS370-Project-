@@ -1,8 +1,32 @@
-import React from 'react'
+"use client"
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import TuneIcon from '@mui/icons-material/Tune';
 import StarIcon from '@mui/icons-material/Star';
 
-function page() {
+function ProjectsPage() {
+    const [projects, setProjects] = useState([]);
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            const token = localStorage.getItem('access_token');
+            try {
+                const response = await axios.get('http://127.0.0.1:8000/projects/', {
+                    headers: {
+                        'Authorization': `Token ${token}`,
+                    },
+                });
+                setProjects(response.data); // Assuming the response is an array of projects
+            } catch (error) {
+                console.error('Error fetching projects:', error);
+            }
+        };
+
+        fetchProjects();
+    }, []);
+  
+  
+
   return (
     <div className='w-full h-full'>
         <div className='w-full p-2 flex flex-row justify-between bg-blue-900 text-white items-centerx'>
@@ -50,52 +74,35 @@ Artificial intelligence, Natural Language Processing, and Data Science.
                  <a href="/profile" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Profile</a>
                 <a href="/setpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Settings</a>
                 </div>
+                    </div>
+                </div>
+            </div>
 
-                    </div>
-                </div>
-            </div>
+
             <div className='w-7/12 p-2'>
-                <div>
-                    <div className='font-bold text-xl items-center p-2 w-full bg-slate-300 rounded-lg'>
-                        Recommended Projects
-                    </div>
-                    <div className='w-full flex-wrap flex justify-center'>
-                        <div className='bg-slate-300 m-3 p-2 rounded-xl flex flex-col w-5/12'>
-                            <div className='flex flex-row justify-between font-bold text-xl'>
-                                <text> Project 1 </text>
-                                <StarIcon />
-                            </div>
-                            <text className='font-light text-sm whitespace-pre-line break-words'> Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text </text>
-                            <text className='font-bold'> 3 contributers </text>
-                        </div>
-                        <div className='bg-slate-300 m-3 p-2 rounded-xl flex flex-col w-5/12'>
-                            <div className='flex flex-row justify-between font-bold text-xl'>
-                                <text> Project 1 </text>
-                                <StarIcon />
-                            </div>
-                            <text className='font-light text-sm whitespace-pre-line break-words'> Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text </text>
-                            <text className='font-bold'> 3 contributers </text>
-                        </div>
-                        <div className='bg-slate-300 m-3 p-2 rounded-xl flex flex-col w-5/12'>
-                            <div className='flex flex-row justify-between font-bold text-xl'>
-                                <text> Project 1 </text>
-                                <StarIcon />
-                            </div>
-                            <text className='font-light text-sm whitespace-pre-line break-words'> Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text </text>
-                            <text className='font-bold'> 3 contributers </text>
-                        </div>
-                        <div className='bg-slate-300 m-3 p-2 rounded-xl flex flex-col w-5/12'>
-                            <div className='flex flex-row justify-between font-bold text-xl'>
-                                <text> Project 1 </text>
-                                <StarIcon />
-                            </div>
-                            <text className='font-light text-sm whitespace-pre-line break-words'> Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text Project Text </text>
-                            <text className='font-bold'> 3 contributers </text>
-                        </div>
-                    </div>
-                    <text className='underline'> Expand for more... </text>
+        <div>
+          <div className='font-bold text-xl items-center p-2 w-full bg-slate-300 rounded-lg'>
+            Recommended Projects
+          </div>
+          <div className='w-full flex-wrap flex justify-center'>
+            {projects.map(project => (
+              <div key={project.id} className='bg-slate-300 m-3 p-2 rounded-xl flex flex-col w-5/12'>
+                <div className='flex flex-row justify-between font-bold text-xl'>
+                  <text> {project.title} </text>
+                  <StarIcon />
                 </div>
-            </div>
+                <text className='font-light text-sm whitespace-pre-line break-words'> {project.description} </text>
+                {/* Add other project details here */}
+                <text className='font-bold'> {project.contributors?.length || '0'} contributors </text>
+              </div>
+            ))}
+          </div>
+          <text className='underline'> Expand for more... </text>
+        </div>
+      </div>
+
+
+
             <div className='w-2/12 p-2 h-[90dvh]'>
                 <div className='bg-slate-200 h-full rounded-lg'>
                     <div className='w-full text-xl font-bold bg-slate-600 rounded-t-lg p-3'>
@@ -127,4 +134,4 @@ Artificial intelligence, Natural Language Processing, and Data Science.
   )
 }
 
-export default page
+export default ProjectsPage
