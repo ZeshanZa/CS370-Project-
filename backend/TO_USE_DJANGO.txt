@@ -9,4 +9,4 @@ Generally, to do most things within django, just cd into the backend, use: pytho
 
 
 To access user-creation/login, use http://localhost:8000/api/auth/register/
-(you can also use cURL and jq if you'd prefer)
+(you can also use cURL and jq if you'd prefer)0
