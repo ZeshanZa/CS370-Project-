@@ -10,7 +10,7 @@ const ChangePasswordForm = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const token = localStorage.getItem('access_token');
+      const token = localStorage.getItem('access_token'); //Their may be a better way to handle storing tokens 
       try {
         const response = await axios.get('http://127.0.0.1:8000/api/auth/user/', {
           headers: {
@@ -21,7 +21,7 @@ const ChangePasswordForm = () => {
         setEmail(response.data.email);
       } catch (error) {
         console.error('Error fetching user data:', error);
-        // Handle error (e.g., redirect to login page if unauthorized)
+        // Handle error (e.g., redirect to login page if unauthorized) Im trying to figure out a simple way to do the token refreshing since I make them expire each hour 
       }
     };
 
@@ -73,7 +73,7 @@ const ChangePasswordForm = () => {
         </div>
       </div>
       <div className="container mx-auto px-4 mt-10">
-  {/* User Information Display the stuff from USER */}
+  {/* User Information Display the stuff from USER I only did Username and Email*/}
   <div className="bg-white shadow-md rounded-lg overflow-hidden">
     <div className="bg-blue-500 p-4">
       <h3 className="text-white text-lg font-semibold">Your Information</h3>

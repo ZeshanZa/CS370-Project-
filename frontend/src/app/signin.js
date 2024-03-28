@@ -25,7 +25,7 @@ const AuthForm = () => {
       payload = { username, email, password }; // For signin
     }
   
-    const url = `http://127.0.0.1:8000/api/auth/${formType === 'signup' ? 'register' : 'login'}/`;
+    const url = `http://127.0.0.1:8000/api/auth/${formType === 'signup' ? 'register' : 'login'}/`; //Changed the local variable file and got rid of it so no need to make it noe 
 
   
     try {
@@ -39,10 +39,10 @@ const AuthForm = () => {
         router.push('/mainpage'); // Redirect after successful signin
       } else if (formType === 'signup') {
         console.log(`${formType} successful`, response.data);
-        // Optionally, handle post-signup logic here, like redirecting to a sign-in page
+        // Optionally, handle post-signup logic here, like redirecting to a sign-in page plz add when you revamp frontend 
       }
     } catch (error) {
-      console.error(`${formType} error`, error.response?.data || error);
+      console.error(`${formType} error`, error.response?.data || error); //If you can add the small popup for errors 
     }
   };
   

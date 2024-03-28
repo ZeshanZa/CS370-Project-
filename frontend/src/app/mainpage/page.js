@@ -236,7 +236,7 @@ function ProjectsPage() {
 
 
           </div>
-          <text className='underline'> Expand for more... </text>
+          <text className='underline'> Expand for more... </text> 
         </div>
       </div>
             <div className='w-2/12 p-2 h-[90dvh]'>
@@ -260,8 +260,8 @@ function ProjectsPage() {
                         <div className='w-full flex flex-col border-b-2 border-gray-400 p-2'>
                             <text className='text-xl font-bold'>You matched!</text>
                             <text className='font-light'>Your skills were a match for:</text>
-                            <text className='underline'>ClosedAI - TalkGPT</text>
-                        </div>
+                            <text className='underline'>ClosedAI - TalkGPT</text> 
+                        </div> 
                     </div>
                 </div>
             </div>

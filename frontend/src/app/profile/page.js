@@ -12,7 +12,7 @@ function Page() {
     });
 
     useEffect(() => {
-        const fetchProfileData = async () => {
+        const fetchProfileData = async () => { //Artem I believe for your drawer stuff you were showing you can copy and paste this into it 
             const token = localStorage.getItem('access_token');
             try {
                 const response = await axios.get('http://127.0.0.1:8000/profile/', {
@@ -65,7 +65,7 @@ function Page() {
         try {
             await axios.put('http://127.0.0.1:8000/profile/', JSON.stringify(payload), {
                 headers: {
-                    'Authorization': `Token ${token}`,
+                    'Authorization': `Token ${token}`, 
                     'Content-Type': 'application/json',
                 },
             });
