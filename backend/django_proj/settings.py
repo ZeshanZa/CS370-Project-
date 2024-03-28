@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "corsheaders",
+    "userProjects", 
+    "skills",
 ]
 
 SITE_ID = 1  # make sure SITE_ID is set
