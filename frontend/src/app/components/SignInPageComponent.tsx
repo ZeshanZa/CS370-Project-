@@ -47,7 +47,7 @@ function SignInPageComponent() {
                   <text className='text-6xl'> Sign In </text>
                   <div className='my-2'>
                     <text className='text-lg'>Need an Emory Connect Account?</text>
-                    <button className='bg-slate-200 rounded-md px-1 ml-2 text-md' onClick={() => setSignIn(false)}> Switch so Sign Up </button>
+                    <button className='bg-slate-200 rounded-md px-1 ml-2 text-md' onClick={() => setSignIn(false)}> Switch to Sign Up </button>
                   </div>
                   <text className='font-bold text-lg mt-4'> Username </text>
                   <span className='w-4/5'><TextField size='small' placeholder='username...' fullWidth/></span>
@@ -64,7 +64,7 @@ function SignInPageComponent() {
                   <text className='text-6xl'> Sign up </text>
                   <div className='my-2'>
                     <text className='text-lg'>Already have an an Emory Connect Account?</text>
-                    <button className='bg-slate-200 rounded-md px-1 ml-2 text-md' onClick={() => setSignIn(true)}> Switch so Sign In </button>
+                    <button className='bg-slate-200 rounded-md px-1 ml-2 text-md' onClick={() => setSignIn(true)}> Switch to Sign In </button>
                   </div>
                   <text className='font-bold text-lg mt-4'> Username </text>
                   <span className='w-4/5'><TextField size='small' placeholder='username...' fullWidth/></span>
