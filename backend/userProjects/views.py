@@ -14,7 +14,7 @@ class ProjectCreateView(generics.CreateAPIView):
 class ProjectListView(generics.ListAPIView):
     serializer_class = ProjectSerializer
     permission_classes = [permissions.IsAuthenticated]
-
+    #Make sure you guys indent when doing def It took me like 20 minutes to figure out why I was getting an error 
     def get_queryset(self):
         # Filter projects by the current user
         return Project.objects.filter(user=self.request.user)
