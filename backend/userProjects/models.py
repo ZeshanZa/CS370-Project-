@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
+
 
 
 # Create your models here.
@@ -23,3 +25,11 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
     
+class Match(models.Model):
+    user1 = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='friend_requests_sent', on_delete=models.CASCADE)
+    user2 = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='friend_requests_received', on_delete=models.CASCADE)
+    matched_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=10, choices=(('pending', 'Pending'), ('accepted', 'Accepted')), default='pending')
+
+    def __str__(self):
+        return f"{self.user1.username} and {self.user2.username} - {self.status}"

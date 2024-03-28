@@ -1,6 +1,100 @@
 from rest_framework import generics, permissions
-from .models import Project, UserProfile
+ # Assuming User is the Django auth user model
+from .models import Project, UserProfile, Match, UserProfile, User
 from .serializers import ProjectSerializer, UserProfileSerializer
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.db.models import Q
+from rest_framework.permissions import IsAuthenticated
+from django.core.exceptions import PermissionDenied
+from django.db import models
+
+def list_pending_requests(request):
+    # Assuming 'user1' is the one who sends the request and 'user2' is the recipient
+    # Modify the query according to your logic if needed
+    pending_requests_sent = Match.objects.filter(user1=request.user, status='pending').values_list('id', flat=True)
+    pending_requests_received = Match.objects.filter(user2=request.user, status='pending').values_list('id', flat=True)
+
+    # Combine both querysets if you want to see all pending requests related to the user
+    pending_requests = list(pending_requests_sent) + list(pending_requests_received)
+
+    return JsonResponse({'pending_request_ids': pending_requests})
+
+
+def view_user_id(request, username):
+    user = get_object_or_404(User, username=username)
+    return HttpResponse(f"The ID for user {username} is {user.id}")
+
+def send_friend_request(request, user_id):
+    # Ensure both sender and receiver are valid users, including admins
+    sender = request.user
+    receiver = get_object_or_404(User, id=user_id)
+
+    # Prevent users from sending a friend request to themselves
+    if sender == receiver:
+        return HttpResponse("You cannot send a friend request to yourself")
+
+    # Create or get the existing friend request
+    match, created = Match.objects.get_or_create(
+        user1=sender,
+        user2=receiver,
+        defaults={'status': 'pending'}
+    )
+
+    if created:
+        return HttpResponse('Friend request sent')
+    else:
+        return HttpResponse('Friend request already sent')
+
+def accept_friend_request(request, match_id):
+    match = get_object_or_404(Match, id=match_id, user2=request.user)
+
+    # Ensure the request.user is the recipient of the friend request
+    if request.user != match.user2:
+        return HttpResponse("You can only accept friend requests sent to you")
+
+    match.status = 'accepted'
+    match.save()
+    return HttpResponse('Friend request accepted')
+
+
+def view_profile(request, user_id):
+    # Assume user_id is the ID of the profile being viewed
+    profile_owner = get_object_or_404(UserProfile, id=user_id)
+    is_friends = Match.objects.filter(user1=request.user, user2=profile_owner.user, status='accepted').exists() or \
+                 Match.objects.filter(user1=profile_owner.user, user2=request.user, status='accepted').exists()
+    
+    if is_friends:
+        # Show the profile details
+        return HttpResponse(f"Showing {profile_owner.full_name}'s profile")
+    else:
+        return HttpResponse("You are not friends with this user")
+    
+# show profile user when matched 
+class MatchedUserProfileView(generics.RetrieveAPIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        other_username = self.kwargs.get('username')
+        user = self.request.user
+        other_user = get_object_or_404(User, username=other_username)
+
+        # Check if there's a match
+        match_exists = Match.objects.filter(
+            (models.Q(user1=user, user2=other_user) | models.Q(user1=other_user, user2=user))
+        ).exists()
+
+        if match_exists:
+            return other_user.userprofile  # Assuming a related_name 'userprofile' on UserProfile model
+        else:
+            raise PermissionDenied('You are not matched with this user.')
+
 
 class ProjectCreateView(generics.CreateAPIView):
     queryset = Project.objects.all()
@@ -31,8 +125,6 @@ class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
 
     # No perform_create needed here
-
-
 
 class UserProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = UserProfileSerializer
