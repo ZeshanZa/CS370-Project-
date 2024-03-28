@@ -57,7 +57,7 @@ const ChangePasswordForm = () => {
         const response = await axios.post('http://localhost:8000/api/auth/password/change/', payload, { headers });
         console.log('Password changed successfully', response.data);
         alert('Password changed successfully');
-        // Optional: Redirect the user or force a logout here
+        // Optional: Redirect the user or force a logout here When you guys edit frontend plz add this 
     } catch (error) {
         console.error('Error changing password:', error.response?.data || error);
         alert('Error changing password');
@@ -73,7 +73,7 @@ const ChangePasswordForm = () => {
         </div>
       </div>
       <div className="container mx-auto px-4 mt-10">
-  {/* User Information Display */}
+  {/* User Information Display the stuff from USER */}
   <div className="bg-white shadow-md rounded-lg overflow-hidden">
     <div className="bg-blue-500 p-4">
       <h3 className="text-white text-lg font-semibold">Your Information</h3>

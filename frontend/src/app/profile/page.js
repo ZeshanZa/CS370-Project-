@@ -52,10 +52,10 @@ function Page() {
               },
             });
         
-        const userId = response.data.pk; // Assuming you've stored the user's ID as 'user_id'
+        const userId = response.data.pk; // For this for some reason I had to make the assumption for userid for testing in django the rest framework atores as the pk value which is unique for each user I believe 
     
         const payload = {
-            user: userId, // Include the user ID in the payload
+            user: userId, // Include the user ID in the payload it needs it to make chnages 
             full_name: profile.fullName,
             major: profile.major,
             github_url: profile.githubUrl,
@@ -93,6 +93,12 @@ function Page() {
                         <p className='text-md mb-1'>{profile.major}</p>
                         <a href={profile.githubUrl} className='text-sm text-blue-500 mb-2'>{profile.githubUrl}</a>
                         <p className='text-sm bg-gray-200 p-3 rounded'>{profile.bio}</p>
+                        <div className="flex justify-center space-x-4 py-2">
+                <a href="/mainpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Home</a>
+                 <a href="/matches" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Matches</a>
+                 <a href="/profile" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Profile</a>
+                <a href="/setpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Settings</a>
+                </div>
                     </div>
                 </div>
                 <div className='flex-grow p-4 ml-5 bg-white rounded shadow'>

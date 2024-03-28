@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation'; // Corrected import based on your comment
+import { useRouter } from 'next/navigation'; // Corrected import based on your comment I though router worked but apparently new update we have to use navigation 
 
 const AuthForm = () => {
   const [formType, setFormType] = useState('signin'); // 'signin' or 'signup'
@@ -25,7 +25,8 @@ const AuthForm = () => {
       payload = { username, email, password }; // For signin
     }
   
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/${formType === 'signup' ? 'register' : 'login'}/`;
+    const url = `http://127.0.0.1:8000/api/auth/${formType === 'signup' ? 'register' : 'login'}/`;
+
   
     try {
       const response = await axios.post(url, payload);
