@@ -22,7 +22,7 @@ const AuthForm = () => {
 
     let payload;
     if (formType === 'signup') {
-      payload = { username, email, password, confirmPassword };
+      payload = { username, email, password1: password, password2: confirmPassword };
     } else {
       payload = { username, email, password };
     }
