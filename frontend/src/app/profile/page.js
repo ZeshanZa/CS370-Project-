@@ -41,6 +41,7 @@ function Page() {
     useEffect(() => {
         const fetchProfileData = async () => { //Artem I believe for your drawer stuff you were showing you can copy and paste this into it 
             const token = localStorage.getItem('access_token');
+            // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';
             try {
                 const response = await axios.get('http://127.0.0.1:8000/profile/', {
                     headers: {
@@ -74,6 +75,7 @@ function Page() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem('access_token');
+        // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';
 
             const response = await axios.get('http://127.0.0.1:8000/api/auth/user/', {
               headers: {
@@ -114,9 +116,9 @@ function Page() {
 
     // When skills data is loaded, initialize the selected skills
     useEffect(() => {
-        setSelectedAcquiredSkills(userSkills.filter(userSkill => userSkill.acquiring));
-        setSelectedSearchingSkills(userSkills.filter(userSkill => userSkill.searching));
-    }, [userSkills]);
+        setSelectedAcquiredSkills(userSkills.filter(userSkill => userSkill.acquiring && userSkill.user === profile.user_id));
+        setSelectedSearchingSkills(userSkills.filter(userSkill => userSkill.searching && userSkill.user === profile.user_id));
+    }, [userSkills, profile.user_id]);
 
     useEffect(() => {
         fetch('http://127.0.0.1:8000/skills/') 
@@ -220,7 +222,7 @@ function Page() {
         } else if (statusType === 'searching') {
             skillsToDisplay = selectedSearchingSkills;
         }
-    
+        console.log('Rendering skills with keys:', skillsToDisplay.map(us => us.skill.id));
         return (
             <div className="flex flex-wrap gap-2 p-2">
                 {skillsToDisplay.map(userSkill => (
@@ -253,6 +255,12 @@ function Page() {
                         </button>
                         <SkillsDropdown isOpen={isAcquiredDropdownOpen} statusType="acquiring" allSkills={allSkills} userSkills={userSkills} toggleSkillStatus={toggleSkillStatus} />
                         <SkillBubbles statusType="acquiring" />
+                        <button onClick={toggleSearchingDropdown} className="px-4 py-2 bg-yellow-500  text-white font-semibold rounded hover:bg-green-700">
+                            Skills I'm Searching For
+                        </button>
+                        
+                        <SkillsDropdown isOpen={isSearchingDropdownOpen} statusType="searching" allSkills={allSkills} userSkills={userSkills} toggleSkillStatus={toggleSkillStatus} />
+                        <SkillBubbles statusType="searching" />
                         <div className="flex justify-center space-x-4 py-2">
                 <a href="/mainpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Home</a>
                  <a href="/matches" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Matches</a>

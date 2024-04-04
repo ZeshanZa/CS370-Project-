@@ -76,6 +76,7 @@ else:
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:3000/",
         "http://127.0.0.1:3000/",
+        "http://127.0.0.1:8000/"
     ]
 
 ROOT_URLCONF = "django_proj.urls"
