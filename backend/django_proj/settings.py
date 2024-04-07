@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "userProjects", 
     "skills",
+    "friendsSystem",
 ]
 
 SITE_ID = 1  # make sure SITE_ID is set

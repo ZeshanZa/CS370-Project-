@@ -17,13 +17,8 @@ Including another URLconf
 from django.urls import include
 from django.contrib import admin
 from django.urls import path
-from django.contrib.auth import views as auth_views 
-from authentication import views 
-from userProjects import views 
 from skills import views as skill_views
-from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework.routers import DefaultRouter
-
 
 # Add Django site authentication urls (for login, logout, password management)
 
@@ -37,5 +32,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('', include('userProjects.urls')),
     path('', include(router.urls)),
+    path('friendsList/', include('friendsSystem.urls')),
 ]
 
