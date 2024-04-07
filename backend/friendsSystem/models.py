@@ -13,3 +13,11 @@ class Friend(models.Model):
 
     def __str__(self):
         return self.name
+    
+class FriendRequest(models.Model):
+    reqSender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='reqSender', on_delete=models.CASCADE)
+    reqReceiver = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='reqReceiver', on_delete=models.CASCADE)
+    status = models.CharField(max_length=10, choices=(('pending', 'Pending'), ('accepted', 'Accepted'), ('rejected', 'Rejected')), default='pending')
+
+    def __str__(self):
+        return f"{self.user1.username} and {self.user2.username} - {self.status}"

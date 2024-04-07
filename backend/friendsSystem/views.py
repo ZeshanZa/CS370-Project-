@@ -2,7 +2,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 
 
-from .models import Friend
+from .models import Friend, FriendRequest
 from userProjects.models import User
 from .serializers import FriendSerializer
 from django.db import models
@@ -49,7 +49,7 @@ def sendFriendRequest(request, user_id):
         return HttpResponse("You cannot send a friend request to yourself.")
 
     # Create or get the existing friend request
-    friend, created = Friend.objects.get_or_create(
+    friendReq, created = FriendRequest.objects.get_or_create(
         user1=sender,
         user2=receiver,
         defaults={'status': 'pending'}
