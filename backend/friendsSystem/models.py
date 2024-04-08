@@ -15,6 +15,7 @@ class Friend(models.Model):
         return self.name
     
 class FriendRequest(models.Model):
+    friendRequest_id = models.CharField(max_length=255)
     reqSender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='reqSender', on_delete=models.CASCADE)
     reqReceiver = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='reqReceiver', on_delete=models.CASCADE)
     status = models.CharField(max_length=10, choices=(('pending', 'Pending'), ('accepted', 'Accepted'), ('rejected', 'Rejected')), default='pending')

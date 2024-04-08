@@ -39,19 +39,20 @@ class FriendListView(generics.ListAPIView):
         # Filter friends by the current user
         return Friend.objects.filter(user=self.request.user)
     
-def sendFriendRequest(request, user_id):
+def sendFriendRequest(request, username):
     # Ensure both sender and receiver are valid users, including admins
-    sender = request.user
-    receiver = get_object_or_404(User, id=user_id)
+    reqSender = request.user
+    reqReceiver = get_object_or_404(User, username=username)
 
     # Prevent users from sending a friend request to themselves
-    if sender == receiver:
+    if reqSender == reqReceiver:
         return HttpResponse("You cannot send a friend request to yourself.")
 
     # Create or get the existing friend request
     friendReq, created = FriendRequest.objects.get_or_create(
-        user1=sender,
-        user2=receiver,
+        friendRequest_id = f"{reqSender.id}{reqReceiver.id}",
+        reqSender=reqSender,
+        reqReceiver=reqReceiver,
         defaults={'status': 'pending'}
     )
 
@@ -61,25 +62,25 @@ def sendFriendRequest(request, user_id):
         return HttpResponse('Friend request already sent.')
 
 def acceptFriendRequest(request, friendRequest_id):
-    friend = get_object_or_404(Friend, id=friendRequest_id, user2=request.user)
+    friendReq = get_object_or_404(Friend, id=friendRequest_id, user2=request.user)
 
     # Ensure the request.user is the recipient of the friend request
-    if request.user != friend.user2:
+    if request.user != friendReq.user2:
         return HttpResponse("You can only interact with friend requests sent to you.")
 
-    friend.status = 'accepted'
-    friend.save()
+    friendReq.status = 'accepted'
+    friendReq.save()
     return HttpResponse('Friend request accepted.')
 
 def rejectFriendRequest(request, friendRequest_id):
-    friend = get_object_or_404(Friend, id=friendRequest_id, user2=request.user)
+    friendReq = get_object_or_404(Friend, id=friendRequest_id, user2=request.user)
 
     # Ensure the request.user is the recipient of the friend request
-    if request.user != friend.user2:
+    if request.user != friendReq.user2:
         return HttpResponse("You can only interact with friend requests sent to you.")
 
-    friend.status = 'rejected'
-    friend.save()
+    friendReq.status = 'rejected'
+    friendReq.save()
     return HttpResponse('Friend request rejected.')
 
 def listPendingRequests(request):
