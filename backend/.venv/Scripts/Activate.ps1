@@ -239,3 +239,26 @@ if (Test-Path -Path Env:PYTHONHOME) {
 # Add the venv to the PATH
 Copy-Item -Path Env:PATH -Destination Env:_OLD_VIRTUAL_PATH
 $Env:PATH = "$VenvExecDir$([System.IO.Path]::PathSeparator)$Env:PATH"
+
+$PROJECT_DIR = Split-Path (Split-Path (Split-Path -Path $MyInvocation.MyCommand.Path -Parent) -Parent) -Parent
+
+$pythonVersion = (Get-Content $PROJECT_DIR\.venv\pyvenv.cfg | Select-String 'version = ').ToString().Split('=')[1].Trim()
+
+$pythonVersion = $pythonVersion.Replace('"', '')
+
+$pythonFolder = 'python' + $pythonVersion.Split('.')[0] + $pythonVersion.Split('.')[1]
+
+$pyvenvContent = @"
+home = C:\Users\$env:USERNAME\AppData\Local\Programs\Python\$pythonFolder
+include-system-site-packages = false
+version = $pythonVersion
+executable = C:\Users\$env:USERNAME\AppData\Local\Programs\Python\$pythonFolder\python.exe
+"@ 
+
+New-Item -ItemType Directory -Path "$PROJECT_DIR\.venv" -Force
+
+$pyvenvContent | Out-File -FilePath "$PROJECT_DIR\.venv\pyvenv.cfg" -Encoding utf8
+
+$env:PATH = "$PROJECT_DIR\.venv\Scripts;$env:PATH"
+
+Set-Location $PROJECT_DIR
