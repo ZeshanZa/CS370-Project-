@@ -23,13 +23,13 @@ class FriendView(generics.RetrieveAPIView):
 
         # Check if users are friends
         is_Friend = Friend.objects.filter(
-            (models.Q(user1=user, user2=other_user) | models.Q(user1=other_user, user2=user))
+            (models.Q(friend1=user, friend2=other_user) | models.Q(friend2=other_user, friend1=user))
         ).exists()
 
         if is_Friend:
             return other_user.userprofile
         else:
-            raise PermissionDenied('You are not matched with this user.')
+            raise PermissionDenied('You are not friends with this user.')
     queryset = Friend.objects.all()
     
 class FriendListView(generics.ListAPIView):
@@ -37,7 +37,7 @@ class FriendListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     def get_queryset(self):
         # Filter friends by the current user
-        return Friend.objects.filter(user=self.request.user)
+        return Friend.objects.filter(friend1=self.request.user)
     
 def sendFriendRequest(request, username):
     # Ensure both sender and receiver are valid users, including admins
@@ -50,7 +50,7 @@ def sendFriendRequest(request, username):
 
     # Create or get the existing friend request
     friendReq, created = FriendRequest.objects.get_or_create(
-        friendRequest_id = f"{reqSender.id}{reqReceiver.id}",
+        friendRequest_id = f"{reqSender.username}{reqReceiver.username}",
         reqSender=reqSender,
         reqReceiver=reqReceiver,
         defaults={'status': 'pending'}
@@ -62,30 +62,36 @@ def sendFriendRequest(request, username):
         return HttpResponse('Friend request already sent.')
 
 def acceptFriendRequest(request, friendRequest_id):
-    friendReq = get_object_or_404(Friend, id=friendRequest_id, user2=request.user)
+    friendReq = get_object_or_404(FriendRequest, friendRequest_id=friendRequest_id, reqReceiver=request.user)
 
     # Ensure the request.user is the recipient of the friend request
-    if request.user != friendReq.user2:
+    if request.user != get_object_or_404(User, username=friendReq.reqReceiver.username):
         return HttpResponse("You can only interact with friend requests sent to you.")
 
     friendReq.status = 'accepted'
     friendReq.save()
+    newFriend, created = Friend.objects.get_or_create(
+        friend_id = f"{friendReq.reqSender.username}{friendReq.reqReceiver.username}",
+        friend1 = get_object_or_404(User, username=friendReq.reqSender.username),
+        friend2 = get_object_or_404(User, username=friendReq.reqReceiver.username),
+    )
+    friendReq.delete()
     return HttpResponse('Friend request accepted.')
 
+
 def rejectFriendRequest(request, friendRequest_id):
-    friendReq = get_object_or_404(Friend, id=friendRequest_id, user2=request.user)
+    friendReq = get_object_or_404(FriendRequest, friendRequest_id=friendRequest_id, reqReceiver=request.user)
 
     # Ensure the request.user is the recipient of the friend request
-    if request.user != friendReq.user2:
+    if request.user != friendReq.reqReceiver:
         return HttpResponse("You can only interact with friend requests sent to you.")
 
-    friendReq.status = 'rejected'
-    friendReq.save()
+    friendReq.delete()
     return HttpResponse('Friend request rejected.')
 
 def listPendingRequests(request):
-    pending_requests_sent = Friend.objects.filter(user1=request.user, status='pending').values_list('id', flat=True)
-    pending_requests_received = Friend.objects.filter(user2=request.user, status='pending').values_list('id', flat=True)
+    pending_requests_sent = Friend.objects.filter(reqSender=request.user, status='pending').values_list('friendRequest_id', flat=True)
+    pending_requests_received = Friend.objects.filter(reqReceiver=request.user, status='pending').values_list('friendRequest_id', flat=True)
 
     pending_requests = list(pending_requests_sent) + list(pending_requests_received)
 

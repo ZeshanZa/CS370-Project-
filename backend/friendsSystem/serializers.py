@@ -6,7 +6,7 @@ class FriendSerializer(ModelSerializer):
     class Meta:
         model = Friend
         fields = (
-            'id', 'name', 'skills', 'projects', 'github_url'
+            'friend_id', 'friend1', 'friend2'
         )
         
 class FriendRequestSerializer(ModelSerializer):
