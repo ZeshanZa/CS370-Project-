@@ -54,9 +54,7 @@ return (
           </ul>
         </nav>
       </header>
-      <main className="friendsList-container">
-        {friendElement}
-      </main>
+      {friendElement}
     </div>
   );
 };
