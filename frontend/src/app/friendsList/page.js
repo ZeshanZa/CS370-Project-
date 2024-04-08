@@ -34,7 +34,8 @@ function FriendsList() {
       return <div>Error: {error}</div>;
     }
 
-const friendElement = FriendsList.map(friend => ({
+const friendElement = friends.map(friend => ({
+    obj: friend,
     id: friend.username, // Assuming 'sender_id' is the field returned by your API
     name: friend.name, // Assuming 'sender' is the field returned by your API
     skills: ["Python", "Django", "JavaScript"], // Temporary skills, replace with actual data if available
@@ -42,6 +43,7 @@ const friendElement = FriendsList.map(friend => ({
     imageUrl: "https://via.placeholder.com/150" // Temporary image URL, replace with actual data if available
   }));
 
+console.log(friendElement)
 
 return (
     <div className="App">
@@ -58,9 +60,7 @@ return (
         </nav>
       </header>
       <main className="friendsList-container">
-        {FriendsList.map(friendElement => (
-          <friendElement key={friendElement.id} friendElement={friendElement} />
-        ))}
+        {friendElement[0].skills}
       </main>
     </div>
   );
