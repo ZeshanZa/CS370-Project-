@@ -1,9 +1,10 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
+from requests import Response
 
 
 from .models import Friend, FriendRequest
-from userProjects.models import User
+from userProjects.models import User, UserProfile
 from .serializers import FriendSerializer
 from django.db import models
 from rest_framework.permissions import IsAuthenticated
@@ -23,21 +24,35 @@ class FriendView(generics.RetrieveAPIView):
 
         # Check if users are friends
         is_Friend = Friend.objects.filter(
-            (models.Q(friend1=user, friend2=other_user) | models.Q(friend2=other_user, friend1=user))
+            (models.Q(friend1=user, friend2=other_user) | models.Q(friend1=other_user, friend2=user))
         ).exists()
 
         if is_Friend:
-            return other_user.userprofile
+            return get_object_or_404(UserProfile, user=other_user)
         else:
             raise PermissionDenied('You are not friends with this user.')
-    queryset = Friend.objects.all()
     
 class FriendListView(generics.ListAPIView):
     serializer_class = FriendSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     def get_queryset(self):
-        # Filter friends by the current user
-        return Friend.objects.filter(friend1=self.request.user)
+        user = self.request.user
+        friends = Friend.objects.filter(models.Q(friend1=user) | models.Q(friend2=user))
+        return friends
+
+def getFriendsInfo(request):
+    friendslist = []
+    # Filter friends by the current user
+    friends = Friend.objects.filter(models.Q(friend1=request.user) | models.Q(friend2=request.user))
+    for friend in friends:
+        if friend.friend1 == request.user:
+            profile = get_object_or_404(UserProfile, user=friend.friend2)
+            friendslist.append(profile.full_name)
+        else:
+            profile = get_object_or_404(UserProfile, user=friend.friend1)
+            friendslist.append(profile.full_name)
+    return friendslist
+
     
 def sendFriendRequest(request, username):
     # Ensure both sender and receiver are valid users, including admins
