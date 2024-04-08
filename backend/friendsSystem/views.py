@@ -62,14 +62,12 @@ def sendFriendRequest(request, username):
         return HttpResponse('Friend request already sent.')
 
 def acceptFriendRequest(request, friendRequest_id):
-    friendReq = get_object_or_404(FriendRequest, friendRequest_id=friendRequest_id, reqReceiver=request.user)
+    friendReq = get_object_or_404(FriendRequest, friendRequest_id=friendRequest_id)
 
     # Ensure the request.user is the recipient of the friend request
     if request.user != get_object_or_404(User, username=friendReq.reqReceiver.username):
         return HttpResponse("You can only interact with friend requests sent to you.")
 
-    friendReq.status = 'accepted'
-    friendReq.save()
     newFriend, created = Friend.objects.get_or_create(
         friend_id = f"{friendReq.reqSender.username}{friendReq.reqReceiver.username}",
         friend1 = get_object_or_404(User, username=friendReq.reqSender.username),
