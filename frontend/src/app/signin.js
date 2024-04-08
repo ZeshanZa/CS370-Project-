@@ -78,12 +78,18 @@ const AuthForm = () => {
               <button className='bg-slate-200 rounded-md px-1 ml-2 text-md' onClick={toggleFormType}>{formType === 'signin' ? 'Switch to Sign Up' : 'Switch to Sign In'}</button>
             </div>
             {/* Form Fields */}
-            <form onSubmit={handleFormSubmit} className="space-y-4">
+            <form onSubmit={handleFormSubmit} className="space-y-4 max-w-[400px]">
+              <text className='font-bold text-lg mt-4'> Username </text>
               <TextField fullWidth label="Username" value={username} onChange={e => setUsername(e.target.value)} size='small' placeholder='Username...' variant="outlined" />
+              <text className='font-bold text-lg mt-3'> Email </text>
               <TextField fullWidth label="Email" value={email} onChange={e => setEmail(e.target.value)} size='small' placeholder='Email...' variant="outlined" type="email" />
+              <text className=' font-bold text-lg mt-3'> Password </text>
               <TextField fullWidth label="Password" value={password} onChange={e => setPassword(e.target.value)} size='small' placeholder='Password...' variant="outlined" type="password" />
               {formType === 'signup' && (
-                <TextField fullWidth label="Confirm Password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} size='small' placeholder='Confirm Password...' variant="outlined" type="password" />
+                <>
+                  <text className=' font-bold text-lg mt-3'> Confirm Password </text>
+                  <TextField fullWidth label="Confirm Password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} size='small' placeholder='Confirm Password...' variant="outlined" type="password" />
+                </>
               )}
               <button type="submit" className='bg-blue-400 text-white w-full rounded-md mt-3 p-1 hover:bg-blue-600'>
                 {formType === 'signin' ? 'Sign In' : 'Sign Up'}
