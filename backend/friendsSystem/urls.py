@@ -3,7 +3,7 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.FriendListView.as_view(), name='friendsList'),
+    path('', views.getFriendsInfo, name='friendsList'),
     path('viewFriend/<str:username>', views.FriendView.as_view(), name='friendsView'),
     path('sendFriendRequest/<str:username>/', views.sendFriendRequest, name='sendFriendRequest'),
     path('acceptFriendRequest/<str:friendRequest_id>/', views.acceptFriendRequest, name='acceptFriendRequest'),

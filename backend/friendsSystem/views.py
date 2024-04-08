@@ -47,11 +47,11 @@ def getFriendsInfo(request):
     for friend in friends:
         if friend.friend1 == request.user:
             profile = get_object_or_404(UserProfile, user=friend.friend2)
-            friendslist.append(profile.full_name)
+            friendslist.append(profile.user.username)
         else:
             profile = get_object_or_404(UserProfile, user=friend.friend1)
-            friendslist.append(profile.full_name)
-    return friendslist
+            friendslist.append(profile.user.username)
+    return JsonResponse(friendslist, safe=False)
 
     
 def sendFriendRequest(request, username):
