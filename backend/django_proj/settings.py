@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "userProjects", 
     "skills",
     "matches", 
+    "friendsSystem",
 ]
 
 SITE_ID = 1  # make sure SITE_ID is set
