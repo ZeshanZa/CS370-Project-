@@ -36,6 +36,7 @@ urlpatterns = [
     path('api/auth/', include('authentication.urls')),
     path("admin/", admin.site.urls),
     path('', include('userProjects.urls')),
+    path('', include('matches.urls')),
     path('', include(router.urls)),
 ]
 

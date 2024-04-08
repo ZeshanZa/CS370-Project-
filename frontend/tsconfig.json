@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
+    "types":["js-cookie"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,

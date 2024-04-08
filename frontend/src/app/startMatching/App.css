@@ -39,19 +39,21 @@ nav ul li a {
   border-radius: 8px;
 }
 
-/* profile.css */
 button {
-  background-color: transparent; /* Make the button transparent */
-  border: none; /* Remove border */
-  padding: 0; /* Remove padding */
-  text-decoration: none; /* Remove default text decoration */
-  cursor: pointer; /* Change cursor to pointer on hover */
+  display: flex; 
+  justify-content: center;
+  background-color: #28a73d;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 button:hover {
-  text-decoration: underline; /* Underline text on hover */
+  background-color: #218838;
 }
-
 
 .profiles-container {
   display: flex;
