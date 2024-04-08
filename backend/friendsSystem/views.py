@@ -94,3 +94,12 @@ def listPendingRequests(request):
     pending_requests = list(pending_requests_sent) + list(pending_requests_received)
 
     return JsonResponse({'pending_request_ids': pending_requests})
+
+def removeFriend(request, username):
+    try:
+        friend = get_object_or_404(Friend, friend1=get_object_or_404(User, username=username), friend2=request.user)
+    except: 
+        friend = get_object_or_404(Friend, friend2=request.user, friend1=get_object_or_404(User, username=username))
+    
+    friend.delete()
+    return HttpResponse('Friend removed.')
