@@ -51,7 +51,7 @@ def getFriendsInfo(request):
         else:
             profile = get_object_or_404(UserProfile, user=friend.friend1)
             friendslist.append(profile.user.username)
-    return JsonResponse(friendslist, safe=False)
+    return JsonResponse({'userfriends': friendslist})
 
     
 def sendFriendRequest(request, username):
