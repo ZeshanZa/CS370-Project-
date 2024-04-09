@@ -242,7 +242,7 @@ $Env:PATH = "$VenvExecDir$([System.IO.Path]::PathSeparator)$Env:PATH"
 
 $PROJECT_DIR = Split-Path (Split-Path (Split-Path -Path $MyInvocation.MyCommand.Path -Parent) -Parent) -Parent
 
-$pythonVersion = (Get-Content $PROJECT_DIR\.venv\pyvenv.cfg | Select-String 'version = ').ToString().Split('=')[1].Trim()
+$pythonVersion = "3.8.8"
 
 $pythonVersion = $pythonVersion.Replace('"', '')
 
@@ -254,6 +254,20 @@ include-system-site-packages = false
 version = $pythonVersion
 executable = C:\Users\$env:USERNAME\AppData\Local\Programs\Python\$pythonFolder\python.exe
 "@ 
+
+try {
+    if (Test-Path -path C:\Users\$env:USERNAME\AppData\Local\Programs\Python\$pythonFolder\python.exe){
+        Write-Host "Python $pythonVersion is already installed and the environment will be activated. You're good to go!"
+    }
+    else {
+        Write-Host "Python $pythonVersion is not installed. Please install it from https://www.python.org/downloads/"
+        exit
+    }
+}
+ catch {
+    Write-Host "An error has occurred within the start script. Contact Esme for help."
+    exit
+}
 
 New-Item -ItemType Directory -Path "$PROJECT_DIR\.venv" -Force
 
