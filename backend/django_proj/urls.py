@@ -23,16 +23,20 @@ from rest_framework.routers import DefaultRouter
 # Add Django site authentication urls (for login, logout, password management)
 
 router = DefaultRouter()
-router.register(r'skills', skill_views.SkillViewSet)
-router.register(r'user_skills', skill_views.UserSkillViewSet)
-router.register(r'users', skill_views.UserViewSet)
+# router.register(r'skills', skill_views.SkillViewSet)
+# router.register(r'user_skills', skill_views.UserSkillViewSet)
+# router.register(r'users', skill_views.UserViewSet)
+router.register(r'user_profiles', skill_views.UserProfileViewSet)
 
 urlpatterns = [
     path('api/auth/', include('authentication.urls')),
     path("admin/", admin.site.urls),
     path('', include('userProjects.urls')),
     path('', include('matches.urls')),
-    path('', include(router.urls)),
     path('friendsList/', include('friendsSystem.urls')),
+    path('api/update_user_skills/', skill_views.UpdateUserSkillsView.as_view(), name='update_user_skills'),
+    path('api/get_user_skills/<int:user_id>/<str:array_type>/', skill_views.GetUserSkillsView.as_view(), name='get_user_skills'),
+    path('api/get_skills_with_user_specification/<int:specific_user_id>/', skill_views.GetSkillsWithUserSpecificationView.as_view(), name='get_skills_with_user_specification'),
+    path('api/', include(router.urls)),
 ]
 

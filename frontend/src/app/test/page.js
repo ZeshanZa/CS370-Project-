@@ -11,6 +11,7 @@ import UpdateProfilePageComponent from "../components/UpdateProfilePageComponent
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import FriendComponent from "../components/FriendComponent"
+import axios from 'axios';
 
 import data from './languages_data.json' assert { type: 'json' };
 
@@ -21,6 +22,23 @@ function page() {
   const [addLooking, setAddLooking] = useState('')
   const [addHave, setAddHave] = useState('')
 
+  // Fetch user's skills from the backend
+  useEffect(() => {
+    const fetchUserSkills = async () => {
+      try {
+        const response = await axios.get('/api/get_user_skills/current_user_id/');
+        const { have, searching } = response.data;
+        setSkillsLooking(searching);
+        setSkillsHave(have);
+      } catch (error) {
+        console.error('Error fetching user skills:', error);
+      }
+    };
+
+    fetchUserSkills();
+  }, []); // Empty dependency array means this effect runs only once after initial render
+
+  // fetch specific user arrays
   useEffect(() => {
     setSkillsLooking(['Java', 'Python', 'CSS'])
     setSkillsHave(['OCaml', 'R', 'HTML'])
@@ -56,7 +74,8 @@ function page() {
           </div>
           <div className='flex flex-col'>
             <text className='my-3'> Skill to add: <span className='font-bold'>{addHave}</span> </text>
-            <button className='bg-blue-600 rounded-md p-2 text-white hover:bg-blue-800 w-max' onClick={() => location.reload()}> Add skill </button>
+            <button className='bg-blue-600 rounded-md p-2 text-white hover:bg-blue-800 w-max' onClick={() => {sadasd;location.reload()}}> Add skill </button>
+            <button className='bg-red-600 rounded-md p-2 text-white hover:bg-red-800 w-max mt-2' onClick={() => {sadasd;location.reload()}}> Remove skill </button>
           </div>
         </div>
         <div className='w-96 border-l-2 border-black items-center pl-20'>
@@ -76,6 +95,7 @@ function page() {
           <div className='flex flex-col'>
             <text className='my-3'> Skill to add: <span className='font-bold'>{addLooking}</span> </text>
             <button className='bg-blue-600 rounded-md p-2 text-white hover:bg-blue-800 w-max' onClick={() => location.reload()}> Add skill </button>
+            <button className='bg-red-600 rounded-md p-2 text-white hover:bg-red-800 w-max mt-2' onClick={() => {sadasd;location.reload()}}> Remove skill </button>
           </div>
         </div>
       </div>
