@@ -41,16 +41,15 @@ class FriendListView(generics.ListAPIView):
         return friends
 
 def getFriendsInfo(request):
+    Currentuser = request.user.id
     friendslist = []
     # Filter friends by the current user
-    friends = Friend.objects.filter(models.Q(friend1=request.user) | models.Q(friend2=request.user))
+    friends = Friend.objects.filter(models.Q(friend1=Currentuser) | models.Q(friend2=Currentuser))
     for friend in friends:
         if friend.friend1 == request.user:
-            profile = get_object_or_404(UserProfile, user=friend.friend2)
-            friendslist.append(profile.user.username)
+            friendslist.append(friend.friend2.username)
         else:
-            profile = get_object_or_404(UserProfile, user=friend.friend1)
-            friendslist.append(profile.user.username)
+            friendslist.append(friend.friend1.username)
     return JsonResponse({'userfriends': friendslist})
 
     
