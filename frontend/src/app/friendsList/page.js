@@ -12,7 +12,7 @@ function FriendsList() {
       setIsLoading(true);
       const token = localStorage.getItem('access_token');
       
-      axios.get('http://127.0.0.1:8000/friendsList/', { // Ensure the endpoint matches your Django URL
+      fetch('http://127.0.0.1:8000/friendsList/', { // Ensure the endpoint matches your Django URL
         headers: { 'Authorization': `Token ${token}` }
       })
       .then(response => {
@@ -34,11 +34,9 @@ function FriendsList() {
       return <div>Error: {error}</div>;
     }
 
-const friendElement = friends.map(friend => ({
-    obj: friend,
-  }));
 
-console.log(friendElement)
+
+console.log(friends)
 
 return (
     <div className="App">
@@ -54,7 +52,7 @@ return (
           </ul>
         </nav>
       </header>
-      {friendElement}
+      {friends}
     </div>
   );
 };
