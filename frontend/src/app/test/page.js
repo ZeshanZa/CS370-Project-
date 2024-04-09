@@ -10,6 +10,7 @@ import ChangePasswordComponent from "../components/ChangePasswordComponent"
 import UpdateProfilePageComponent from "../components/UpdateProfilePageComponent"
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import FriendComponent from "../components/FriendComponent"
 
 import data from './languages_data.json' assert { type: 'json' };
 
@@ -34,6 +35,7 @@ function page() {
       sx={{ width: 300 }}
       renderInput={(params) => <TextField {...params} label="skill" />}
     />
+    <FriendComponent name={"Jon"} skills={["Java ", "Python ", "CSS "]} github='github/jon/me.com'/>
     </div>
   )
 }
