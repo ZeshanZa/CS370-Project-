@@ -36,6 +36,41 @@ function ProjectsPage() {
 
         fetchProjects();
     }, []);
+
+
+    const [profile, setProfile] = useState({
+        fullName: '',
+        major: '',
+        githubUrl: '',
+        bio: '',
+        user_id: null,
+    });
+
+    useEffect(() => {
+        const fetchProfileData = async () => { //Artem I believe for your drawer stuff you were showing you can copy and paste this into it 
+            const token = localStorage.getItem('access_token');
+            // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';
+            try {
+                const response = await axios.get('http://127.0.0.1:8000/profile/', {
+                    headers: {
+                        'Authorization': `Token ${token}`,
+                    },
+                });
+                setProfile({
+                    fullName: response.data.full_name || '',
+                    major: response.data.major || '',
+                    githubUrl: response.data.github_url || '',
+                    bio: response.data.bio || '',
+                    user_id: response.data.user || '',
+                });
+                console.log('Fetched user_id:', response.data.user);
+            } catch (error) {
+                console.error('Error fetching profile data:', error);
+            }
+        };
+
+        fetchProfileData();
+    }, []);
     const handleAddProjectSubmit = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem('access_token');//Maybe we should find another way to store token 
@@ -194,17 +229,10 @@ function ProjectsPage() {
                     </div>
                 </div>
                 <div className='flex flex-col'>
-                    <text className='text-lg'>Brian S.</text>
-                    <text className='text-lg'>3rd Year computer science BA</text>
-                    <text className='text-sm font-light'>bsmith@emory.edu</text>
-                    <div className='flex flex-row'>
-                        <text> - </text>
-                        <text className='text-sm'> https://briansmith.github.io </text>
-                    </div>
-                    <div className='whitespace-pre-line p-1 bg-slate-100 font-md rounded-lg break-words'>
-                    Hello, my name is Brian, and I am a 3rd year computer science major at Emory. I enjoy making projects related to:
-Artificial intelligence, Natural Language Processing, and Data Science.
-                    </div>
+                <h2 className='text-lg font-bold mb-2'>{profile.fullName}</h2>
+                        <p className='text-md mb-1'>{profile.major}</p>
+                        <a href={profile.githubUrl} className='text-sm text-blue-500 mb-2'>{profile.githubUrl}</a>
+                        <p className='text-sm bg-gray-200 p-3 rounded'>{profile.bio}</p>
                     <div className='w-full mt-2 flex flex-row flex-wrap justify-around text-white'>
                         <div className='rounded-full bg-slate-400 p-2 m-1 items-center'>
                             JavaScript
