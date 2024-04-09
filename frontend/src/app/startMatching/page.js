@@ -60,6 +60,42 @@ const Matches = () => {
     imageUrl: "https://via.placeholder.com/150",
   }));
 
+  const skillsIhave = ["Python", "Java", "Css", "HTML"]
+  const skillsIwant = ["Python", "Django", "Ruby"]
+
+  let bestscore1 = 0
+  let user1
+  let bestscore2 = 0
+  let user2
+  let bestscore3 = 0
+  let user3
+
+  for (let i = 0; i < profiles.length; i++){
+    let score = 0
+    for (let q = 0; q < skillsIwant.length; q++){
+      for (let j = 0; j < profiles[i].skills.length; j++){
+        if (skillsIwant[q] == profiles[i].skills[j]){
+          score += 1
+        }
+      }
+    }
+    if (score > bestscore1){
+      bestscore1 = score
+      user3 = user2
+      user2 = user1
+      user1 = profiles[i]
+    } else if (score > bestscore2){
+      bestscore2 = score
+      user3 = user2
+      user2 = profiles[i]
+    } else if (score > bestscore3){
+      bestscore3 = score
+      user3 = profiles[i]
+    }
+  }
+
+  const newProfiles = [user1, user2, user3]
+
   return (
     <div className="App">
       <header>
@@ -74,7 +110,7 @@ const Matches = () => {
         </nav>
       </header>
       <main className="profiles-container">
-        {profiles.map(profile => (
+        {newProfiles.map(profile => (
           <Profile key={profile.id} profile={profile} />
         ))}
       </main>
