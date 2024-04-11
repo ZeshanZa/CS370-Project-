@@ -1,8 +1,9 @@
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from requests import Response
-
-
+from .serializers import UserDetailSerializer
+from django.contrib.auth import get_user_model
+from django.db.models import Q
 from .models import Friend, FriendRequest
 from userProjects.models import User, UserProfile
 from .serializers import FriendSerializer
@@ -117,3 +118,21 @@ def removeFriend(request, username):
     
     friend.delete()
     return HttpResponse('Friend removed.')
+
+
+class DetailedFriendListView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserDetailSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        friend_relations = Friend.objects.filter(
+            models.Q(friend1=user) | models.Q(friend2=user)
+        ).distinct()
+        friend_ids = set()
+
+        for relation in friend_relations:
+            # Add both friend1 and friend2 ids, excluding the current user's id
+            friend_ids.add(relation.friend1.id if relation.friend1 != user else relation.friend2.id)
+
+        return get_user_model().objects.filter(id__in=friend_ids)
