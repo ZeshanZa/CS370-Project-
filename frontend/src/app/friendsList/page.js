@@ -1,44 +1,48 @@
-"use client" 
+"use client"
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import "./App.css";
+//import "./App.css";
+import FriendComponent from "../components/FriendComponent"
+import Layout from '../Layouts/Layout';
 
 function FriendsList() {
-    const [friends, putFriends] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
-  
-    useEffect(() => {
-      setIsLoading(true);
+  const [friends, putFriends] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchFriends = async () => {
       const token = localStorage.getItem('access_token');
-      
-      fetch('http://127.0.0.1:8000/friendsList/', { // Ensure the endpoint matches your Django URL
-        headers: { 'Authorization': `Token ${token}` }
-      })
-      .then(response => {
-        putFriends(response.data);
-        setIsLoading(false);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-        setError(error.message);
-        setIsLoading(false);
-      });
-    }, []);
-  
-    if (isLoading) {
-      return <div>Loading...</div>;
-    }
-  
-    if (error) {
-      return <div>Error: {error}</div>;
-    }
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/friendsList/detailedFriendsList', {
+          headers: {
+            'Authorization': `Token ${token}`,
+          },
+        });
+        putFriends(response.data); // friends here
+        //console.log(response.data)
+      } catch (error) {
+        console.error('Error fetching friends:', error);
+      }
+    };
+
+    fetchFriends().then(() => {setIsLoading(false)})
+
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
 
 
-console.log(friends)
+  console.log(friends)
 
-return (
+  /*return (
     <div className="App">
       <header>
         <nav>
@@ -52,8 +56,21 @@ return (
           </ul>
         </nav>
       </header>
-      {friends}
+      <div className='w-full items-center flex justify-center'>
+        {friends.map(friend => (
+          <FriendComponent name={friend.username} skills={["Java ", "Python ", "CSS "]} github={friend.email}/>
+        ))}
+      </div>
     </div>
-  );
+  );*/
+  return(
+    <Layout>
+      <div className='w-full items-center flex justify-center'>
+        {friends.map(friend => (
+          <FriendComponent name={friend.username} skills={["Java ", "Python ", "CSS "]} github={friend.email}/>
+        ))}
+      </div>
+    </Layout>
+  )
 };
 export default FriendsList;

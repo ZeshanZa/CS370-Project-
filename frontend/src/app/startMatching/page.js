@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie'; // You need 'js-cookie' package for this
-import "./App.css";
+//import "./App.css";
 import Profile from "./Profile";
+import Layout from '../Layouts/Layout';
 
 const Matches = () => {
   const [usernames, setUsernames] = useState([]);
@@ -30,18 +31,18 @@ const Matches = () => {
     console.log(fetchedCsrfToken);
 
     setIsLoading(true);
-    
+
     axios.get('http://127.0.0.1:8000/user-list/', {
     })
-    .then(response => {
-      setUsernames(response.data);
-      setIsLoading(false);
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-      setError('Error fetching data');
-      setIsLoading(false);
-    });
+      .then(response => {
+        setUsernames(response.data);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setError('Error fetching data');
+        setIsLoading(false);
+      });
   }, []);
 
   if (isLoading) {
@@ -70,25 +71,25 @@ const Matches = () => {
   let bestscore3 = 0
   let user3
 
-  for (let i = 0; i < profiles.length; i++){
+  for (let i = 0; i < profiles.length; i++) {
     let score = 0
-    for (let q = 0; q < skillsIwant.length; q++){
-      for (let j = 0; j < profiles[i].skills.length; j++){
-        if (skillsIwant[q] == profiles[i].skills[j]){
+    for (let q = 0; q < skillsIwant.length; q++) {
+      for (let j = 0; j < profiles[i].skills.length; j++) {
+        if (skillsIwant[q] == profiles[i].skills[j]) {
           score += 1
         }
       }
     }
-    if (score > bestscore1){
+    if (score > bestscore1) {
       bestscore1 = score
       user3 = user2
       user2 = user1
       user1 = profiles[i]
-    } else if (score > bestscore2){
+    } else if (score > bestscore2) {
       bestscore2 = score
       user3 = user2
       user2 = profiles[i]
-    } else if (score > bestscore3){
+    } else if (score > bestscore3) {
       bestscore3 = score
       user3 = profiles[i]
     }
@@ -96,7 +97,7 @@ const Matches = () => {
 
   const newProfiles = [user1, user2, user3]
 
-  return (
+  /*return (
     <div className="App">
       <header>
         <nav>
@@ -115,7 +116,16 @@ const Matches = () => {
         ))}
       </main>
     </div>
-  );
+  );*/
+  return (
+    <Layout>
+      <div className='w-full items-center flex justify-center flex-wrap'>
+        {newProfiles.map(profile => (
+          <Profile key={profile.id} profile={profile} />
+        ))}
+      </div>
+    </Layout>
+  )
 };
 
 export default Matches;
