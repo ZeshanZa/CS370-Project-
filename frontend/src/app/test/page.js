@@ -14,6 +14,7 @@ import FriendComponent from "../components/FriendComponent"
 import axios from 'axios';
 
 import data from './languages_data.json' assert { type: 'json' };
+import Layout from '../Layouts/Layout'
 
 function page() {
   const [skillsLooking, setSkillsLooking] = useState([])
@@ -54,6 +55,14 @@ function page() {
     return result;
   }
   const inputskills = json2array(data)
+
+  return(
+    <Layout>
+      <div className='w-full h-[100dvh]'>
+        Test here
+      </div>
+    </Layout>
+  )
   
   return (
     <div className='w-full h-[100dvh] items-center flex justify-center flex-col'>
