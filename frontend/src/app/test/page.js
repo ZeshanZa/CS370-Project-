@@ -16,7 +16,7 @@ import axios from 'axios';
 import data from './languages_data.json' assert { type: 'json' };
 import Layout from '../Layouts/Layout'
 
-function page() {
+function Page() {
   const [skillsLooking, setSkillsLooking] = useState([])
   const [skillsHave, setSkillsHave] = useState([])
 
@@ -117,4 +117,4 @@ function page() {
   )
 }
 
-export default page
+export default Page
