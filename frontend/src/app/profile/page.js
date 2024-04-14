@@ -27,7 +27,7 @@ const useSkills = (user_id) => {
 
 
 
-function Page() {
+function ProfilePage() {
 
     
 
@@ -312,7 +312,7 @@ function Page() {
                         <SkillsDropdown isOpen={isAcquiredDropdownOpen} statusType="acquiring" allSkills={allSkills} userSkills={userSkills} toggleSkillStatus={toggleSkillStatus} />
                         <SkillBubbles statusType="acquiring" />
                         <button onClick={toggleSearchingDropdown} className="px-4 py-2 bg-yellow-500  text-white font-semibold rounded hover:bg-green-700">
-                            Skills I'm Searching For
+                            Skills Im Searching For
                         </button>
                         
                         <SkillsDropdown isOpen={isSearchingDropdownOpen} statusType="searching" allSkills={allSkills} userSkills={userSkills} toggleSkillStatus={toggleSkillStatus} />
@@ -353,4 +353,4 @@ function Page() {
     );
 }
 
-export default Page;
+export default ProfilePage;
