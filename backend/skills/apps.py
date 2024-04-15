@@ -7,6 +7,6 @@ class SkillsConfig(AppConfig):
 
     def ready(self):
         from django.contrib.auth.models import User
-        from .models import UserProfile #, Skills, UserSkills
+        from .models import Skills
         from django.db import models
-        # User.add_to_class('skills', models.ManyToManyField(Skills, through=UserSkills))
+        import skills.signals

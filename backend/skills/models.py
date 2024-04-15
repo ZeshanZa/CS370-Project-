@@ -1,99 +1,116 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.postgres.fields import ArrayField
 
+def default_skills():
+    """
+    Defines the default structure for the 'acquired' and 'search' fields in the Skills model.
+    
+    Returns:
+        dict: A dictionary with keys for 'Exp', 'DB', 'Lang', 'Pers', each mapped to an empty list.
+    """
+    return {'Exp': [], 'DB': [], 'Lang': [], 'Pers': []}
 
-# new models
-# class Skills(models.Model):
-#     name = models.CharField(max_length=100, unique=True)
-#     users = models.ManyToManyField(User, through='UserSkills',  related_name='skills_set')
-#     def __str__(self):
-#         return self.name
-    
-# class UserSkills(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     skill = models.ForeignKey(Skills, on_delete=models.CASCADE)
-#     acquiring = models.BooleanField(default=False)
-#     searching = models.BooleanField(default=False)
-    
-#     class Meta:
-#         unique_together = ('user','skill')
-        
-#     def __str__(self):
-#         return f"{self.user.username}'s skill: {self.skill}"
-    
-    
-class UserProfile(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE, related_name='skills_userprofile')
-    have = ArrayField(models.CharField(max_length=100), default=list)
-    searching = ArrayField(models.CharField(max_length=100), default=list)
-    
+class Skills(models.Model):
+    """
+    Represents a set of skills associated with a user.
+
+    Attributes:
+        user (User): The user to whom these skills belong, in a one-to-one relationship.
+        acquired (JSONField): A dictionary storing skills the user has acquired.
+        search (JSONField): A dictionary storing skills the user is interested in acquiring.
+    """
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='skills')
+    acquired = models.JSONField(default=default_skills)
+    search = models.JSONField(default=default_skills)
+
     def __str__(self):
+        """
+        String representation of the Skills instance, showing the associated user's username.
+
+        Returns:
+            str: The username of the user associated with these skills.
+        """
         return self.user.username
-    
-    def update_user_skills(user_id, new_array, array_type):
-        user_profile, created = UserProfile.objects.get_or_create(user_id=user_id)
-        if array_type == 'have':
-           user_profile.have = new_array
-        elif array_type == 'searching':
-            user_profile.searching = new_array
-        else: 
-            raise ValueError("Invalid array type. Choose 'have' or 'searching'.")
-        user_profile.save()
-        
-    def get_user_skills(user_id, array_type):
-        user_profile = UserProfile.objects.get(user_id=user_id)
-        if array_type == 'have':
-            return user_profile.have
-        elif array_type == 'searching':
-            return user_profile.searching
-        else: 
-            return ValueError("Invalid array type. Choose 'have' or 'searching'.")
-    
-    # dictionary variant
+
+    @staticmethod
+    def update_user_skills(user_id, category, skill_type, new_skills):
+        """
+        Updates a specific set of skills for a user based on the category and skill type.
+
+        Parameters:
+            user_id (int): The ID of the user whose skills need to be updated.
+            category (str): Either 'acquired' or 'search', specifying which dictionary to update.
+            skill_type (str): One of 'Exp', 'DB', 'Lang', 'Pers', specifying which array to update.
+            new_skills (list): A list of new skills to replace the existing skills in the specified category and type.
+
+        Raises:
+            ValueError: If the category or skill type is invalid.
+            Skills.DoesNotExist: If no Skills instance is found for the user.
+        """
+        VALID_CATEGORIES = ['acquired', 'search']
+        VALID_SKILL_TYPES = ['Exp', 'DB', 'Lang', 'Pers']
+
+        if category not in VALID_CATEGORIES:
+            raise ValueError(f"Invalid category '{category}'. Must be one of {VALID_CATEGORIES}.")
+        if skill_type not in VALID_SKILL_TYPES:
+            raise ValueError(f"Invalid skill type '{skill_type}'. Must be one of {VALID_SKILL_TYPES}.")
+
+        skills = Skills.objects.get(user_id=user_id)
+        skills_data = getattr(skills, category)
+        skills_data[skill_type] = new_skills
+        setattr(skills, category, skills_data)
+        skills.save()
+
+    @staticmethod
+    def get_user_skills(user_id, category, skill_type):
+        """
+        Retrieves a specific set of skills for a user based on the category and skill type.
+
+        Parameters:
+            user_id (int): The ID of the user whose skills are to be retrieved.
+            category (str): Either 'acquired' or 'search', specifying which dictionary to access.
+            skill_type (str): One of 'Exp', 'DB', 'Lang', 'Pers', specifying which array to retrieve.
+
+        Returns:
+            list: The skills list from the specified category and type.
+
+        Raises:
+            ValueError: If the category or skill type is invalid.
+            Skills.DoesNotExist: If no Skills instance is found for the user.
+        """
+        VALID_CATEGORIES = ['acquired', 'search']
+        VALID_SKILL_TYPES = ['Exp', 'DB', 'Lang', 'Pers']
+
+        if category not in VALID_CATEGORIES:
+            raise ValueError(f"Invalid category '{category}'. Must be one of {VALID_CATEGORIES}.")
+        if skill_type not in VALID_SKILL_TYPES:
+            raise ValueError(f"Invalid skill type '{skill_type}'. Must be one of {VALID_SKILL_TYPES}.")
+
+        skills = Skills.objects.get(user_id=user_id)
+        skills_data = getattr(skills, category)
+        return skills_data.get(skill_type, [])
+
     @staticmethod
     def get_skills_with_user_specification(specific_user_id):
-        all_users_skills = {}
+        """
+        Retrieves skills data for all users except one specified user.
 
-        # Process for all users except the specified one
-        for profile in UserProfile.objects.exclude(user_id=specific_user_id):
-            all_users_skills[profile.user_id] = {
-                'have': profile.have,
-                'searching': profile.searching
-            }
+        Parameters:
+            specific_user_id (int): The user ID of the user to exclude from the retrieval.
 
-        # Process for the specified user
-        specific_user_profile = UserProfile.objects.get(user_id=specific_user_id)
-        specific_user_skills = {
-            'user_id': specific_user_id,
-            'have': specific_user_profile.have,
-            'searching': specific_user_profile.searching
-        }
+        Returns:
+            tuple: Contains two elements; a dictionary of all users' skills and a dictionary of the specified user's skills.
+
+        Raises:
+            Skills.DoesNotExist: If no Skills instance is found for the specific user.
+        """
+        all_users_skills = {profile.user_id: {'acquired': profile.acquired, 'search': profile.search}
+                            for profile in Skills.objects.exclude(user_id=specific_user_id)}
+        try:
+            specific_user_profile = Skills.objects.get(user_id=specific_user_id)
+            specific_user_skills = {'user_id': specific_user_id, 'acquired': specific_user_profile.acquired,
+                                    'search': specific_user_profile.search}
+        except Skills.DoesNotExist:
+            specific_user_skills = {'user_id': specific_user_id, 'acquired': {}, 'search': {}}
 
         return all_users_skills, specific_user_skills
-    
-    #list variant
-    # @staticmethod
-    # def get_skills_with_user_specification(specific_user_id):
-    #     all_users_skills = []
-
-    #     # Process for all users except the specified one
-    #     for profile in UserProfile.objects.exclude(user_id=specific_user_id):
-    #         user_skills = {
-    #             'user_id': profile.user_id,
-    #             'have': profile.have,
-    #             'searching': profile.searching
-    #         }
-    #         all_users_skills.append(user_skills)
-
-    #     # Process for the specified user
-    #     specific_user_profile = UserProfile.objects.get(user_id=specific_user_id)
-    #     specific_user_skills = {
-    #         'user_id': specific_user_id,
-    #         'have': specific_user_profile.have,
-    #         'searching': specific_user_profile.searching
-    #     }
-
-    #     return all_users_skills, specific_user_skills
-    
-    # add usernames later

@@ -1,96 +1,74 @@
-from django.http import JsonResponse
-from .models import UserProfile #,Skills, UserSkills, 
-from .serializers import UserProfileSerializer #SkillUpdateSerializer,UserSkillRequestSerializer, UserProfileSerializer #,SkillsSerializer, UserSkillsSerializer, UserSerializer,
-from rest_framework.decorators import api_view, APIView
+from .models import Skills 
+from .serializers import SkillsSerializer
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from django.contrib.auth.models import User
-    
-# new views (generics can use all requests)
-# create, retrieve, update, delete, etc
-# class SkillViewSet(viewsets.ModelViewSet):
-#     queryset = Skills.objects.all()
-#     serializer_class = SkillsSerializer
+from django.shortcuts import get_object_or_404
+from rest_framework.status import HTTP_400_BAD_REQUEST
 
-# class UserSkillViewSet(viewsets.ModelViewSet):
-#     queryset = UserSkills.objects.all()
-#     serializer_class = UserSkillsSerializer
+class SkillsViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing user skills.
+    """
+    queryset = Skills.objects.all()
+    serializer_class = SkillsSerializer
 
-# class UserViewSet(viewsets.ModelViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
+    @action(detail=True, methods=['post'], url_path='(?P<category>[^/.]+)/(?P<skill_type>[^/.]+)/update-skills')
+    def update_skills(self, request, pk=None, category=None, skill_type=None):
+        """
+        Updates a specific type of skills for a user.
 
+        Parameters:
+            request (Request): The HTTP request object.
+            pk (int): The primary key of the user whose skills are to be updated.
+            category (str): The category of skills to update ('acquired' or 'search').
+            skill_type (str): The type of skills to update (e.g., 'Exp', 'DB', 'Lang', 'Pers').
 
-# class UserProfileViewSet(viewsets.ModelViewSet):
-#     queryset = UserProfile.objects.all()
-#     serializer_class = UserProfileSerializer    
-    
-# class UpdateUserSkillsView(APIView):
-#     def post(self, request, format=None):
-#         serializer = SkillUpdateSerializer(data=request.data)
-#         if serializer.is_valid():
-#             user_id = serializer.validated_data['user_id']
-#             new_array = serializer.validated_data['new_array']
-#             array_type = serializer.validated_data['array_type']
-#             UserProfile.update_user_skills(user_id, new_array, array_type)
-#             return Response({'status': 'success'}, status=status.HTTP_200_OK)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-# class GetUserSkillsView(APIView):
-#     def get(self, request, user_id, array_type, format=None):
-#         serializer = UserSkillRequestSerializer(data={'user_id': user_id, 'array_type': array_type})
-#         if serializer.is_valid():
-#             user_id = serializer.validated_data['user_id']
-#             array_type = serializer.validated_data['array_type']
-#             skills = UserProfile.get_user_skills(user_id, array_type)
-#             return Response({'skills': skills}, status=status.HTTP_200_OK)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-# class GetSkillsWithUserSpecificationView(APIView):
-#     def get(self, request, specific_user_id, format=None):
-#         try:
-#             specific_user_id = int(specific_user_id)  # Basic integer validation
-#             all_users_skills, specific_user_skills = UserProfile.get_skills_with_user_specification(specific_user_id)
-#             return Response({
-#                 'all_users_skills': all_users_skills, 
-#                 'specific_user_skills': specific_user_skills
-#             }, status=status.HTTP_200_OK)
-#         except ValueError:
-#             return Response({'error': 'Invalid user ID'}, status=status.HTTP_400_BAD_REQUEST)
-        
-class UserProfileViewSet(viewsets.ModelViewSet):
-    queryset = UserProfile.objects.all()
-    serializer_class = UserProfileSerializer
+        Returns:
+            Response: HTTP response with the update status.
+        """
+        skills = get_object_or_404(Skills, user_id=pk)
+        new_skills = request.data.get('new_skills', [])
+        if not new_skills:
+            return Response({'error': 'new_skills is required'}, status=HTTP_400_BAD_REQUEST)
 
-class UpdateUserSkillsView(APIView):
-    def post(self, request, format=None):
-        user_id = request.data.get('user_id')
-        new_array = request.data.get('new_array')
-        array_type = request.data.get('array_type')
-        
-        if user_id is None or new_array is None or array_type is None:
-            return Response({'error': 'Missing required fields'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        UserProfile.update_user_skills(user_id, new_array, array_type)
-        return Response({'status': 'success'}, status=status.HTTP_200_OK)
+        skills.update_user_skills(pk, category, skill_type, new_skills)
+        return Response({'status': 'Skills updated successfully'})
 
-class GetUserSkillsView(APIView):
-    def get(self, request, user_id, array_type, format=None):
-        try:
-            skills = UserProfile.get_user_skills(user_id, array_type)
-            return Response({'skills': skills}, status=status.HTTP_200_OK)
-        except UserProfile.DoesNotExist:
-            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    @action(detail=True, methods=['get'], url_path='(?P<category>[^/.]+)/(?P<skill_type>[^/.]+)/get-skills')
+    def get_skills(self, request, pk=None, category=None, skill_type=None):
+        """
+        Retrieves a specific type of skills for a user.
 
-class GetSkillsWithUserSpecificationView(APIView):
-    def get(self, request, specific_user_id, format=None):
-        try:
-            specific_user_id = int(specific_user_id)  # Basic integer validation
-            all_users_skills, specific_user_skills = UserProfile.get_skills_with_user_specification(specific_user_id)
-            return Response({
-                'all_users_skills': all_users_skills, 
-                'specific_user_skills': specific_user_skills
-            }, status=status.HTTP_200_OK)
-        except ValueError:
-            return Response({'error': 'Invalid user ID'}, status=status.HTTP_400_BAD_REQUEST)
+        Parameters:
+            request (Request): The HTTP request object.
+            pk (int): The primary key of the user whose skills are to be retrieved.
+            category (str): The category of skills to retrieve ('acquired' or 'search').
+            skill_type (str): The type of skills to retrieve (e.g., 'Exp', 'DB', 'Lang', 'Pers').
+
+        Returns:
+            Response: HTTP response containing the requested skills.
+        """
+        skills = get_object_or_404(Skills, user_id=pk)
+        skill_data = skills.get_user_skills(pk, category, skill_type)
+        return Response({skill_type: skill_data})
+
+    @action(detail=True, methods=['get'], url_path='get-all-skills')
+    def get_all_user_skills(self, request, pk=None):
+        """
+        Retrieves all skills data excluding the specified user.
+
+        Parameters:
+            request (Request): The HTTP request object.
+            pk (int): The primary key of the user to exclude from the results.
+
+        Returns:
+            Response: HTTP response containing skills data for all users except the specified one.
+        """
+        all_skills, specific_skills = Skills.get_skills_with_user_specification(int(pk))
+        return Response({
+            'all_users_skills': all_skills,
+            'specific_user_skills': specific_skills
+        })
