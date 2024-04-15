@@ -56,13 +56,13 @@ function page() {
   }
   const inputskills = json2array(data)
 
-  return(
+  /*return(
     <Layout>
       <div className='w-full h-[100dvh]'>
         Test here
       </div>
     </Layout>
-  )
+  )*/
   
   return (
     <div className='w-full h-[100dvh] items-center flex justify-center flex-col'>
