@@ -1,7 +1,7 @@
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from requests import Response
-from .serializers import UserDetailSerializer
+from .serializers import FriendRequestSerializer, UserDetailSerializer
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from .models import Friend, FriendRequest
@@ -102,13 +102,37 @@ def rejectFriendRequest(request, friendRequest_id):
     friendReq.delete()
     return HttpResponse('Friend request rejected.')
 
-def listPendingRequests(request):
-    pending_requests_sent = Friend.objects.filter(reqSender=request.user, status='pending').values_list('friendRequest_id', flat=True)
-    pending_requests_received = Friend.objects.filter(reqReceiver=request.user, status='pending').values_list('friendRequest_id', flat=True)
+class OutgoingPendingRequestsView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = FriendRequestSerializer
+    def get_queryset(self):
+        user = self.request.user
+        request_relations = FriendRequest.objects.filter(
+            models.Q(reqSender=user) | models.Q(reqReceiver=user)
+        ).distinct()
+        request_ids = set()
 
-    pending_requests = list(pending_requests_sent) + list(pending_requests_received)
+        for relation in request_relations:
+            if relation.reqSender == user:
+                request_ids.add(relation.reqReceiver.id)
+        # Returns the users whom the current user has sent friend requests (not yet answered).
+        return get_user_model().objects.filter(id__in=request_ids)
+    
+class IncomingPendingRequestsView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = FriendRequestSerializer
+    def get_queryset(self):
+        user = self.request.user
+        request_relations = FriendRequest.objects.filter(
+            models.Q(reqSender=user) | models.Q(reqReceiver=user)
+        ).distinct()
+        request_ids = set()
 
-    return JsonResponse({'pending_request_ids': pending_requests})
+        for relation in request_relations:
+            if relation.reqReceiver == user:
+                request_ids.add(relation.reqSender.id)
+        # Returns the users whom the current user has not yet answered the requests for.
+        return get_user_model().objects.filter(id__in=request_ids)
 
 def removeFriend(request, username):
     try:
