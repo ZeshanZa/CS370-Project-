@@ -103,8 +103,8 @@ const Matches = () => {
         //console.log(targetSkills.data)
         //step 3 - the matching begins
         //3.1 - we looks through skills they want | we have 4 arrays of skills we want and 4 arrays of skills we have, same for them
-        console.log(myskills.data.acquired.DB)
-        console.log(targetSkills.data.search.DB)
+        //console.log(myskills.data.acquired.DB)
+        //console.log(targetSkills.data.search.DB)
         for (let ime = 0; ime < myskills.data.acquired.DB.length; ime++) {
           for (let ithem = 0; ithem < targetSkills.data.search.DB.length; ithem++) {
             if (myskills.data.acquired.DB[ime] == targetSkills.data.search.DB[ithem]){
