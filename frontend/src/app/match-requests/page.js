@@ -13,7 +13,7 @@ const MatchesList = () => {
     setIsLoading(true);
     const token = localStorage.getItem('access_token');
     
-    axios.get('http://3.91.27.166:8000/view-match-requests/', { // Ensure the endpoint matches your Django URL
+    axios.get('http://127.0.0.1:8000/view-match-requests/', { // Ensure the endpoint matches your Django URL
       headers: { 'Authorization': `Token ${token}` }
     })
     .then(response => {

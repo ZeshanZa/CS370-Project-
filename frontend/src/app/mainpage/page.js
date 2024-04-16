@@ -90,7 +90,7 @@ function ProjectsPage() {
     const fetchProjects = async () => {
       const token = localStorage.getItem("access_token");
       try {
-        const response = await axios.get("http://3.91.27.166:8000/projects/", {
+        const response = await axios.get("http://127.0.0.1:8000/projects/", {
           headers: {
             Authorization: `Token ${token}`,
           },
@@ -118,7 +118,7 @@ function ProjectsPage() {
       const token = localStorage.getItem("access_token");
       // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';
       try {
-        const response = await axios.get("http://3.91.27.166:8000/profile/", {
+        const response = await axios.get("http://127.0.0.1:8000/profile/", {
           headers: {
             Authorization: `Token ${token}`,
           },
@@ -148,7 +148,7 @@ function ProjectsPage() {
 
     try {
       await axios.post(
-        "http://3.91.27.166:8000/projects/create/",
+        "http://127.0.0.1:8000/projects/create/",
         projectData,
         {
           //I decided to remove local variable since some of yall are havin issues so just put URL instead
@@ -174,7 +174,7 @@ function ProjectsPage() {
   const handleDeleteProject = async (projectId) => {
     const token = localStorage.getItem("access_token");
     try {
-      await axios.delete(`http://3.91.27.166:8000/projects/${projectId}/`, {
+      await axios.delete(`http://127.0.0.1:8000/projects/${projectId}/`, {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -208,7 +208,7 @@ function ProjectsPage() {
     const token = localStorage.getItem("access_token");
     try {
       await axios.put(
-        `http://3.91.27.166:8000/projects/${editingProjectId}/`,
+        `http://127.0.0.1:8000/projects/${editingProjectId}/`,
         {
           title: editTitle,
           description: editDescription,
