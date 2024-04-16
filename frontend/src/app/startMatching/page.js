@@ -96,7 +96,7 @@ const Matches = () => {
         //step 2 - get the user's id and fetch the skills
         const targetId = await axios.get(`http://127.0.0.1:8000/user-id/${profiles[i].name}/`);
         //console.log(targetId)
-        if (targetId == uuid) {
+        if (targetId.data == uuid) {
           continue; //we make sure we dont collect out of skills and thus dont match to ourself
         }
         const targetSkills = await axios.get(`http://127.0.0.1:8000/skills/${targetId.data}/get-complete-skills/`);
@@ -109,6 +109,7 @@ const Matches = () => {
           for (let ithem = 0; ithem < targetSkills.data.search.DB.length; ithem++) {
             if (myskills.data.acquired.DB[ime] == targetSkills.data.search.DB[ithem]){
               score += 1
+              //console.log(myskills.data.acquired.DB[ime], targetSkills.data.search.DB[ithem])
             }
           }
         }
@@ -123,6 +124,7 @@ const Matches = () => {
           for (let ithem = 0; ithem < targetSkills.data.search.Lang.length; ithem++) {
             if (myskills.data.acquired.Lang[ime] == targetSkills.data.search.Lang[ithem]){
               score += 1
+              //console.log(myskills.data.acquired.Lang[ime], targetSkills.data.search.Lang[ithem])
             }
           }
         }
@@ -138,28 +140,30 @@ const Matches = () => {
 
         for (let ithem = 0; ithem < targetSkills.data.acquired.DB.length; ithem++) {
           for (let ime = 0; ime < myskills.data.search.DB.length; ime++) {
-            if (myskills.data.acquired.DB[ime] == targetSkills.data.search.DB[ithem]){
+            if (myskills.data.search.DB[ime] == targetSkills.data.acquired.DB[ithem]){
               score += 1
+              //console.log(myskills.data.search.DB[ime], targetSkills.data.acquired.DB[ithem])
             }
           }
         }
         for (let ithem = 0; ithem < targetSkills.data.acquired.Exp.length; ithem++) {
           for (let ime = 0; ime < myskills.data.search.Exp.length; ime++) {
-            if (myskills.data.acquired.Exp[ime] == targetSkills.data.search.Exp[ithem]){
+            if (myskills.data.search.Exp[ime] == targetSkills.data.acquired.Exp[ithem]){
               score += 1
             }
           }
         }
         for (let ithem = 0; ithem < targetSkills.data.acquired.Lang.length; ithem++) {
           for (let ime = 0; ime < myskills.data.search.Lang.length; ime++) {
-            if (myskills.data.acquired.Lang[ime] == targetSkills.data.search.Lang[ithem]){
+            if (myskills.data.search.Lang[ime] == targetSkills.data.acquired.Lang[ithem]){
               score += 1
+              //console.log(myskills.data.search.Lang[ime], targetSkills.data.acquired.Lang[ithem])
             }
           }
         }
         for (let ithem = 0; ithem < targetSkills.data.acquired.Pers.length; ithem++) {
           for (let ime = 0; ime < myskills.data.search.Pers.length; ime++) {
-            if (myskills.data.acquired.Pers[ime] == targetSkills.data.search.Pers[ithem]){
+            if (myskills.data.search.Pers[ime] == targetSkills.data.acquired.Pers[ithem]){
               score += 1
             }
           }
