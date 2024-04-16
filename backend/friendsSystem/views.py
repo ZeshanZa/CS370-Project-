@@ -1,7 +1,7 @@
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from requests import Response
-from .serializers import UserDetailSerializer
+from .serializers import FriendRequestSerializer, UserDetailSerializer
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from .models import Friend, FriendRequest
@@ -76,39 +76,63 @@ def sendFriendRequest(request, username):
     else:
         return HttpResponse('Friend request already sent.')
 
-def acceptFriendRequest(request, friendRequest_id):
-    friendReq = get_object_or_404(FriendRequest, friendRequest_id=friendRequest_id)
+def acceptFriendRequest(request, otherUser):
+    user = request.user
+    friend_reqs = FriendRequest.objects.filter(models.Q(reqReceiver=user))
+    
+    for req in friend_reqs:
+            if (req.reqSender == get_object_or_404(User, username=otherUser)):
+                newFriend, created = Friend.objects.get_or_create(
+                friend_id = f"{req.reqSender.username}{req.reqReceiver.username}",
+                friend1 = get_object_or_404(User, username=req.reqSender.username),
+                friend2 = get_object_or_404(User, username=req.reqReceiver.username),
+                )
+                req.delete()
+                return HttpResponse('Friend request accepted.')
+    return HttpResponse('Request does not exist.')
 
-    # Ensure the request.user is the recipient of the friend request
-    if request.user != get_object_or_404(User, username=friendReq.reqReceiver.username):
-        return HttpResponse("You can only interact with friend requests sent to you.")
 
-    newFriend, created = Friend.objects.get_or_create(
-        friend_id = f"{friendReq.reqSender.username}{friendReq.reqReceiver.username}",
-        friend1 = get_object_or_404(User, username=friendReq.reqSender.username),
-        friend2 = get_object_or_404(User, username=friendReq.reqReceiver.username),
-    )
-    friendReq.delete()
-    return HttpResponse('Friend request accepted.')
+def rejectFriendRequest(request, otherUser):
+    user = request.user
+    friend_reqs = FriendRequest.objects.filter(models.Q(reqReceiver=user))
+    
+    for req in friend_reqs:
+            if (req.reqSender == get_object_or_404(User, username=otherUser)):
+                req.delete()
+                return HttpResponse('Friend request rejected.')
+    return HttpResponse('Request does not exist.')
 
+class OutgoingPendingRequestsView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = FriendRequestSerializer
+    def get_queryset(self):
+        user = self.request.user
+        request_relations = FriendRequest.objects.filter(
+            models.Q(reqSender=user) | models.Q(reqReceiver=user)
+        ).distinct()
+        request_ids = set()
 
-def rejectFriendRequest(request, friendRequest_id):
-    friendReq = get_object_or_404(FriendRequest, friendRequest_id=friendRequest_id, reqReceiver=request.user)
+        for relation in request_relations:
+            if relation.reqSender == user:
+                request_ids.add(relation.reqReceiver.id)
+        # Returns the users whom the current user has sent friend requests (not yet answered).
+        return get_user_model().objects.filter(id__in=request_ids)
+    
+class IncomingPendingRequestsView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = FriendRequestSerializer
+    def get_queryset(self):
+        user = self.request.user
+        request_relations = FriendRequest.objects.filter(
+            models.Q(reqSender=user) | models.Q(reqReceiver=user)
+        ).distinct()
+        request_ids = set()
 
-    # Ensure the request.user is the recipient of the friend request
-    if request.user != friendReq.reqReceiver:
-        return HttpResponse("You can only interact with friend requests sent to you.")
-
-    friendReq.delete()
-    return HttpResponse('Friend request rejected.')
-
-def listPendingRequests(request):
-    pending_requests_sent = Friend.objects.filter(reqSender=request.user, status='pending').values_list('friendRequest_id', flat=True)
-    pending_requests_received = Friend.objects.filter(reqReceiver=request.user, status='pending').values_list('friendRequest_id', flat=True)
-
-    pending_requests = list(pending_requests_sent) + list(pending_requests_received)
-
-    return JsonResponse({'pending_request_ids': pending_requests})
+        for relation in request_relations:
+            if relation.reqReceiver == user:
+                request_ids.add(relation.reqSender.id)
+        # Returns the users whom the current user has not yet answered the requests for.
+        return get_user_model().objects.filter(id__in=request_ids)
 
 def removeFriend(request, username):
     try:

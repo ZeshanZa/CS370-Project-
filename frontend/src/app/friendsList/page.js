@@ -23,7 +23,8 @@ function FriendsList() {
         //console.log(response.data)
       } catch (error) {
         console.error('Error fetching friends:', error);
-      }
+        setError('Failed to fetch friends.');  // Display a user-friendly message
+      }      
     };
 
     fetchFriends().then(() => {setIsLoading(false)})
@@ -66,9 +67,15 @@ function FriendsList() {
   return(
     <Layout>
       <div className='w-full items-center flex justify-center'>
-        {friends.map(friend => (
-          <FriendComponent name={friend.username} skills={["Java ", "Python ", "CSS "]} github={friend.email}/>
-        ))}
+      {friends.map(friend => (
+    <FriendComponent
+      key={friend.id}  // Ensure each friend has a unique id
+      name={friend.username}
+      skills={["Java ", "Python ", "CSS "]}
+      github={friend.email}
+    />
+))}
+
       </div>
     </Layout>
   )

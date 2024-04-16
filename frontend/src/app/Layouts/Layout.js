@@ -10,7 +10,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useRouter } from 'next/navigation';
 
 function Layout({ children }) {
-    const url = window.location.href;
+    const [url, setUrl] = useState('');
     //console.log(url)
     const router = useRouter()
     const [ProfileDrawer, setProfileDrawer] = useState(false)
@@ -32,6 +32,9 @@ function Layout({ children }) {
     });
 
     useEffect(() => {
+        if (typeof window !== "undefined") {
+            setUrl(window.location.href); // Only accesses window when it's defined
+        }
         const fetchProfileData = async () => { //Artem I believe for your drawer stuff you were showing you can copy and paste this into it 
             const token = localStorage.getItem('access_token');
             // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';

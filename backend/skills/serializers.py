@@ -1,40 +1,55 @@
 from rest_framework import serializers
-from .models import UserProfile #, Skills, UserSkills, 
-from django.contrib.auth.models import User
-        
-# new serializers        
-# class SkillsSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Skills
-#         fields = ['id','name']
-        
-# class UserSkillsSerializer(serializers.ModelSerializer):
-#     skill = SkillsSerializer(read_only=True)
-#     skill_id = serializers.IntegerField(write_only=True)
+from .models import Skills
 
-#     class Meta:
-#         model = UserSkills
-#         fields = ['id', 'user', 'skill', 'skill_id', 'acquiring', 'searching']
+class SkillsSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Skills model.
 
-# class UserSerializer(serializers.ModelSerializer):
-#     skills = UserSkillsSerializer(source='userskill_set', many=True)
+    This serializer handles serialization and validation of the Skills model, which includes the user, 
+    acquired skills, and search skills of the user. The user field is set to be read-only to prevent 
+    modification through the API.
 
-#     class Meta:
-#         model = User
-#         fields = ['id', 'username', 'skills']
-        
-        
-# new new serializers
-class UserProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserProfile
-        fields = ['user', 'have', 'searching']
-        
-# class SkillUpdateSerializer(serializers.Serializer):
-#     user_id = serializers.IntegerField()
-#     new_array = serializers.ListField(child=serializers.CharField(max_length=100))
-#     array_type = serializers.ChoiceField(choices=['have', 'searching'])
+    Attributes:
+        Meta: Metadata options defined for the SkillsSerializer.
+    """
     
-# class UserSkillRequestSerializer(serializers.Serializer):
-#     user_id = serializers.IntegerField()
-#     array_type = serializers.ChoiceField(choices=['have', 'searching'])
+    class Meta:
+        model = Skills
+        fields = ['user', 'acquired', 'search']
+        read_only_fields = ['user']  # Prevents the API consumer from changing the user directly
+
+    def validate_acquired(self, value):
+        """
+        Validate that all keys in the 'acquired' dictionary are valid based on predefined skill types.
+
+        Parameters:
+            value (dict): The dictionary of acquired skills provided by the API consumer.
+
+        Returns:
+            dict: The validated dictionary of acquired skills.
+
+        Raises:
+            serializers.ValidationError: If any keys in the 'acquired' dictionary are invalid.
+        """
+        valid_keys = {'Exp', 'DB', 'Lang', 'Pers'}
+        if not all(key in valid_keys for key in value.keys()):
+            raise serializers.ValidationError("Each key in 'acquired' must be one of 'Exp', 'DB', 'Lang', 'Pers'.")
+        return value
+
+    def validate_search(self, value):
+        """
+        Validate that all keys in the 'search' dictionary are valid based on predefined skill types.
+
+        Parameters:
+            value (dict): The dictionary of search skills provided by the API consumer.
+
+        Returns:
+            dict: The validated dictionary of search skills.
+
+        Raises:
+            serializers.ValidationError: If any keys in the 'search' dictionary are invalid.
+        """
+        valid_keys = {'Exp', 'DB', 'Lang', 'Pers'}
+        if not all(key in valid_keys for key in value.keys()):
+            raise serializers.ValidationError("Each key in 'search' must be one of 'Exp', 'DB', 'Lang', 'Pers'.")
+        return value

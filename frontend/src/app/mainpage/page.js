@@ -139,7 +139,11 @@ function ProjectsPage() {
             setNewProjectTitle('');
             setNewProjectDescription('');
             setShowAddProjectForm(false); // Hide the form upon successful submission
-            window.location.reload(); // Force reload the page for some reason it wont reload when I fetch them but this way works same for editing
+            if (typeof window !== "undefined") {
+                // Safe to use window here
+                window.location.reload();
+            }
+             // Force reload the page for some reason it wont reload when I fetch them but this way works same for editing
         } catch (error) {
             console.error('Error adding project:', error);
         }
@@ -191,7 +195,11 @@ function ProjectsPage() {
                 },
             });
             handleCancelEdit(); // Reset editing state
-            window.location.reload();
+            if (typeof window !== "undefined") {
+                // Safe to use window here
+                window.location.reload();
+            }
+            
         } catch (error) {
             console.error('Error updating project:', error);
         }
