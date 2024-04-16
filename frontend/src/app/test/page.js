@@ -20,6 +20,34 @@ import Layout from '../Layouts/Layout'
 const categories = ['Exp', 'DB', 'Lang', 'Pers'];
 
 function Page() {
+
+  const [profile, setProfile] = useState({
+    user_id: null,
+});
+
+useEffect(() => {
+    const fetchProfileData = async () => { //Artem I believe for your drawer stuff you were showing you can copy and paste this into it 
+        const token = localStorage.getItem('access_token');
+        // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';
+        try { 
+          // http://3.91.27.166:8000/profile/
+            const response = await axios.get('http://127.0.0.1:8000/profile/', {
+                headers: {
+                    'Authorization': `Token ${token}`,
+                },
+            });
+            setProfile({
+                user_id: response.data.user || '',
+            });
+            console.log('Fetched user_id:', response.data.user);
+        } catch (error) {
+            console.error('Error fetching profile data:', error);
+        }
+    };
+
+    fetchProfileData();
+}, []);
+
   // this is for new implementation
   const [skillsLooking, setSkillsLooking] = useState({ Exp: [], DB: [], Lang: [], Pers: [] })
   const [skillsHave, setSkillsHave] = useState({ Exp: [], DB: [], Lang: [], Pers: [] })
@@ -43,13 +71,13 @@ function Page() {
 
 
 
-  const user_id = 10;
+  // const user_id = 10;
   // Fetch user's skills from the backend
   useEffect(() => {
     const fetchUserSkills = async () => {
       try {
         // http://3.91.27.166:8000/skills/${user_id}/get-complete-skills/
-        const response = await axios.get(`http://127.0.0.1:8000/skills/${user_id}/get-complete-skills/`);
+        const response = await axios.get(`http://127.0.0.1:8000/skills/${profile.user_id}/get-complete-skills/`);
         const { acquired, search } = response.data;
         setSkillsLooking(search);
         setSkillsHave(acquired);
@@ -84,16 +112,35 @@ function Page() {
     updateSkillsOnServer(category, newSkills, type);
 };
 
-const handleRemoveSkill = (category, type) => {
-    const skillToRemove = selectedSkill[category];
-    if (!skillToRemove) return; // No skill selected or found
+// const handleRemoveSkill = (category, type) => {
+//     const skillToRemove = selectedSkill[category];
+//     if (!skillToRemove) return; // No skill selected or found
 
-    const newSkills = (type === 'acquired' ? skillsHave[category] : skillsLooking[category]).filter(skill => skill !== skillToRemove);
-    updateSkillsOnServer(category, newSkills, type);
+//     const newSkills = (type === 'acquired' ? skillsHave[category] : skillsLooking[category]).filter(skill => skill !== skillToRemove);
+//     updateSkillsOnServer(category, newSkills, type);
+// };
+
+
+const handleRemoveSkill = (category, type) => {
+  const skillToRemove = selectedSkill[category];
+  if (!skillToRemove) return; // No skill selected or found
+
+  const currentSkills = type === 'acquired' ? skillsHave[category] : skillsLooking[category];
+  const newSkills = currentSkills.filter(skill => skill !== skillToRemove);
+
+  updateSkillsOnServer(category, newSkills, type)
+      .then(() => {
+          const updateFn = type === 'acquired' ? setSkillsHave : setSkillsLooking;
+          updateFn(prev => ({ ...prev, [category]: newSkills }));
+      })
+      .catch(error => {
+          console.log("Failed to update skills:", error);
+          alert("Failed to update skills."); 
+      });
 };
 
 const updateSkillsOnServer = async (category, newSkills, type) => {
-    const url = `http://127.0.0.1:8000/skills/${user_id}/${type}/${category}/update-skills/`;
+    const url = `http://127.0.0.1:8000/skills/${profile.user_id}/${type}/${category}/update-skills/`;
     try {
         await axios.post(url, { new_skills: newSkills });
         // Update local state to reflect changes
@@ -107,10 +154,22 @@ const updateSkillsOnServer = async (category, newSkills, type) => {
     } catch (error) {
         console.error('Error updating skills:', error);
     }
-
-    
 };
   
+// const updateSkillsOnServer = async (category, newSkills, type) => {
+//   const url = `http://127.0.0.1:8000/skills/${user_id}/${type}/${category}/update-skills/`;
+//   try {
+//       const response = await axios.post(url, { new_skills: newSkills });
+//       console.log(`Updated ${type} skills for ${category}:`, newSkills);
+//       return response;  // Return response for chaining
+//   } catch (error) {
+//       console.error('Error updating skills:', error);
+//       throw error;  // Rethrow to handle it in calling function
+//   }
+// };
+
+
+
   console.log(data);
   function json2array(json){
     var result = [];
