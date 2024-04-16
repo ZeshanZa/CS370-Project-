@@ -3,15 +3,6 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.postgres.fields import ArrayField
 
-def default_skills():
-    """
-    Defines the default structure for the 'acquired' and 'search' fields in the Skills model.
-    
-    Returns:
-        dict: A dictionary with keys for 'Exp', 'DB', 'Lang', 'Pers', each mapped to an empty list.
-    """
-    return {'Exp': [], 'DB': [], 'Lang': [], 'Pers': []}
-
 class Master_Skills(models.Model):
     Exp = ArrayField(models.CharField(max_length=100), default=list, blank=True)
     DB = ArrayField(models.CharField(max_length=100), default=list, blank=True)
@@ -21,7 +12,14 @@ class Master_Skills(models.Model):
     def __str__(self):
         return "Master Skills Repository"
 
+def default_skills():
+    """
+    Defines the default structure for the 'acquired' and 'search' fields in the Skills model.
     
+    Returns:
+        dict: A dictionary with keys for 'Exp', 'DB', 'Lang', 'Pers', each mapped to an empty list.
+    """
+    return {'Exp': [], 'DB': [], 'Lang': [], 'Pers': []}    
     
 class Skills(models.Model):
     """
