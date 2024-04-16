@@ -76,31 +76,31 @@ def sendFriendRequest(request, username):
     else:
         return HttpResponse('Friend request already sent.')
 
-def acceptFriendRequest(request, friendRequest_id):
-    friendReq = get_object_or_404(FriendRequest, friendRequest_id=friendRequest_id)
+def acceptFriendRequest(request, otherUser):
+    user = request.user
+    friend_reqs = FriendRequest.objects.filter(models.Q(reqReceiver=user))
+    
+    for req in friend_reqs:
+            if (req.reqSender == get_object_or_404(User, username=otherUser)):
+                newFriend, created = Friend.objects.get_or_create(
+                friend_id = f"{req.reqSender.username}{req.reqReceiver.username}",
+                friend1 = get_object_or_404(User, username=req.reqSender.username),
+                friend2 = get_object_or_404(User, username=req.reqReceiver.username),
+                )
+                req.delete()
+                return HttpResponse('Friend request accepted.')
+    return HttpResponse('Request does not exist.')
 
-    # Ensure the request.user is the recipient of the friend request
-    if request.user != get_object_or_404(User, username=friendReq.reqReceiver.username):
-        return HttpResponse("You can only interact with friend requests sent to you.")
 
-    newFriend, created = Friend.objects.get_or_create(
-        friend_id = f"{friendReq.reqSender.username}{friendReq.reqReceiver.username}",
-        friend1 = get_object_or_404(User, username=friendReq.reqSender.username),
-        friend2 = get_object_or_404(User, username=friendReq.reqReceiver.username),
-    )
-    friendReq.delete()
-    return HttpResponse('Friend request accepted.')
-
-
-def rejectFriendRequest(request, friendRequest_id):
-    friendReq = get_object_or_404(FriendRequest, friendRequest_id=friendRequest_id, reqReceiver=request.user)
-
-    # Ensure the request.user is the recipient of the friend request
-    if request.user != friendReq.reqReceiver:
-        return HttpResponse("You can only interact with friend requests sent to you.")
-
-    friendReq.delete()
-    return HttpResponse('Friend request rejected.')
+def rejectFriendRequest(request, otherUser):
+    user = request.user
+    friend_reqs = FriendRequest.objects.filter(models.Q(reqReceiver=user))
+    
+    for req in friend_reqs:
+            if (req.reqSender == get_object_or_404(User, username=otherUser)):
+                req.delete()
+                return HttpResponse('Friend request rejected.')
+    return HttpResponse('Request does not exist.')
 
 class OutgoingPendingRequestsView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]

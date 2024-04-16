@@ -14,6 +14,31 @@ class SkillsViewSet(viewsets.ModelViewSet):
     """
     queryset = Skills.objects.all()
     serializer_class = SkillsSerializer
+    
+    @action(detail=False, methods=['post'], url_path='(?P<user_id>\d+)/reset-skills')
+    def reset_skills(self, request, user_id=None):
+        """
+        Resets the skills of a user identified by user_id to their default values.
+        """
+        skills = get_object_or_404(Skills, user__id=user_id)
+        skills.reset_skills()
+        return Response({'status': 'Skills have been reset to default.'}, status=status.HTTP_200_OK)
+    
+    @action(detail=True, methods=['get'], url_path='get-complete-skills')
+    def get_complete_skills(self, request, pk=None):
+        """
+        Retrieves the complete set of skills (both 'acquired' and 'search') for a specified user.
+
+        Parameters:
+            request (Request): The HTTP request object.
+            pk (int): The primary key of the user whose complete skills set is to be retrieved.
+
+        Returns:
+            Response: HTTP response containing both 'acquired' and 'search' skills.
+        """
+        skills = get_object_or_404(Skills, user_id=pk)
+        serializer = SkillsSerializer(skills)
+        return Response(serializer.data)
 
     @action(detail=True, methods=['post'], url_path='(?P<category>[^/.]+)/(?P<skill_type>[^/.]+)/update-skills')
     def update_skills(self, request, pk=None, category=None, skill_type=None):

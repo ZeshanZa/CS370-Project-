@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 def default_skills():
     """
@@ -31,7 +32,38 @@ class Skills(models.Model):
             str: The username of the user associated with these skills.
         """
         return self.user.username
+    
+    def reset_skills(self):
+        """
+        Resets the user's skills to the default structures defined in default_skills.
+        """
+        self.acquired = default_skills()
+        self.search = default_skills()
+        self.save()
+        return self
 
+    @staticmethod
+    def get_all_user_skills(user_id):
+        """
+        Retrieves the 'acquired' and 'search' skills for a specific user.
+
+        Parameters:
+            user_id (int): The ID of the user whose skills are to be retrieved.
+
+        Returns:
+            tuple: A tuple containing two dictionaries, 'acquired' and 'search' skills.
+
+        Raises:
+            ObjectDoesNotExist: If no Skills object is found for the provided user_id.
+        """
+        try:
+            skills = Skills.objects.get(user_id=user_id)
+            return skills.acquired, skills.search
+        except ObjectDoesNotExist:
+            raise ObjectDoesNotExist(f"No Skills object found for user ID {user_id}.")
+    
+    
+    
     @staticmethod
     def update_user_skills(user_id, category, skill_type, new_skills):
         """
