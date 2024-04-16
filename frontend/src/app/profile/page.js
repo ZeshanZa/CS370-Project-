@@ -6,6 +6,7 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import { useRouter } from 'next/navigation'
 import axios from 'axios';
+import Layout from '../Layouts/Layout'
 
 function UpdateProfilePageComponent() {
     const [ProfileDrawer, setProfileDrawer] = useState(false)
@@ -25,7 +26,7 @@ function UpdateProfilePageComponent() {
             const token = localStorage.getItem('access_token');
             // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';
             try {
-                const response = await axios.get('http://3.91.27.166:8000/profile/', {
+                const response = await axios.get('http://127.0.0.1:8000/profile/', {
                     headers: {
                         'Authorization': `Token ${token}`,
                     },
@@ -59,7 +60,7 @@ function UpdateProfilePageComponent() {
         const token = localStorage.getItem('access_token');
         // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';
 
-            const response = await axios.get('http://3.91.27.166:8000/api/auth/user/', {
+            const response = await axios.get('http://127.0.0.1:8000/api/auth/user/', {
               headers: {
                 'Authorization': `Token ${token}`,
               },
@@ -76,7 +77,7 @@ function UpdateProfilePageComponent() {
         };
     
         try {
-            await axios.put('http://3.91.27.166:8000/profile/', JSON.stringify(payload), {
+            await axios.put('http://127.0.0.1:8000/profile/', JSON.stringify(payload), {
                 headers: {
                     'Authorization': `Token ${token}`, 
                     'Content-Type': 'application/json',
@@ -91,7 +92,7 @@ function UpdateProfilePageComponent() {
    
   return (
     <>
-    <Drawer open={NotificationsDrawer} anchor='left' onClose={() => setNotificationsDrawer(false)}>
+    {/*<Drawer open={NotificationsDrawer} anchor='left' onClose={() => setNotificationsDrawer(false)}>
       <Box width={350}>
         <div className='h-[100dvh] p-2'>
             <div className='w-full text-xl font-bold p-3 border-b-2 border-slate-900'>
@@ -234,9 +235,10 @@ Artificial intelligence, Natural Language Processing, and Data Science.
         </div>
         <Divider className='relative mb-5'/>
         <text className='ml-5 text-3xl text-slate-800 font-semibold'> Profile </text>
-        <div className='ml-12 w-32 border-4 border-blue-400 rounded-full my-2'></div>
+  <div className='ml-12 w-32 border-4 border-blue-400 rounded-full my-2'></div> */}
+  <Layout>
         <div className='items-center flex justify-center h-4/5 w-full'>
-            <div className='bg-gray-100 p-3 w-full max-w-[400px] text-center rounded-md'>
+            <div className='bg-gray-100 p-3 w-full max-w-[400px] text-center rounded-md max-[750px]:hidden'>
                 <div className='w-full items-center justify-center flex'>
                     <div className='rounded-full items-center h-60 w-60 flex justify-center mt-10 text-white'>
                         <img src='https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745'/>
@@ -244,7 +246,7 @@ Artificial intelligence, Natural Language Processing, and Data Science.
                 </div>
                 <div className='my-10'><text className='text-xl my-10 font-semibold'>{profile.fullName}</text></div>
             </div>
-            <div className='bg-slate-800 h-4/5 mx-16 w-[1px]'></div>
+            <div className='bg-slate-800 h-4/5 mx-16 w-[1px] max-[750px]:hidden'></div>
             <div className='border-2 border-slate-200 rounded-2xl px-10 py-6 flex flex-col w-full max-w-[500px]'>
                 <form className='flex flex-col w-full' onSubmit={handleSubmit}>
                     <text className='text-l font-semibold mb-1 mt-4' > Full name </text>
@@ -273,7 +275,7 @@ Artificial intelligence, Natural Language Processing, and Data Science.
                </div>
             </div>
         </div>
-    </div>
+    </Layout>
     </>
   )
 }
