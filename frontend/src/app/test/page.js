@@ -111,13 +111,13 @@ const updateSkillsOnServer = async (category, newSkills, type) => {
   }
   const inputskills = json2array(data)
 
-  // return(
-  //   <Layout>
-  //     <div className='w-full h-[100dvh]'>
-  //       Test here
-  //     </div>
-  //   </Layout>
-  // )
+  /*return(
+    <Layout>
+      <div className='w-full h-[100dvh]'>
+        Test here
+      </div>
+    </Layout>
+  )*/
   
   const DisplaySkills = ({ title, skillsDict }) => {
     return (
