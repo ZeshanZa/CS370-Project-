@@ -86,7 +86,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000'"https://cs-370-project.vercel.app",
+    'http://localhost:3000',"https://cs-370-project.vercel.app",
 ]
 
 CSRF_TRUSTED_ORIGINS = ['http://localhost:3000',"https://cs-370-project.vercel.app"]
