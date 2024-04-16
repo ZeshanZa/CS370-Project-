@@ -87,7 +87,7 @@ function Page() {
         };
 
         fetchUserSkills();
-    }, []);
+    }, [profile]);
 
     // fetch specific user arrays
     // useEffect(() => {
