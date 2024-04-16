@@ -8,7 +8,7 @@ function Profile({ profile }) {
   useEffect(() => {
     const fetchUsername = async () => {
       try {
-        const response = await axios.get('http://3.91.27.166:8000/get-username/', {
+        const response = await axios.get('http://127.0.0.1:8000/get-username/', {
           headers: { 'Authorization': `Token ${token}` }
         });
         const { username } = response.data;
@@ -36,7 +36,7 @@ function Profile({ profile }) {
     const receiver = profile.name;
     console.log(receiver); 
 
-    fetch(`http://3.91.27.166:8000/send-match-request/${sender}/${receiver}/`, {
+    fetch(`http://127.0.0.1:8000/send-match-request/${sender}/${receiver}/`, {
       method: 'POST',
       headers: {
         'Authorization': `Token ${token}`,
@@ -69,7 +69,10 @@ function Profile({ profile }) {
         Match
       </button>
     </section>*/
-    <div className="w-96 m-2 p-3 items-center flex-col flex justify-center break-words rounded-2xl border-[1px] border-slate-200 shadow-sm">
+
+    //this component can be in accept/deny matching:
+
+    /*<div className="w-96 m-2 p-3 items-center flex-col flex justify-center break-words rounded-2xl border-[1px] border-slate-200 shadow-sm">
       <img src={profile.imageUrl} alt="Profile_picture" />
       <text className="text-xl font-semibold">{profile.name}</text>
       <text className="w-full my-2 px-2">Skills: {profile.skills.join(", ")}</text>
@@ -80,6 +83,19 @@ function Profile({ profile }) {
         </button>
         <button onClick={sendMatchRequest} className="bg-sky-500 text-white font-semibold p-1 rounded-lg">
           Accept Match
+        </button>
+      </div>
+    </div>*/
+
+    <div className="w-96 m-2 p-3 items-center flex-col flex justify-center break-words rounded-2xl border-[1px] border-slate-200 shadow-sm">
+      <img src={profile.imageUrl} alt="Profile_picture" />
+      <text className="text-xl font-semibold">{profile.name}</text>
+      <text> match score = {profile.matchscore}</text>
+      <text className="w-full my-2 px-2">Skills: {profile.skills.join(", ")}</text>
+      <text className="w-full px-2">Interested in: {profile.interests.join(", ")}</text>
+      <div className="flex flex-row justify-center w-full px-6 my-2">
+        <button onClick={sendMatchRequest} className="bg-sky-500 text-white font-semibold p-1 rounded-lg">
+          Send Match Request
         </button>
       </div>
     </div>

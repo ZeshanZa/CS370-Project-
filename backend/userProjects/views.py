@@ -28,7 +28,8 @@ def list_pending_requests(request):
 
 def view_user_id(request, username):
     user = get_object_or_404(User, username=username)
-    return HttpResponse(f"The ID for user {username} is {user.id}")
+    #return HttpResponse(f"The ID for user {username} is {user.id}")
+    return HttpResponse(user.id)
 
 def send_friend_request(request, user_id):
     # Ensure both sender and receiver are valid users, including admins
