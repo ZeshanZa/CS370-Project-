@@ -35,7 +35,10 @@ const AuthForm = () => {
       localStorage.setItem('access_token', key);
       console.log(`${formType} successful`, response.data);
       console.log(localStorage.getItem('access_token'));
-      router.push('/mainpage'); // Redirect on successful form submission
+      if (formType === 'signup') {
+      } else{
+        router.push('/mainpage'); // Redirect on successful form submission
+      }
     } catch (error) {
       console.error(`${formType} error`, error.response?.data || error);
     }
