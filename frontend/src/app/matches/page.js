@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "./App.css";
 import Profile from "./Profile";
+import Layout from '../Layouts/Layout';
 
 const MatchesList = () => {
   const [matches, setMatches] = useState([]);
@@ -13,7 +14,7 @@ const MatchesList = () => {
     setIsLoading(true);
     const token = localStorage.getItem('access_token');
     
-    axios.get('http://127.0.0.1:8000/user-matches/', {
+    axios.get('http://3.91.27.166:8000/user-matches/', {
       headers: { 'Authorization': `Token ${token}` }
     })
     .then(response => {

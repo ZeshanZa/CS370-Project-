@@ -13,7 +13,7 @@ const ChangePasswordForm = () => {
     const fetchUserData = async () => {
       const token = localStorage.getItem('access_token'); //Their may be a better way to handle storing tokens 
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/auth/user/', {
+        const response = await axios.get('http://3.91.27.166:8000/api/auth/user/', {
           headers: {
             'Authorization': `Token ${token}`,
           },
@@ -55,7 +55,7 @@ const ChangePasswordForm = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:8000/api/auth/password/change/', payload, { headers });
+      const response = await axios.post('http://3.91.27.166:8000/api/auth/password/change/', payload, { headers });
       console.log('Password changed successfully', response.data);
       alert('Password changed successfully');
       // Optional: Redirect the user or force a logout here When you guys edit frontend plz add this 

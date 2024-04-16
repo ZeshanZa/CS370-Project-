@@ -27,7 +27,7 @@ const AuthForm = () => {
       payload = { username, email, password };
     }
 
-    const url = `http://127.0.0.1:8000/api/auth/${formType === 'signup' ? 'register' : 'login'}/`;
+    const url = `http://3.91.27.166:8000/api/auth/${formType === 'signup' ? 'register' : 'login'}/`;
 
     try {
       const response = await axios.post(url, payload);

@@ -38,7 +38,7 @@ function Page() {
   useEffect(() => {
     const fetchUserSkills = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/skills/${user_id}/get-complete-skills/`);
+        const response = await axios.get(`http://3.91.27.166:8000/skills/${user_id}/get-complete-skills/`);
         const { acquired, search } = response.data;
         setSkillsLooking(search);
         setSkillsHave(acquired);

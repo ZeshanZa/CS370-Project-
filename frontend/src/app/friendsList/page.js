@@ -14,7 +14,7 @@ function FriendsList() {
     const fetchFriends = async () => {
       const token = localStorage.getItem('access_token');
       try {
-        const response = await axios.get('http://127.0.0.1:8000/friendsList/detailedFriendsList', {
+        const response = await axios.get('http://3.91.27.166:8000/friendsList/detailedFriendsList', {
           headers: {
             'Authorization': `Token ${token}`,
           },

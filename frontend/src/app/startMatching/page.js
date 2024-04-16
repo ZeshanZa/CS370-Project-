@@ -32,7 +32,7 @@ const Matches = () => {
 
     setIsLoading(true);
 
-    axios.get('http://127.0.0.1:8000/user-list/', {
+    axios.get('http://3.91.27.166:8000/user-list/', {
     })
       .then(response => {
         setUsernames(response.data);

@@ -39,7 +39,7 @@ function Layout({ children }) {
             const token = localStorage.getItem('access_token');
             // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';
             try {
-                const response = await axios.get('http://127.0.0.1:8000/profile/', {
+                const response = await axios.get('http://3.91.27.166:8000/profile/', {
                     headers: {
                         'Authorization': `Token ${token}`,
                     },
