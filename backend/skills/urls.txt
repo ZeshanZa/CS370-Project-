@@ -1,0 +1,47 @@
+# These are the urls configured by Default Router for the skills app
+
+host : meaning the localhost or server address you are using for backend
+
+-----------------------------------------------------------------------------------------------
+
+To see all skill entries in table:
+host/skills/
+
+To reset the skills of a specific user:
+host/skills/(?P<user_id>\d+)/reset-skills/
+    - user_id: is the user_id of the specific user pulled from axios
+
+To see the skills of a specific user:
+host/skills/(?P<pk>[^/.]+)/
+    - pk: is the user_id of the specific user pulled from axios
+
+To get all the skills of all users in a dictionary except the specific user (in a serperate dictionary):
+host/skills/(?P<pk>[^/.]+)/get-all-skills/
+    - pk: is the user_id of the specific user pulled from axios
+
+To get all the skills of a specific user:
+host/skills/(?P<pk>[^/.]+)/get-complete-skills/
+    - pk: is the user_id of the specific user pulled from axios
+
+To get a specific skill array of a specific dictionary category of a specific user:
+host/skills/(?P<pk>[^/.]+)/(?P<category>[^/.]+)/(?P<skill_type>[^/.]+)/get-skills/
+    - pk: is the user_id of the specific user pulled from axios
+    - category: acquired or search (respective dictionaries)
+    - skill_type: Exp (Expertise), DB (Databases), Lang (Languages), Pers (Soft skills)
+
+To update a specific skill array of a specific dictionary category of a specific user:
+host/skills/(?P<pk>[^/.]+)/(?P<category>[^/.]+)/(?P<skill_type>[^/.]+)/update-skills/
+    - pk: is the user_id of the specific user pulled from axios
+    - category: acquired or search (respective dictionaries)
+    - skill_type: Exp (Expertise), DB (Databases), Lang (Languages), Pers (Soft skills)
+
+
+-------------------------------------------------------------------------------------------------
+
+
+To get all of the master skills lists :
+host/masterskills/
+
+To get the specific skill array of a certain category:
+host/masterskills/(?P<category>[^/.]+)/ 
+    - valid categories are Exp (Expertise), DB (Databases), Lang (Languages), Pers (Soft skills)

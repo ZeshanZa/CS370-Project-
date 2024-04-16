@@ -65,28 +65,44 @@ class SkillsViewSet(viewsets.ModelViewSet):
         serializer = SkillsSerializer(skills)
         return Response(serializer.data)
 
+    # @action(detail=True, methods=['post'], url_path='(?P<category>[^/.]+)/(?P<skill_type>[^/.]+)/update-skills')
+    # def update_skills(self, request, pk=None, category=None, skill_type=None):
+    #     """
+    #     Updates a specific type of skills for a user.
+
+    #     Parameters:
+    #         request (Request): The HTTP request object.
+    #         pk (int): The primary key of the user whose skills are to be updated.
+    #         category (str): The category of skills to update ('acquired' or 'search').
+    #         skill_type (str): The type of skills to update (e.g., 'Exp', 'DB', 'Lang', 'Pers').
+
+    #     Returns:
+    #         Response: HTTP response with the update status.
+    #     """
+    #     skills = get_object_or_404(Skills, user_id=pk)
+    #     new_skills = request.data.get('new_skills', [])
+    #     if not new_skills:
+    #         return Response({'error': 'new_skills is required'}, status=HTTP_400_BAD_REQUEST)
+
+    #     skills.update_user_skills(pk, category, skill_type, new_skills)
+    #     return Response({'status': 'Skills updated successfully'})
+
+
     @action(detail=True, methods=['post'], url_path='(?P<category>[^/.]+)/(?P<skill_type>[^/.]+)/update-skills')
     def update_skills(self, request, pk=None, category=None, skill_type=None):
-        """
-        Updates a specific type of skills for a user.
-
-        Parameters:
-            request (Request): The HTTP request object.
-            pk (int): The primary key of the user whose skills are to be updated.
-            category (str): The category of skills to update ('acquired' or 'search').
-            skill_type (str): The type of skills to update (e.g., 'Exp', 'DB', 'Lang', 'Pers').
-
-        Returns:
-            Response: HTTP response with the update status.
-        """
         skills = get_object_or_404(Skills, user_id=pk)
-        new_skills = request.data.get('new_skills', [])
-        if not new_skills:
-            return Response({'error': 'new_skills is required'}, status=HTTP_400_BAD_REQUEST)
+        new_skills = request.data.get('new_skills')
 
-        skills.update_user_skills(pk, category, skill_type, new_skills)
-        return Response({'status': 'Skills updated successfully'})
+        # Check explicitly if new_skills is provided and allow empty list
+        if new_skills is None:
+            return Response({'error': 'new_skills is required'}, status=status.HTTP_400_BAD_REQUEST)
 
+        try:
+            skills.update_user_skills(pk, category, skill_type, new_skills)
+            return Response({'status': 'Skills updated successfully'})
+        except ValueError as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
     @action(detail=True, methods=['get'], url_path='(?P<category>[^/.]+)/(?P<skill_type>[^/.]+)/get-skills')
     def get_skills(self, request, pk=None, category=None, skill_type=None):
         """
