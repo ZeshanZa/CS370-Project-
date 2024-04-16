@@ -6,7 +6,7 @@ charset-normalizer==3.3.2
 cryptography==42.0.5
 defusedxml==0.8.0rc2
 dj-rest-auth==4.0.0
-Django==4.2.10
+Django==4.2.2
 django-allauth==0.52.0
 django-cors-headers==4.1.0
 django-rest-framework==0.1.0
