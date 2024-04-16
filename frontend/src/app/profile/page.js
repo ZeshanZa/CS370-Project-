@@ -268,6 +268,9 @@ Artificial intelligence, Natural Language Processing, and Data Science.
                         <span className=''><button type="submit" className='bg-blue-400 text-white w-full max-w-[200px] rounded-md mt-8 p-1 hover:bg-blue-600'> Save Changes </button></span>
                     </div>
                </form>
+               <div className='w-full mt-5 text-white items-center flex justify-center border-t-2 pt-2'>
+                <button className='mt-2 bg-blue-400 rounded-lg p-2 w-max' onClick={() => router.push('/test')}> Go to Skills page </button>
+               </div>
             </div>
         </div>
     </div>
