@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.postgres.fields import ArrayField
 
 def default_skills():
     """
@@ -11,6 +12,17 @@ def default_skills():
     """
     return {'Exp': [], 'DB': [], 'Lang': [], 'Pers': []}
 
+class Master_Skills(models.Model):
+    Exp = ArrayField(models.CharField(max_length=100), default=list, blank=True)
+    DB = ArrayField(models.CharField(max_length=100), default=list, blank=True)
+    Lang = ArrayField(models.CharField(max_length=100), default=list, blank=True)
+    Pers = ArrayField(models.CharField(max_length=100), default=list, blank=True)
+
+    def __str__(self):
+        return "Master Skills Repository"
+
+    
+    
 class Skills(models.Model):
     """
     Represents a set of skills associated with a user.

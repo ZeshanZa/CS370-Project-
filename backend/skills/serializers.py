@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from .models import Skills
+from .models import Skills, Master_Skills
+
+class MasterSkillsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Master_Skills
+        fields = ['Exp', 'DB', 'Lang', 'Pers']
+
 
 class SkillsSerializer(serializers.ModelSerializer):
     """
