@@ -1,12 +1,37 @@
-from .models import Skills 
-from .serializers import SkillsSerializer
+from .models import Skills , Master_Skills
+from .serializers import SkillsSerializer, MasterSkillsSerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework import viewsets
+from rest_framework import viewsets , response
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from rest_framework.status import HTTP_400_BAD_REQUEST
+
+
+class MasterSkillsViewSet(viewsets.ViewSet):
+    
+    def list(self, request):
+        # Assuming there's only one instance of Master_Skills
+        instance = Master_Skills.objects.first()
+        if not instance:
+            return response.Response({'error': 'Master skills data not found'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = MasterSkillsSerializer(instance)
+        return response.Response(serializer.data)
+
+    @action(detail=False, methods=['get'], url_path='(?P<category>[^/.]+)')
+    def category(self, request, category=None):
+        instance = Master_Skills.objects.first()
+        if not instance:
+            return response.Response({'error': 'Master skills data not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Dynamically access the category's skills from the instance
+        skills_list = getattr(instance, category, None)  # Removed .lower() to match field names exactly
+        if skills_list is None:
+            return response.Response({'error': 'Invalid category'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return response.Response(skills_list)
+
 
 class SkillsViewSet(viewsets.ModelViewSet):
     """
@@ -97,3 +122,5 @@ class SkillsViewSet(viewsets.ModelViewSet):
             'all_users_skills': all_skills,
             'specific_user_skills': specific_skills
         })
+         
+    

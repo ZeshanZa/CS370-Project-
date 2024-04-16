@@ -24,6 +24,7 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'skills', skill_views.SkillsViewSet, basename='skills')
+router.register(r'masterskills', skill_views.MasterSkillsViewSet, basename='master-skills')
 
 urlpatterns = [
     path('api/auth/', include('authentication.urls')),

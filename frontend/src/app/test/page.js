@@ -18,7 +18,7 @@ import data from './languages_data.json' assert { type: 'json' };
 import Layout from '../Layouts/Layout'
 
 const categories = ['Exp', 'DB', 'Lang', 'Pers'];
-const user_id = 5;
+
 function Page() {
   // this is for new implementation
   const [skillsLooking, setSkillsLooking] = useState({ Exp: [], DB: [], Lang: [], Pers: [] })
@@ -32,13 +32,24 @@ function Page() {
   const [selectedSkill, setSelectedSkill] = useState({ Exp: '', DB: '', Lang: '', Pers: '' });
   // const [addLooking, setAddLooking] = useState({ Exp: '', DB: '', Lang: '', Pers: '' })
   // const [addHave, setAddHave] = useState({ Exp: '', DB: '', Lang: '', Pers: '' })
+  const [MasterSkills, setMasterSkills] = useState({ Exp: [], DB: [], Lang: [], Pers: [] })
 
-  const user_id = 5;
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/masterskills/')
+        .then(response => response.json())
+        .then(data => setMasterSkills(data))
+        .catch(error => console.error('Failed to load skills:', error));
+}, []);
+
+
+
+  const user_id = 10;
   // Fetch user's skills from the backend
   useEffect(() => {
     const fetchUserSkills = async () => {
       try {
-        const response = await axios.get(`http://3.91.27.166:8000/skills/${user_id}/get-complete-skills/`);
+        // http://3.91.27.166:8000/skills/${user_id}/get-complete-skills/
+        const response = await axios.get(`http://127.0.0.1:8000/skills/${user_id}/get-complete-skills/`);
         const { acquired, search } = response.data;
         setSkillsLooking(search);
         setSkillsHave(acquired);
@@ -48,7 +59,7 @@ function Page() {
     };
 
     fetchUserSkills();
-  }, []); // Empty dependency array means this effect runs only once after initial render
+  }, []); 
 
   // fetch specific user arrays
   // useEffect(() => {
@@ -151,7 +162,7 @@ const updateSkillsOnServer = async (category, newSkills, type) => {
             <div key={category}>
                 <h3>{category}</h3>
                 <Autocomplete
-                    options={["Vercel","HTMX","C++","C","SQL","Firebase","Excel","Backend","Frontend","Test123"]} // replace with actual skill options
+                    options={MasterSkills[category]} // replace with actual skill options
                     renderInput={(params) => <TextField {...params} label="Select Skill" />}
                     value={selectedSkill[category]}
                     onChange={(event, newValue) => {
