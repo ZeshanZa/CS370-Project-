@@ -90,8 +90,12 @@ function Profile({ profile }) {
     <div className="w-96 m-2 p-3 items-center flex-col flex justify-center break-words rounded-2xl border-[1px] border-slate-200 shadow-sm">
       <img src={profile.imageUrl} alt="Profile_picture" />
       <text className="text-xl font-semibold">{profile.name}</text>
-      <text> match score = {profile.matchscore}</text>
-      <text className="w-full my-2 px-2">Skills: {profile.skills.join(", ")}</text>
+      <text> match score = <span className="font-bold">{profile.matchscore}</span></text>
+      <text> match % = <span className={Math.round(profile.pscore * 100) > 50 ? 'text-green-500 font-bold' : 'text-red-500 font-bold'}>{Math.round(profile.pscore * 100)}</span></text>
+      <text className="w-full my-2 px-2">Skills (DB): {profile.skills.DB.join(", ")}</text>
+      <text className="w-full my-2 px-2">Skills (Experiances): {profile.skills.Exp.join(", ")}</text>
+      <text className="w-full my-2 px-2">Skills (Languages): {profile.skills.Lang.join(", ")}</text>
+      <text className="w-full my-2 px-2">Skills (Personal): {profile.skills.Pers.join(", ")}</text>
       <text className="w-full px-2">Interested in: {profile.interests.join(", ")}</text>
       <div className="flex flex-row justify-center w-full px-6 my-2">
         <button onClick={sendMatchRequest} className="bg-sky-500 text-white font-semibold p-1 rounded-lg">
