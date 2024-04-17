@@ -1,4 +1,4 @@
-"use client"; //For our react version have to use this
+"use client" //For our react version have to use this
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TuneIcon from "@mui/icons-material/Tune";
