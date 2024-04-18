@@ -91,45 +91,46 @@ const ChangePasswordForm = () => {
             }}
           >
             <form onSubmit={handlePasswordChange}>
-              <div className="mb-4">
-                <label
-                  htmlFor="newpassword"
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                >
-                  New Password
-                </label>
-                <input
-                  onChange={(e) => setConfirmNewPassword(e.target.value)}
-                  type="password"
-                  id="confirmpassword"
-                  placeholder="Confirm New Password"
-                  className="w-full p-3 mb-2 border-2 border-gray-300 rounded-md md:border md:border-gray-200 sm:border sm:border-gray-100"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="confirmpassword"
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                >
-                  Confirm New Password
-                </label>
-                <input
-                  onChange={(e) => setConfirmNewPassword(e.target.value)}
-                  type="password"
-                  id="confirmpassword"
-                  placeholder="Confirm New Password"
-                  className="w-full p-3 mb-2 border-2 border-gray-300 rounded-md md:border md:border-gray-200 sm:border sm:border-gray-100"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              >
-                Save Changes
-              </button>
-            </form>
+  <div className="mb-4">
+    <label
+      htmlFor="newpassword"
+      className="block text-gray-700 text-sm font-bold mb-2"
+    >
+      New Password
+    </label>
+    <input
+      onChange={(e) => setNewPassword(e.target.value)}
+      type="password"
+      id="newpassword"
+      placeholder="New Password"
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      required
+    />
+  </div>
+  <div className="mb-4">
+    <label
+      htmlFor="confirmpassword"
+      className="block text-gray-700 text-sm font-bold mb-2"
+    >
+      Confirm New Password
+    </label>
+    <input
+      onChange={(e) => setConfirmNewPassword(e.target.value)}
+      type="password"
+      id="confirmpassword"
+      placeholder="Confirm New Password"
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      required
+    />
+  </div>
+  <button
+    type="submit"
+    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+  >
+    Save Changes
+  </button>
+</form>
+
           </div>
         </div>
       </div>
