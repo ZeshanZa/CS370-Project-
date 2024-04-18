@@ -31,7 +31,7 @@ function Page() {
             // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';
             try {
                 // http://3.91.27.166:8000/profile/
-                const response = await axios.get('http://127.0.0.1:8000/profile/', {
+                const response = await axios.get('https://econnectbackend.click:8000/profile/', {
                     headers: {
                         'Authorization': `Token ${token}`,
                     },
@@ -63,7 +63,7 @@ function Page() {
     const [MasterSkills, setMasterSkills] = useState({ Exp: [], DB: [], Lang: [], Pers: [] })
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/masterskills/')
+        fetch('https://econnectbackend.click:8000/masterskills/')
             .then(response => response.json())
             .then(data => setMasterSkills(data))
             .catch(error => console.error('Failed to load skills:', error));
@@ -77,7 +77,7 @@ function Page() {
         const fetchUserSkills = async () => {
             try {
                 // http://3.91.27.166:8000/skills/${user_id}/get-complete-skills/
-                const response = await axios.get(`http://127.0.0.1:8000/skills/${profile.user_id}/get-complete-skills/`);
+                const response = await axios.get(`https://econnectbackend.click:8000/skills/${profile.user_id}/get-complete-skills/`);
                 const { acquired, search } = response.data;
                 setSkillsLooking(search);
                 setSkillsHave(acquired);
@@ -140,7 +140,7 @@ function Page() {
     };
 
     const updateSkillsOnServer = async (category, newSkills, type) => {
-        const url = `http://127.0.0.1:8000/skills/${profile.user_id}/${type}/${category}/update-skills/`;
+        const url = `https://econnectbackend.click:8000/skills/${profile.user_id}/${type}/${category}/update-skills/`;
         try {
             await axios.post(url, { new_skills: newSkills });
             // Update local state to reflect changes
