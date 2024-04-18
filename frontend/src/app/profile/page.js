@@ -60,7 +60,7 @@ function UpdateProfilePageComponent() {
         const token = localStorage.getItem('access_token');
         // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';
 
-            const response = await axios.get('http://127.0.0.1:8000/api/auth/user/', {
+            const response = await axios.get('https://econnectbackend.click:8000/api/auth/user/', {
               headers: {
                 'Authorization': `Token ${token}`,
               },
