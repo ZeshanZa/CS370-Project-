@@ -5,7 +5,7 @@ from .models import UserProfile
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ['id', 'title', 'description', 'created_at']
+        fields = ['id', 'title', 'description', 'github_url', 'created_at']
 
 
 
