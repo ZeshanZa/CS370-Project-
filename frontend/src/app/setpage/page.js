@@ -14,7 +14,7 @@ const ChangePasswordForm = () => {
       const token = localStorage.getItem("access_token"); //Their may be a better way to handle storing tokens
       try {
         const response = await axios.get(
-          "http://127.0.0.1:8000/api/auth/user/",
+          "https://econnectbackend.click:8000/api/auth/user/",
           {
             headers: {
               Authorization: `Token ${token}`,
@@ -59,7 +59,7 @@ const ChangePasswordForm = () => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/auth/password/change/",
+        "https://econnectbackend.click:8000/api/auth/password/change/",
         payload,
         { headers }
       );
