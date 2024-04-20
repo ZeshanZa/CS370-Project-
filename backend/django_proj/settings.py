@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "skills",
     "matches", 
     "friendsSystem",
+    "sslserver",
 ]
 
 SITE_ID = 1  # make sure SITE_ID is set
@@ -93,8 +94,8 @@ CSRF_TRUSTED_ORIGINS = ['http://localhost:3000',"https://cs-370-project.vercel.a
 CORS_ALLOWED_ORIGINS = [
         "http://localhost:3000",
         "http://127.0.0.1:8000",
-        "https://cs-370-project.vercel.app"
-        "https://www.ecsconnectneazme.com"
+        "https://cs-370-project.vercel.app",
+        "https://www.ecsconnectneazme.com",
         "https://cs-370-project-zeshanzas-projects.vercel.app"
     ]
     
