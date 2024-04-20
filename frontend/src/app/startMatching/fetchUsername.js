@@ -1,6 +1,6 @@
 const fetchUsername = async () => {
   try {
-      const response = await axios.get('http://3.91.27.166:8000/get-username/', {
+      const response = await axios.get('https://ecsconnectbackend.com:8000/get-username/', {
         headers: { 'Authorization': `Token ${token}` }
       });
       const { username } = response.data;

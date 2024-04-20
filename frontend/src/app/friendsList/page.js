@@ -14,7 +14,7 @@ function FriendsList() {
     const fetchFriends = async () => {
       const token = localStorage.getItem('access_token');
       try {
-        const response = await axios.get('https://econnectbackend.click:8000/friendsList/detailedFriendsList', {
+        const response = await axios.get('https://ecsconnectbackend.com:8000/friendsList/detailedFriendsList', {
           headers: {
             'Authorization': `Token ${token}`,
           },

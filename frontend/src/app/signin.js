@@ -32,7 +32,7 @@ const AuthForm = () => {
       payload = { username, email, password };
     }
 
-    const url = `https://econnectbackend.click:8000/api/auth/${
+    const url = `https://ecsconnectbackend.com:8000/api/auth/${
       formType === "signup" ? "register" : "login"
     }/`;
 
