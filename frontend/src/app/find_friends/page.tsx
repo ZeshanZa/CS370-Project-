@@ -103,6 +103,7 @@ const SearchBar: React.FC = () => {
                 console.log(data);
                 alert(`Friend request sent to: ${receiver}`);
                 if (typeof window !== "undefined") {
+                    const token = localStorage.getItem('token');
                     window.location.reload();
                 }
               })
@@ -150,6 +151,7 @@ const SearchBar: React.FC = () => {
           console.log(result);
           alert(`Friend request with ${username} accepted.`);
           if (typeof window !== "undefined") {
+            const token = localStorage.getItem('token');
             window.location.reload();
         }
         } catch (error) {
@@ -181,6 +183,7 @@ const SearchBar: React.FC = () => {
           console.log(result);
           alert(`Friend request with ${username} declined.`);
           if (typeof window !== "undefined") {
+            const token = localStorage.getItem('token');
             window.location.reload();
         }
         } catch (error) {
@@ -220,6 +223,7 @@ const SearchBar: React.FC = () => {
             setSearchQuery('');
             setSearchResults([]);
             if (typeof window !== "undefined") {
+                const token = localStorage.getItem('token');
                 window.location.reload();
             }
         }
