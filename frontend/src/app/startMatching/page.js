@@ -41,7 +41,7 @@ const Matches = () => {
     //functions:
     const fetchUsername = async () => {
       try {
-        const response = await axios.get('https://econnectbackend.click:8000/profile/', {
+        const response = await axios.get('https://ecsconnectbackend.com:8000/profile/', {
           headers: {
             'Authorization': `Token ${localStorage.getItem('access_token')}`,
           },
@@ -54,7 +54,7 @@ const Matches = () => {
 
     async function getUserSkills(user_id) {
       console.log("SKILLS FOUND")
-      const response = await axios.get(`https://econnectbackend.click:8000/skills/${user_id}/get-complete-skills/`);
+      const response = await axios.get(`https://ecsconnectbackend.com:8000/skills/${user_id}/get-complete-skills/`);
       const { acquired, search } = response.data;
       return [search, acquired]
     }
@@ -76,7 +76,7 @@ const Matches = () => {
       const skillsIwant = ["Python", "Django", "Ruby"]
 
       //if (uuid) { getUserSkills(uuid).then((skills) => console.log(skills)) }
-      const myskills = await axios.get(`https://econnectbackend.click:8000/skills/${uuid}/get-complete-skills/`); //fetched my own skills
+      const myskills = await axios.get(`https://ecsconnectbackend.com:8000/skills/${uuid}/get-complete-skills/`); //fetched my own skills
       //console.log(myskills)
 
       //initial scores
@@ -94,12 +94,12 @@ const Matches = () => {
         console.log(`${(i+1)/profiles.length*100}% is complete`)
         let score = 0 //assign a score to each potential match
         //step 2 - get the user's id and fetch the skills
-        const targetId = await axios.get(`https://econnectbackend.click:8000/user-id/${profiles[i].name}/`);
+        const targetId = await axios.get(`https://ecsconnectbackend.com:8000/user-id/${profiles[i].name}/`);
         //console.log(targetId)
         if (targetId.data == uuid) {
           continue; //we make sure we dont collect out of skills and thus dont match to ourself
         }
-        const targetSkills = await axios.get(`https://econnectbackend.click:8000/skills/${targetId.data}/get-complete-skills/`);
+        const targetSkills = await axios.get(`https://ecsconnectbackend.com:8000/skills/${targetId.data}/get-complete-skills/`);
         //console.log(targetSkills.data)
         //step 3 - the matching begins
         //3.1 - we looks through skills they want | we have 4 arrays of skills we want and 4 arrays of skills we have, same for them
@@ -201,7 +201,7 @@ const Matches = () => {
     }
     //
     fetchUsername().then((uuid) => {
-      axios.get('https://econnectbackend.click:8000/user-list/', {
+      axios.get('https://ecsconnectbackend.com:8000/user-list/', {
       })
         .then(response => {
           FilterMatches(response.data, uuid).then((newProfiles) => setMatchProfiles(newProfiles))

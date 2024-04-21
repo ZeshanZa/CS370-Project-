@@ -10,7 +10,7 @@ function Profile({ profile }) {
     }
 
     try {
-      const response = await fetch(`https://econnectbackend.click:8000/accept-match-request/${profile.name}/`, {
+      const response = await fetch(`https://ecsconnectbackend.com:8000/accept-match-request/${profile.name}/`, {
         method: 'POST',
         headers: {
           'Authorization': `Token ${token}`,
@@ -38,7 +38,7 @@ function Profile({ profile }) {
     }
 
     try {
-      const response = await fetch(`https://econnectbackend.click:8000/decline-match/${profile.name}/`, {
+      const response = await fetch(`https://ecsconnectbackend.com:8000/decline-match/${profile.name}/`, {
         method: 'POST',
         headers: {
           'Authorization': `Token ${token}`,

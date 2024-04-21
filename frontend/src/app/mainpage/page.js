@@ -73,7 +73,7 @@ function ProjectsPage() {
         const fetchProjects = async () => {
             const token = localStorage.getItem('access_token');
             try {
-                const response = await axios.get('https://econnectbackend.click:8000/projects/', {
+                const response = await axios.get('https://ecsconnectbackend.com:8000/projects/', {
                     headers: {
                         'Authorization': `Token ${token}`,
                     },
@@ -101,7 +101,7 @@ function ProjectsPage() {
             const token = localStorage.getItem('access_token');
             // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';
             try {
-                const response = await axios.get('https://econnectbackend.click:8000/profile/', {
+                const response = await axios.get('https://ecsconnectbackend.com:8000/profile/', {
                     headers: {
                         'Authorization': `Token ${token}`,
                     },
@@ -130,7 +130,7 @@ function ProjectsPage() {
         };
 
         try {
-            await axios.post('https://econnectbackend.click:8000/projects/create/', projectData, { //I decided to remove local variable since some of yall are havin issues so just put URL instead 
+            await axios.post('https://ecsconnectbackend.com:8000/projects/create/', projectData, { //I decided to remove local variable since some of yall are havin issues so just put URL instead 
                 headers: {
                     'Authorization': `Token ${token}`,
                     'Content-Type': 'application/json',
@@ -152,7 +152,7 @@ function ProjectsPage() {
     const handleDeleteProject = async (projectId) => {
         const token = localStorage.getItem('access_token');
         try {
-            await axios.delete(`https://econnectbackend.click:8000/projects/${projectId}/`, {
+            await axios.delete(`https://ecsconnectbackend.com:8000/projects/${projectId}/`, {
                 headers: {
                     'Authorization': `Token ${token}`,
                 },
@@ -185,7 +185,7 @@ function ProjectsPage() {
         e.preventDefault();
         const token = localStorage.getItem('access_token');
         try {
-            await axios.put(`https://econnectbackend.click:8000/projects/${editingProjectId}/`, {
+            await axios.put(`https://ecsconnectbackend.com:8000/projects/${editingProjectId}/`, {
                 title: editTitle,
                 description: editDescription,
             }, {
