@@ -128,23 +128,6 @@ const SearchBar: React.FC = () => {
         }
     }, [token]);
 
-    useEffect(() => {
-        if (token) {
-            axios.get('https://econnectbackend.click:8000/user-list/', {
-              headers: { 'Authorization': `Token ${token}` }
-            })
-            .then(response => {
-                setUsernames(response.data);
-                setIsLoading(false);
-            })
-            .catch(err => {
-                setError(err.message);
-                setIsLoading(false);
-            });
-        }
-    }, [token]);
-
-
     const acceptFriend = async (username) => {
         if (!token) {
           console.error('No access token available.');
