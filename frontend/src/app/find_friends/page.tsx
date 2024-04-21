@@ -23,9 +23,12 @@ const SearchBar: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [friendRequests, setFriendRequests] = useState([]); 
+    const [token, setToken] = useState<string | null>(null);
 
 
-    var token = localStorage.getItem("access_token");
+    useEffect(() => {
+        setToken(localStorage.getItem("access_token"));
+    }, []);
 /*
     const profiles = matches.map(match => ({
         id: match.sender_id, // Assuming 'sender_id' is the field returned by your API
@@ -50,7 +53,7 @@ const SearchBar: React.FC = () => {
           console.error('Error fetching data:', error);
           setError(error.message);
         });
-      }, []);
+      }, [token]);
 
     const friend_requests = friendRequests.map((request, index) => ({
         id: index + 1,
@@ -102,10 +105,6 @@ const SearchBar: React.FC = () => {
               .then(data => {
                 console.log(data);
                 alert(`Friend request sent to: ${receiver}`);
-                if (typeof window !== "undefined") {
-                    token = localStorage.getItem('token');
-                    window.location.reload();
-                }
               })
               .catch(error => {
                 console.error('Error:', error);
@@ -114,19 +113,37 @@ const SearchBar: React.FC = () => {
             };
           
     useEffect(() => {
-        const fetchUsernames = async () => {
-            try {
-                const response = await axios.get('https://econnectbackend.click:8000/user-list/');
+        if (token) {
+            const fetchUsernames = async () => {
+                try {
+                    const response = await axios.get('https://econnectbackend.click:8000/user-list/');
+                    setUsernames(response.data);
+                    setIsLoading(false);
+                } catch (err: any) {
+                    setError(err.message);
+                    setIsLoading(false);
+                }
+            };
+            fetchUsernames();
+        }
+    }, [token]);
+
+    useEffect(() => {
+        if (token) {
+            axios.get('https://econnectbackend.click:8000/user-list/', {
+              headers: { 'Authorization': `Token ${token}` }
+            })
+            .then(response => {
                 setUsernames(response.data);
                 setIsLoading(false);
-            } catch (err: any) {
+            })
+            .catch(err => {
                 setError(err.message);
                 setIsLoading(false);
-            }
-        };
+            });
+        }
+    }, [token]);
 
-        fetchUsernames();
-    }, []);
 
     const acceptFriend = async (username) => {
         if (!token) {
@@ -151,7 +168,6 @@ const SearchBar: React.FC = () => {
           console.log(result);
           alert(`Friend request with ${username} accepted.`);
           if (typeof window !== "undefined") {
-            token = localStorage.getItem('token');
             window.location.reload();
         }
         } catch (error) {
@@ -183,7 +199,6 @@ const SearchBar: React.FC = () => {
           console.log(result);
           alert(`Friend request with ${username} declined.`);
           if (typeof window !== "undefined") {
-            token = localStorage.getItem('token');
             window.location.reload();
         }
         } catch (error) {
@@ -223,7 +238,6 @@ const SearchBar: React.FC = () => {
             setSearchQuery('');
             setSearchResults([]);
             if (typeof window !== "undefined") {
-                token = localStorage.getItem('token');
                 window.location.reload();
             }
         }
