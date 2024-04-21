@@ -43,7 +43,7 @@ const SearchBar: React.FC = () => {
     useEffect(() => {
         setIsLoading(true);
         
-        axios.get('https://econnectbackend.click:8000/friendsList/incomingPendingRequests/', { // Ensure the endpoint matches your Django URL
+        axios.get('https://ecsconnectbackend.com:8000/friendsList/incomingPendingRequests/', { // Ensure the endpoint matches your Django URL
           headers: { 'Authorization': `Token ${token}` }
         })
         .then(response => {
@@ -63,7 +63,7 @@ const SearchBar: React.FC = () => {
 
     const fetchUsername = async () => {
         try {
-            const response = await axios.get('https://econnectbackend.click:8000/get-username/', {
+            const response = await axios.get('https://ecsconnectbackend.com:8000/get-username/', {
               headers: { 'Authorization': `Token ${token}` }
             });
             const { username } = response.data;
@@ -88,7 +88,7 @@ const SearchBar: React.FC = () => {
         }
         console.log(sender); 
         console.log(receiver); 
-        fetch(`https://econnectbackend.click:8000/friendsList/sendFriendRequest/${sender}/${receiver}/`, {
+        fetch(`https://ecsconnectbackend.com:8000/friendsList/sendFriendRequest/${sender}/${receiver}/`, {
                 method: 'POST', 
                 headers: {
                     // Include the token in your headers
@@ -116,7 +116,7 @@ const SearchBar: React.FC = () => {
         if (token) {
             const fetchUsernames = async () => {
                 try {
-                    const response = await axios.get('https://econnectbackend.click:8000/user-list/');
+                    const response = await axios.get('https://ecsconnectbackend.com:8000/user-list/');
                     setUsernames(response.data);
                     setIsLoading(false);
                 } catch (err: any) {
@@ -135,7 +135,7 @@ const SearchBar: React.FC = () => {
         }
     
         try {
-          const response = await fetch(`https://econnectbackend.click:8000/friendsList/acceptFriendRequest/${username}/`, {
+          const response = await fetch(`https://ecsconnectbackend.com:8000/friendsList/acceptFriendRequest/${username}/`, {
             method: 'POST',
             headers: {
               'Authorization': `Token ${token}`,
@@ -166,7 +166,7 @@ const SearchBar: React.FC = () => {
         }
     
         try {
-          const response = await fetch(`https://econnectbackend.click:8000/friendsList/rejectFriendRequest/${username}/`, {
+          const response = await fetch(`https://ecsconnectbackend.com:8000/friendsList/rejectFriendRequest/${username}/`, {
             method: 'POST',
             headers: {
               'Authorization': `Token ${token}`,
