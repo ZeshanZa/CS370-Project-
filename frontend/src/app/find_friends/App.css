@@ -1,0 +1,92 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.profile-detail {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-width: 300px;
+}
+
+.profile-picture {
+  width: 50%;
+  border-radius: 8px;
+}
+
+/* profile.css */
+button {
+  background-color: transparent; /* Make the button transparent */
+  border: none; /* Remove border */
+  padding: 0; /* Remove padding */
+  text-decoration: none; /* Remove default text decoration */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+button:hover {
+  text-decoration: underline; /* Underline text on hover */
+}
+
+
+.profiles-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 20px;
+  padding: 20px;
+}
+
+.profile {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-width: 300px;
+  margin-bottom: 20px;
+  padding: px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.scrollable-box {
+    height: 300px; /* Set the desired height for the scrollable box */
+    overflow-y: scroll; /* Enable vertical scrolling */
+    border: 1px solid #ccc; /* Optional: add a border for visual clarity */
+  }
+  
+  .scrollable-box ul {
+    list-style-type: none; /* Remove default list styles */
+    padding: 0;
+  }
+  
+  .scrollable-box li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc; /* Optional: add a border between items */
+  }
+  
+  .scrollable-box li:last-child {
+    border-bottom: none; /* Remove border from the last item */
+  }
+  
