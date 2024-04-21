@@ -101,7 +101,10 @@ const SearchBar: React.FC = () => {
               })
               .then(data => {
                 console.log(data);
-                alert(`Friends request sent to: ${receiver}`);
+                alert(`Friend request sent to: ${receiver}`);
+                if (typeof window !== "undefined") {
+                    window.location.reload();
+                }
               })
               .catch(error => {
                 console.error('Error:', error);
@@ -146,6 +149,9 @@ const SearchBar: React.FC = () => {
           const result = await response.json();
           console.log(result);
           alert(`Friend request with ${username} accepted.`);
+          if (typeof window !== "undefined") {
+            window.location.reload();
+        }
         } catch (error) {
           console.error('Error:', error);
           alert('Error acceptingg match request');
@@ -174,6 +180,9 @@ const SearchBar: React.FC = () => {
           const result = await response.json();
           console.log(result);
           alert(`Friend request with ${username} declined.`);
+          if (typeof window !== "undefined") {
+            window.location.reload();
+        }
         } catch (error) {
           console.error('Error:', error);
           alert('Error declining friend request');
@@ -210,6 +219,9 @@ const SearchBar: React.FC = () => {
         if (searchContainer && !searchContainer.contains(target)) {
             setSearchQuery('');
             setSearchResults([]);
+            if (typeof window !== "undefined") {
+                window.location.reload();
+            }
         }
     };
 
