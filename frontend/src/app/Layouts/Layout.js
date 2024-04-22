@@ -39,7 +39,7 @@ function Layout({ children }) {
             const token = localStorage.getItem('access_token');
             // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';
             try {
-                const response = await axios.get('https://ecsconnectbackend.com:8000/profile/', {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/profile/`, {
                     headers: {
                         'Authorization': `Token ${token}`,
                     },

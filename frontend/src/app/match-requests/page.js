@@ -13,7 +13,7 @@ const MatchesList = () => {
     setIsLoading(true);
     const token = localStorage.getItem('access_token');
     
-    axios.get('https://ecsconnectbackend.com:8000/view-match-requests/', { // Ensure the endpoint matches your Django URL
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/view-match-requests/`, { // Ensure the endpoint matches your Django URL
       headers: { 'Authorization': `Token ${token}` }
     })
     .then(response => {
