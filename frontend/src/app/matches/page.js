@@ -14,7 +14,7 @@ const MatchesList = () => {
     setIsLoading(true);
     const token = localStorage.getItem('access_token');
     
-    axios.get('https://ecsconnectbackend.com:8000/user-matches/', {
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user-matches/`, {
       headers: { 'Authorization': `Token ${token}` }
     })
     .then(response => {
