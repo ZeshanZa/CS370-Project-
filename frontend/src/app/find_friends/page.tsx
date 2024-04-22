@@ -27,33 +27,28 @@ const SearchBar: React.FC = () => {
 
 
     useEffect(() => {
-        setToken(localStorage.getItem("access_token"));
+        // Get the token from localStorage only on client side
+        const accessToken = localStorage.getItem("access_token");
+        setToken(accessToken);
     }, []);
-/*
-    const profiles = matches.map(match => ({
-        id: match.sender_id, // Assuming 'sender_id' is the field returned by your API
-        name: match.sender, // Assuming 'sender' is the field returned by your API
-        skills: ["Python", "Django", "JavaScript"], // Temporary skills, replace with actual data if available
-        interests: ["Web Development", "Machine Learning"], // Temporary interests, replace with actual data if available
-        imageUrl: "https://via.placeholder.com/150" // Temporary image URL, replace with actual data if available
-      }));
-      */
-
 
     useEffect(() => {
-        setIsLoading(true);
-        
-        axios.get('https://ecsconnectbackend.com:8000/friendsList/incomingPendingRequests/', { // Ensure the endpoint matches your Django URL
-          headers: { 'Authorization': `Token ${token}` }
-        })
-        .then(response => {
-          setFriendRequests(response.data);
-        })
-        .catch(error => {
-          console.error('Error fetching data:', error);
-          setError(error.message);
-        });
-      }, [token]);
+        if (token) {
+            setIsLoading(true);
+            axios.get('https://ecsconnectbackend.com:8000/friendsList/incomingPendingRequests/', {
+                headers: { 'Authorization': `Token ${token}` }
+            })
+            .then(response => {
+                setFriendRequests(response.data);
+                setIsLoading(false);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                setError(error.message);
+                setIsLoading(false);
+            });
+        }
+    }, [token]);
 
     const friend_requests = friendRequests.map((request, index) => ({
         id: index + 1,
@@ -62,56 +57,50 @@ const SearchBar: React.FC = () => {
     ));
 
     const fetchUsername = async () => {
+        if (!token) {
+            console.error('No access token available.');
+            return null;
+        }
+
         try {
             const response = await axios.get('https://ecsconnectbackend.com:8000/get-username/', {
-              headers: { 'Authorization': `Token ${token}` }
+                headers: { 'Authorization': `Token ${token}` }
             });
             const { username } = response.data;
-            return username;  // You can use this username in your application
+            return username;
         } catch (error) {
             console.error('Error fetching username:', error);
             return null;
         }
-      };
+    };
 
     const sendRequest = async (receiver) => {
-        // Retrieve the token from local storage or state management
-        const sender = await fetchUsername(); 
-        if (!token) {
-            console.error('No access token available.');
-            return;
-          }
-      
-        if (!sender) {
-            console.error('Sender username not available.');
-            return;
-        }
-        console.log(sender); 
-        console.log(receiver); 
-        fetch(`https://ecsconnectbackend.com:8000/friendsList/sendFriendRequest/${sender}/${receiver}/`, {
+        const sender = await fetchUsername();
+        if (sender && token) {
+            fetch(`https://ecsconnectbackend.com:8000/friendsList/sendFriendRequest/${sender}/${receiver}/`, {
                 method: 'POST', 
                 headers: {
-                    // Include the token in your headers
                     'Authorization': `Token ${token}`,
                     'Content-Type': 'application/json'
                 }
             })
             .then(response => {
                 if (!response.ok) {
-                  throw new Error(`HTTP error! Status: ${response.status}`);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 return response.json();
-              })
-              .then(data => {
+            })
+            .then(data => {
                 console.log(data);
-                alert(`Friend request sent to: ${receiver}`);
-              })
-              .catch(error => {
+                alert(`Friends request sent to: ${receiver}`);
+            })
+            .catch(error => {
                 console.error('Error:', error);
                 alert('Error sending match request');
-              });
-            };
-          
+            });
+        }
+    };
+
     useEffect(() => {
         if (token) {
             const fetchUsernames = async () => {
@@ -133,7 +122,7 @@ const SearchBar: React.FC = () => {
           console.error('No access token available.');
           return;
         }
-    
+
         try {
           const response = await fetch(`https://ecsconnectbackend.com:8000/friendsList/acceptFriendRequest/${username}/`, {
             method: 'POST',
@@ -142,17 +131,14 @@ const SearchBar: React.FC = () => {
               'Content-Type': 'application/json'
             }
           });
-    
+
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
-    
+
           const result = await response.json();
           console.log(result);
           alert(`Friend request with ${username} accepted.`);
-          if (typeof window !== "undefined") {
-            window.location.reload();
-        }
         } catch (error) {
           console.error('Error:', error);
           alert('Error acceptingg match request');
@@ -164,7 +150,7 @@ const SearchBar: React.FC = () => {
           console.error('No access token available.');
           return;
         }
-    
+
         try {
           const response = await fetch(`https://ecsconnectbackend.com:8000/friendsList/rejectFriendRequest/${username}/`, {
             method: 'POST',
@@ -173,17 +159,14 @@ const SearchBar: React.FC = () => {
               'Content-Type': 'application/json'
             }
           });
-    
+
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
-    
+
           const result = await response.json();
           console.log(result);
           alert(`Friend request with ${username} declined.`);
-          if (typeof window !== "undefined") {
-            window.location.reload();
-        }
         } catch (error) {
           console.error('Error:', error);
           alert('Error declining friend request');
@@ -220,9 +203,6 @@ const SearchBar: React.FC = () => {
         if (searchContainer && !searchContainer.contains(target)) {
             setSearchQuery('');
             setSearchResults([]);
-            if (typeof window !== "undefined") {
-                window.location.reload();
-            }
         }
     };
 
