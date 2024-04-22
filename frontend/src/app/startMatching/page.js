@@ -15,6 +15,7 @@ const Matches = () => {
   const [token, setToken] = useState(null);
   const [csrfToken, setCsrfToken] = useState(null);
   const [newProfiles, setMatchProfiles] = useState(null)
+  const [loadingPercent, setLPercent] = useState(0)
 
   useEffect(() => {
     const fetchedToken = localStorage.getItem('access_token');
@@ -72,11 +73,18 @@ const Matches = () => {
         matchscore: -1,
       }));
 
-      const skillsIhave = ["Python", "Java", "Css", "HTML"]
-      const skillsIwant = ["Python", "Django", "Ruby"]
+      //const skillsIhave = ["Python", "Java", "Css", "HTML"]
+      //const skillsIwant = ["Python", "Django", "Ruby"]
 
       //if (uuid) { getUserSkills(uuid).then((skills) => console.log(skills)) }
       const myskills = await axios.get(`https://ecsconnectbackend.com:8000/skills/${uuid}/get-complete-skills/`); //fetched my own skills
+      const allSkills = await axios.get(`https://ecsconnectbackend.com:8000/skills/`)
+      //console.log(allSkills.data)
+      let SkillMap = {}
+      for (let i = 0; i < allSkills.data.length; i++){
+        SkillMap[allSkills.data[i].user] = {data: {acquired: allSkills.data[i].acquired, search: allSkills.data[i].search}}
+      }
+      //console.log(SkillMap)
       //console.log(myskills)
 
       //initial scores
@@ -92,6 +100,7 @@ const Matches = () => {
       for (let i = 0; i < profiles.length; i++) {
         //console.log(profiles[i].name)
         console.log(`${(i+1)/profiles.length*100}% is complete`)
+        setLPercent((i+1)/profiles.length*100)
         let score = 0 //assign a score to each potential match
         //step 2 - get the user's id and fetch the skills
         const targetId = await axios.get(`https://ecsconnectbackend.com:8000/user-id/${profiles[i].name}/`);
@@ -99,7 +108,10 @@ const Matches = () => {
         if (targetId.data == uuid) {
           continue; //we make sure we dont collect out of skills and thus dont match to ourself
         }
-        const targetSkills = await axios.get(`https://ecsconnectbackend.com:8000/skills/${targetId.data}/get-complete-skills/`);
+        
+        //const targetSkills = await axios.get(`http://127.0.0.1:8000/skills/${targetId.data}/get-complete-skills/`);
+        const targetSkills = SkillMap[targetId.data]
+
         //console.log(targetSkills.data)
         //step 3 - the matching begins
         //3.1 - we looks through skills they want | we have 4 arrays of skills we want and 4 arrays of skills we have, same for them
@@ -181,15 +193,21 @@ const Matches = () => {
           user2 = user1
           user1 = profiles[i]
           user1.matchscore = bestscore1;
+          user1.skills = targetSkills.data.acquired
+          user1.pscore = bestscore1*2 / (targetSkills.data.acquired.DB.length + targetSkills.data.acquired.Exp.length + targetSkills.data.acquired.Lang.length + targetSkills.data.acquired.Pers.length + myskills.data.acquired.DB.length + myskills.data.acquired.Exp.length + myskills.data.acquired.Lang.length + myskills.data.acquired.Pers.length)
         } else if (score > bestscore2) {
           bestscore2 = score
           user3 = user2
           user2 = profiles[i]
           user2.matchscore = bestscore2;
+          user2.skills = targetSkills.data.acquired
+          user2.pscore = bestscore1*2 / (targetSkills.data.acquired.DB.length + targetSkills.data.acquired.Exp.length + targetSkills.data.acquired.Lang.length + targetSkills.data.acquired.Pers.length + myskills.data.acquired.DB.length + myskills.data.acquired.Exp.length + myskills.data.acquired.Lang.length + myskills.data.acquired.Pers.length)
         } else if (score > bestscore3) {
           bestscore3 = score
           user3 = profiles[i]
           user3.matchscore = bestscore3;
+          user3.skills = targetSkills.data.acquired
+          user3.pscore = bestscore1*2 / (targetSkills.data.acquired.DB.length + targetSkills.data.acquired.Exp.length + targetSkills.data.acquired.Lang.length + targetSkills.data.acquired.Pers.length + myskills.data.acquired.DB.length + myskills.data.acquired.Exp.length + myskills.data.acquired.Lang.length + myskills.data.acquired.Pers.length)
         }
       }
       //END OF MATCHING ALGORYTHM
@@ -257,7 +275,7 @@ const Matches = () => {
   } else {
     return (
       <>
-        Loading
+        Loading {Math.round(loadingPercent)}%
       </>
     )
   }
