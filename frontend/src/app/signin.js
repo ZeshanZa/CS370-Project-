@@ -46,7 +46,7 @@ const AuthForm = () => {
         if (typeof window !== "undefined") {
           // Safe to use window here
           window.location.reload();
-      }
+        }
       } else {
         router.push("/mainpage"); // Redirect on successful form submission
       }
@@ -280,7 +280,7 @@ const AuthForm = () => {
                     type="submit"
                     className="mt-4 bg-blue-400 text-white w-full rounded-md p-2 hover:bg-blue-600"
                   >
-                    Sign In
+                    {formType === "signin" ? "Sign In" : "Sign Up"}
                   </button>
                 </div>
               </form>
