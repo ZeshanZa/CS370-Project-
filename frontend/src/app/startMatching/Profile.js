@@ -8,7 +8,7 @@ function Profile({ profile }) {
   useEffect(() => {
     const fetchUsername = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/get-username/', {
+        const response = await axios.get('https://ecsconnectbackend.com:8000/get-username/', {
           headers: { 'Authorization': `Token ${token}` }
         });
         const { username } = response.data;
@@ -36,7 +36,7 @@ function Profile({ profile }) {
     const receiver = profile.name;
     console.log(receiver); 
 
-    fetch(`http://127.0.0.1:8000/send-match-request/${sender}/${receiver}/`, {
+    fetch(`https://ecsconnectbackend.com:8000/send-match-request/${sender}/${receiver}/`, {
       method: 'POST',
       headers: {
         'Authorization': `Token ${token}`,

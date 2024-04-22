@@ -20,7 +20,7 @@ function Profile({ profile }) {
     const username = profile.name; 
     setIsLoading(true);
     const token = localStorage.getItem('access_token');
-    axios.get(`http://3.91.27.166:8000/matched-profile/${username}`, {
+    axios.get(`https://ecsconnectbackend.com:8000/matched-profile/${username}`, {
       headers: { 'Authorization': `Token ${token}` }
     })
       .then(response => {

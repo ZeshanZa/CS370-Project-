@@ -14,7 +14,7 @@ const MatchesList = () => {
     setIsLoading(true);
     const token = localStorage.getItem('access_token');
     
-    axios.get('http://127.0.0.1:8000/user-matches/', {
+    axios.get('https://ecsconnectbackend.com:8000/user-matches/', {
       headers: { 'Authorization': `Token ${token}` }
     })
     .then(response => {

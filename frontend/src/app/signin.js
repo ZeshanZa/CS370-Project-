@@ -32,7 +32,7 @@ const AuthForm = () => {
       payload = { username, email, password };
     }
 
-    const url = `http://127.0.0.1:8000/api/auth/${
+    const url = `https://ecsconnectbackend.com:8000/api/auth/${
       formType === "signup" ? "register" : "login"
     }/`;
 
@@ -43,6 +43,10 @@ const AuthForm = () => {
       console.log(`${formType} successful`, response.data);
       console.log(localStorage.getItem("access_token"));
       if (formType === "signup") {
+        if (typeof window !== "undefined") {
+          // Safe to use window here
+          window.location.reload();
+      }
       } else {
         router.push("/mainpage"); // Redirect on successful form submission
       }
@@ -62,33 +66,6 @@ const AuthForm = () => {
           <span className="text-blue-600">Emory</span>{" "}
           <span className="text-blue-400">Connect</span>{" "}
         </text>
-        {/* <div className='w-full h-full items-center flex justify-center'>
-          <div className='text-center h-1/2 flex justify-center items-center'>
-            <div className='h-min w-full'>
-              <text className='text-6xl whitespace-pre-line'>Welcome to {'\n'} Emory Connect</text>
-              <div className='w-1/2 border-4 border-blue-400 rounded-full my-6'></div>
-              <text className='text-xl whitespace-pre-line'>A place where computer scientists {'\n'} connect and collaborate</text>
-              <div className='my-2' />
-              <TypeAnimation
-                sequence={[
-                  // Same substring at the start will only be typed out once, initially
-                  'Connect',
-                  1000,
-                  'Collaborate',
-                  1000,
-                  'Learn',
-                  1000,
-                  'Innovate',
-                  1000
-                ]}
-                wrapper="span"
-                speed={50}
-                style={{ fontSize: '2em', display: 'inline-block' }}
-                repeat={Infinity}
-              />
-            </div>
-          </div>
-        </div> */}
         <div className="w-full h-full items-center flex justify-start">
           <div className="p-4 h-1/2 flex justify-center items-center w-full">
             <div className="h-min flex flex-col items-center">

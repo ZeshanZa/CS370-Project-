@@ -38,7 +38,5 @@ class Migration(migrations.Migration):
         migrations.DeleteModel(
             name='Skills',
         ),
-        migrations.DeleteModel(
-            name='UserSkills',
-        ),
+       
     ]

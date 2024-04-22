@@ -39,7 +39,7 @@ function Layout({ children }) {
             const token = localStorage.getItem('access_token');
             // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';
             try {
-                const response = await axios.get('http://127.0.0.1:8000/profile/', {
+                const response = await axios.get('https://ecsconnectbackend.com:8000/profile/', {
                     headers: {
                         'Authorization': `Token ${token}`,
                     },
@@ -255,15 +255,15 @@ function Layout({ children }) {
                 <Divider />
                 <div className='py-5 px-5 w-full flex max-[750px]:flex-col justify-between shadow-md sticky top-0 bg-white z-30'>
                     <text className='text-3xl text-slate-600 max-[750px]:mb-2'> {
-                        url == "http://localhost:3000/mainpage" ?
+                        url == "https://ecsconnectbackend.com:8000/mainpage" ?
                         "Your Projects" :
-                        url == "http://localhost:3000/startMatching" ?
+                        url == "https://ecsconnectbackend.com:8000/startMatching" ?
                         "Matching" :
-                        url == "http://localhost:3000/friendsList" ?
+                        url == "https://ecsconnectbackend.com:8000/friendsList" ?
                         "Friends" :
-                        url == "http://localhost:3000/profile" ?
+                        url == "https://ecsconnectbackend.com:8000/profile" ?
                         "Profile" :
-                        url == "http://localhost:3000/setpage" ?
+                        url == "https://ecsconnectbackend.com:8000/setpage" ?
                         "Settings" :
                         ""
                     } </text>
