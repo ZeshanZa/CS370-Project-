@@ -50,7 +50,7 @@ function ProjectsPage() {
         { name: "Zeshan Zahid", role: "Scrum Master / Developer", image: "/images/zeshan.jpg", Major: "Placeholder Major" },
         { name: "Artem Linde", role: "Developer", image: "/images/artem.jpg", Major: "ECON + CS" },
         { name: "Michael Abebe", role: "Developer", image: "/images/michael.jpg", Major: "ECON/CS + Math Minor" },
-        { name: "Esme Richardson", role: "Developer", image: "/images/esme.jpg", Major: "Placeholder Major" },
+        { name: "Esme Richardson", role: "Developer", image: "/images/esme.jpg", Major: "CS" },
         { name: "Elijah Ting", role: "Developer", image: "/images/elijah.jpg", Major: "Placeholder Major" },
         { name: "Nicole Zhou", role: "Developer", image: "/images/nicole.jpg", Major: "Placeholder Major" }
     ];
