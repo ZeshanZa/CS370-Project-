@@ -69,3 +69,53 @@ button:hover {
   padding: px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.rectangle2 {
+  position: absolute;
+  left: 399.0568px;
+  top: 351.5px;
+  width: 488.8635px;
+  height: 68px;
+  outline: solid 1px #6f6f6f;
+  outline-offset: -1px;
+  border-radius: 40px;
+}
+.searchForFilesPluginsAndCreato {
+  color: #6f6f6f;
+  font-size: 21px;
+  font-family: Roboto, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    'Liberation Sans', sans-serif;
+  letter-spacing: 0.02em;
+  position: absolute;
+  left: 431.9885px;
+  top: 373px;
+  width: 364.477px;
+  height: min-content;
+  flex-direction: column;
+}
+.group15 {
+  position: absolute;
+  left: 816.9656px;
+  top: 362px;
+  width: 47px;
+  height: 47px;
+  overflow: visible;
+}
+.icon {
+  width: 100%;
+  height: 100%;
+}
+.search {
+  color: #fff;
+  font-size: 21px;
+  font-family: Font Awesome 5 Free, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    'Liberation Sans', sans-serif;
+  letter-spacing: 0.02em;
+  position: absolute;
+  left: 829.9656px;
+  top: 373.5px;
+  width: min-content;
+  height: min-content;
+  white-space: nowrap;
+  flex-direction: column;
+}
