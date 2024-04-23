@@ -35,7 +35,7 @@ const SearchBar: React.FC = () => {
     useEffect(() => {
         if (token) {
             setIsLoading(true);
-            axios.get('https://ecsconnectbackend.com:8000/friendsList/incomingPendingRequests/', {
+            axios.get(`${process.env.NEXT_PUBLIC_API_URL}/friendsList/incomingPendingRequests/`, {
                 headers: { 'Authorization': `Token ${token}` }
             })
             .then(response => {
@@ -63,7 +63,7 @@ const SearchBar: React.FC = () => {
         }
 
         try {
-            const response = await axios.get('https://ecsconnectbackend.com:8000/get-username/', {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/get-username/`, {
                 headers: { 'Authorization': `Token ${token}` }
             });
             const { username } = response.data;
@@ -77,7 +77,7 @@ const SearchBar: React.FC = () => {
     const sendRequest = async (receiver) => {
         const sender = await fetchUsername();
         if (sender && token) {
-            fetch(`https://ecsconnectbackend.com:8000/friendsList/sendFriendRequest/${sender}/${receiver}/`, {
+            fetch(`${process.env.NEXT_PUBLIC_API_URL}/friendsList/sendFriendRequest/${sender}/${receiver}/`, {
                 method: 'POST', 
                 headers: {
                     'Authorization': `Token ${token}`,
@@ -105,7 +105,7 @@ const SearchBar: React.FC = () => {
         if (token) {
             const fetchUsernames = async () => {
                 try {
-                    const response = await axios.get('https://ecsconnectbackend.com:8000/user-list/');
+                    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user-list/`);
                     setUsernames(response.data);
                     setIsLoading(false);
                 } catch (err: any) {
@@ -124,7 +124,7 @@ const SearchBar: React.FC = () => {
         }
 
         try {
-          const response = await fetch(`https://ecsconnectbackend.com:8000/friendsList/acceptFriendRequest/${username}/`, {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/friendsList/acceptFriendRequest/${username}/`, {
             method: 'POST',
             headers: {
               'Authorization': `Token ${token}`,
@@ -152,7 +152,7 @@ const SearchBar: React.FC = () => {
         }
 
         try {
-          const response = await fetch(`https://ecsconnectbackend.com:8000/friendsList/rejectFriendRequest/${username}/`, {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/friendsList/rejectFriendRequest/${username}/`, {
             method: 'POST',
             headers: {
               'Authorization': `Token ${token}`,

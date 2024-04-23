@@ -178,7 +178,7 @@ function Layout({ children }) {
                                 </div>
                                 <div className="flex justify-center space-x-4 py-2">
                                     <a href="/mainpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Home</a>
-                                    <a href="/matches" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Matches</a>
+                                    <a href="/matching" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Matches</a>
                                     <a href="/profile" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Profile</a>
                                     <a href="/setpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Settings</a>
                                 </div>
@@ -269,7 +269,7 @@ function Layout({ children }) {
                     } </text>
                     <div className='max-[750px]:justify-around flex max-[750px]:w-full'>
                         <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/mainpage") }}> Home </button>
-                        <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/startMatching") }}> Matching </button>
+                        <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/matching") }}> Matching </button>
                         <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/friendsList") }}> Friends </button>
                         <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/profile") }}> Profile </button>
                         <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/setpage") }}> Settings </button>

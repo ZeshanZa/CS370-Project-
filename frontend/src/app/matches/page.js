@@ -5,7 +5,7 @@ import "./App.css";
 import Profile from "./Profile";
 import Layout from '../Layouts/Layout';
 
-const MatchesList = () => {
+const MatchesList2 = () => {
   const [matches, setMatches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -46,7 +46,7 @@ const MatchesList = () => {
   }));
 
   return (
-    <div className="App">
+    /* <div className="App">
       <header>
         <nav>
           <ul>
@@ -63,8 +63,13 @@ const MatchesList = () => {
           <Profile key={profile.id} profile={profile}/>
         ))}
       </main>
+    </div> */
+    <div className='w-full items-center justify-center flex flex-wrap'>
+      {profiles.map(profile => (
+          <Profile key={profile.id} profile={profile}/>
+        ))}
     </div>
   );
 };
 
-export default MatchesList;
+export default MatchesList2;

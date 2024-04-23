@@ -6,6 +6,10 @@ import Cookies from 'js-cookie'; // You need 'js-cookie' package for this
 //import "./App.css";
 import Profile from "./Profile";
 import Layout from '../Layouts/Layout';
+import PropTypes from 'prop-types';
+import LinearProgress from '@mui/material/LinearProgress';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 const Matches = () => {
   console.log("PAGE LOADED")
@@ -16,6 +20,24 @@ const Matches = () => {
   const [csrfToken, setCsrfToken] = useState(null);
   const [newProfiles, setMatchProfiles] = useState(null)
   const [loadingPercent, setLPercent] = useState(0)
+
+  function LinearProgressWithLabel(props) {
+    return (
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ width: '100%', mr: 1 }}>
+          <LinearProgress variant="determinate" {...props} />
+        </Box>
+        <Box sx={{ minWidth: 35 }}>
+          <Typography variant="body2" color="text.secondary">{`${Math.round(
+            props.value,
+          )}%`}</Typography>
+        </Box>
+      </Box>
+    );
+  }
+  LinearProgressWithLabel.propTypes = {
+    value: PropTypes.number.isRequired,
+  };
 
   useEffect(() => {
     const fetchedToken = localStorage.getItem('access_token');
@@ -263,20 +285,32 @@ const Matches = () => {
   );*/
   if (newProfiles) {
     console.log(newProfiles)
-    return (
-      <Layout>
+    {/* <Layout>
         <div className='w-full items-center flex justify-center flex-wrap'>
           {newProfiles.map(profile => (
             <Profile key={profile.id} profile={profile} />
           ))}
         </div>
-      </Layout>
+        </Layout> */}
+    return (
+      <div className='w-full items-center flex justify-center flex-wrap'>
+        {newProfiles.map(profile => (
+          <Profile key={profile.id} profile={profile} />
+        ))}
+      </div>
     )
   } else {
     return (
-      <>
-        Loading {Math.round(loadingPercent)}%
-      </>
+      <div className='items-center flex justify-center w-full h-full'>
+          <Box sx={{ width: '80%' }}>
+            <div className='w-full items-center flex justify-center'>
+                <img src='https://alliedforum.net/wp-content/uploads/sites/313/2020/02/high-performing-team.jpg' className='items-center min-[750px]:max-w-[40%]' alt='image_match'/>
+            </div>
+            <text> Something amazing awaits...</text>
+            <LinearProgressWithLabel value={loadingPercent} />
+          </Box>
+      </div>
+      /*Loading {Math.round(loadingPercent)}%*/
     )
   }
 };
