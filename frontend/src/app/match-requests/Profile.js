@@ -10,7 +10,7 @@ function Profile({ profile }) {
     }
 
     try {
-      const response = await fetch(`https://ecsconnectbackend.com:8000/accept-match-request/${profile.name}/`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/accept-match-request/${profile.name}/`, {
         method: 'POST',
         headers: {
           'Authorization': `Token ${token}`,
@@ -38,7 +38,7 @@ function Profile({ profile }) {
     }
 
     try {
-      const response = await fetch(`https://ecsconnectbackend.com:8000/decline-match/${profile.name}/`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/decline-match/${profile.name}/`, {
         method: 'POST',
         headers: {
           'Authorization': `Token ${token}`,
@@ -60,7 +60,7 @@ function Profile({ profile }) {
   };
 
   return (
-    <section className="profile-detail">
+    /* <section className="profile-detail">
       <img src={profile.imageUrl} alt="Profile" className="profile-picture" />
       <h1>{profile.name}</h1>
       <p>Skills: {profile.skills.join(", ")}</p>
@@ -73,7 +73,21 @@ function Profile({ profile }) {
       <button onClick={declineMatch}>
         Decline Match
       </button>
-    </section>
+    </section> */
+    <div className="w-96 m-2 p-3 items-center flex-col flex justify-center break-words rounded-2xl border-[1px] border-slate-200 shadow-sm">
+      <img src={profile.imageUrl} alt="Profile_picture" />
+      <text className="text-xl font-semibold">{profile.name}</text>
+      <text className="w-full my-2 px-2">Skills: {profile.skills.join(", ")}</text>
+      <text className="w-full px-2">Interested in: {profile.interests.join(", ")}</text>
+      <div className="flex flex-row justify-between w-full px-6 my-2">
+        <button onClick={declineMatch} className="bg-sky-500 text-white font-semibold p-1 rounded-lg">
+          Decline Match
+        </button>
+        <button onClick={acceptMatch} className="bg-sky-500 text-white font-semibold p-1 rounded-lg">
+          Accept Match
+        </button>
+      </div>
+    </div>
   );
 }
 

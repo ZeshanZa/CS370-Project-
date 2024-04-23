@@ -20,7 +20,7 @@ function Profile({ profile }) {
     const username = profile.name; 
     setIsLoading(true);
     const token = localStorage.getItem('access_token');
-    axios.get(`https://ecsconnectbackend.com:8000/matched-profile/${username}`, {
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/matched-profile/${username}`, {
       headers: { 'Authorization': `Token ${token}` }
     })
       .then(response => {
@@ -37,7 +37,7 @@ function Profile({ profile }) {
   return (
     <section className="profile-detail">
       {modal && (
-        <div className='modal'>
+        <div className='modal z-50'>
           <div className='overlay'></div>
           <div className='modal-content flex flex-col justify-center'>
             {isLoading ? (

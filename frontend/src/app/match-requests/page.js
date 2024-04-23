@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import "./App.css";
+//import "./App.css";
 import Profile from "./Profile";
 
 const MatchesList = () => {
@@ -45,7 +45,7 @@ const MatchesList = () => {
   }));
 
   return (
-    <div className="App">
+    /* <div className="App">
       <header>
         <nav>
           <ul>
@@ -63,6 +63,11 @@ const MatchesList = () => {
           <Profile key={profile.id} profile={profile} />
         ))}
       </main>
+    </div> */
+    <div className='w-full items-center justify-center flex flex-wrap'>
+      {profiles.map(profile => (
+        <Profile key={profile.id} profile={profile} />
+      ))}
     </div>
   );
 };
