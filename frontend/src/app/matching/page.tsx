@@ -7,7 +7,7 @@ import MatchRequestsPageComponent from '../match-requests/MatchRequestsPageCompo
 import StartMatchingPageComponent from '../startMatching/StartMatchingPageComponent'
 import MatchesPageComponent from '../matches/MatchesPageComponent'
 
-function page() {
+function MatchingPage() {
     const [tabValue, setTabValue] = useState(0)
     
     return (
@@ -34,4 +34,4 @@ function page() {
     )
 }
 
-export default page
+export default MatchingPage
