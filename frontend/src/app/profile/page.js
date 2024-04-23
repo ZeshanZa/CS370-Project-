@@ -60,14 +60,14 @@ function UpdateProfilePageComponent() {
         const token = localStorage.getItem('access_token');
         // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';
 
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/user/`, {
-              headers: {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/user/`, {
+            headers: {
                 'Authorization': `Token ${token}`,
-              },
-            });
-        
+            },
+        });
+
         const userId = response.data.pk; // For this for some reason I had to make the assumption for userid for testing in django the rest framework atores as the pk value which is unique for each user I believe 
-    
+
         const payload = {
             user: userId, // Include the user ID in the payload it needs it to make chnages 
             full_name: profile.fullName,
@@ -75,11 +75,11 @@ function UpdateProfilePageComponent() {
             github_url: profile.githubUrl,
             bio: profile.bio,
         };
-    
+
         try {
             await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/profile/`, JSON.stringify(payload), {
                 headers: {
-                    'Authorization': `Token ${token}`, 
+                    'Authorization': `Token ${token}`,
                     'Content-Type': 'application/json',
                 },
             });
@@ -89,10 +89,10 @@ function UpdateProfilePageComponent() {
         }
     };
 
-   
-  return (
-    <>
-    {/*<Drawer open={NotificationsDrawer} anchor='left' onClose={() => setNotificationsDrawer(false)}>
+
+    return (
+        <>
+            {/*<Drawer open={NotificationsDrawer} anchor='left' onClose={() => setNotificationsDrawer(false)}>
       <Box width={350}>
         <div className='h-[100dvh] p-2'>
             <div className='w-full text-xl font-bold p-3 border-b-2 border-slate-900'>
@@ -236,48 +236,45 @@ Artificial intelligence, Natural Language Processing, and Data Science.
         <Divider className='relative mb-5'/>
         <text className='ml-5 text-3xl text-slate-800 font-semibold'> Profile </text>
   <div className='ml-12 w-32 border-4 border-blue-400 rounded-full my-2'></div> */}
-  <Layout>
-        <div className='items-center flex justify-center h-4/5 w-full'>
-            <div className='bg-gray-100 p-3 w-full max-w-[400px] text-center rounded-md max-[750px]:hidden'>
-                <div className='w-full items-center justify-center flex'>
-                    <div className='rounded-full items-center h-60 w-60 flex justify-center mt-10 text-white'>
-                        <img src='https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745'/>
+            <Layout>
+                <div className='items-center flex justify-center h-4/5 w-full'>
+                    <div className='bg-gray-100 p-3 w-full max-w-[400px] text-center rounded-md max-[750px]:hidden'>
+                        <div className='w-full items-center justify-center flex'>
+                            <div className='rounded-full items-center h-60 w-60 flex justify-center mt-10 text-white'>
+                                <img src='https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745' />
+                            </div>
+                        </div>
+                        <div className='my-10'><text className='text-xl my-10 font-semibold'>{profile.fullName}</text></div>
+                    </div>
+                    <div className='bg-slate-800 h-4/5 mx-16 w-[1px] max-[750px]:hidden'></div>
+                    <div className='border-2 border-slate-200 rounded-2xl px-10 py-6 flex flex-col w-full max-w-[500px]'>
+                        <form className='flex flex-col w-full max-[750px]:items-center' onSubmit={handleSubmit}>
+                            <text className='text-l font-semibold mb-1 mt-4' > Full name </text>
+                            <span className='w-4/5'><TextField type="text" name="fullName" value={profile.fullName} onChange={handleChange} size='small' placeholder='name...' fullWidth /></span>
+                            <text className='text-l font-semibold mb-1 mt-4'> Intended Major </text>
+                            <span className='w-4/5'><TextField type="text" name="major" value={profile.major} onChange={handleChange} fullWidth /></span>
+                            <text className='text-l font-semibold mb-1 mt-4'> Github URL </text>
+                            <span className='w-4/5 mb-4'><TextField
+                                type="text"
+                                name="githubUrl"
+                                value={profile.githubUrl || ''} // Ensure the value is always defined
+                                onChange={handleChange}
+                                fullWidth
+                                minRows={3}
+                                placeholder='something about you...' />
+                            </span>
+                            <text className='text-l font-semibold mb-1 mt-4'> Bio </text>
+                            <span className='w-4/5'><TextField name="bio" value={profile.bio} onChange={handleChange} fullWidth multiline minRows={3} /></span>
+                            <button type="submit" className='bg-blue-400 text-white w-full max-w-[200px] rounded-md mt-8 p-1 hover:bg-blue-600'> Save Changes </button>
+                        </form>
+                        <div className='w-full mt-5 text-white items-center flex justify-center border-t-2 pt-2'>
+                            <button className='mt-2 bg-blue-400 rounded-lg p-2 w-max' onClick={() => router.push('/test')}> Go to Skills page </button>
+                        </div>
                     </div>
                 </div>
-                <div className='my-10'><text className='text-xl my-10 font-semibold'>{profile.fullName}</text></div>
-            </div>
-            <div className='bg-slate-800 h-4/5 mx-16 w-[1px] max-[750px]:hidden'></div>
-            <div className='border-2 border-slate-200 rounded-2xl px-10 py-6 flex flex-col w-full max-w-[500px]'>
-                <form className='flex flex-col w-full' onSubmit={handleSubmit}>
-                    <text className='text-l font-semibold mb-1 mt-4' > Full name </text>
-                    <span className='w-4/5'><TextField type="text" name="fullName" value={profile.fullName} onChange={handleChange}size='small' placeholder='name...' fullWidth/></span>
-                    <text className='text-l font-semibold mb-1 mt-4'> Intended Major </text>
-                    <span className='w-4/5'><TextField type="text" name="major" value={profile.major} onChange={handleChange} fullWidth/></span>
-                    <text className='text-l font-semibold mb-1 mt-4'> Github URL </text>
-                    <span className='w-4/5 mb-4'><TextField   
-                            type="text"
-                            name="githubUrl"
-                            value={profile.githubUrl || ''} // Ensure the value is always defined
-                            onChange={handleChange}
-                            fullWidth
-                            minRows={3}
-                            placeholder='something about you...'/>
-                    </span>
-                    <text className='text-l font-semibold mb-1 mt-4'> Bio </text>
-                    <span className='w-4/5'><TextField name="bio" value={profile.bio} onChange={handleChange} fullWidth multiline minRows={3}/></span>
-                    <div>
-                        <span className=''><button className='bg-blue-400 text-white w-full max-w-[80px] rounded-md mt-8 p-1 hover:bg-blue-600 mr-4'> Edit </button></span>
-                        <span className=''><button type="submit" className='bg-blue-400 text-white w-full max-w-[200px] rounded-md mt-8 p-1 hover:bg-blue-600'> Save Changes </button></span>
-                    </div>
-               </form>
-               <div className='w-full mt-5 text-white items-center flex justify-center border-t-2 pt-2'>
-                <button className='mt-2 bg-blue-400 rounded-lg p-2 w-max' onClick={() => router.push('/test')}> Go to Skills page </button>
-               </div>
-            </div>
-        </div>
-    </Layout>
-    </>
-  )
+            </Layout>
+        </>
+    )
 }
 
 export default UpdateProfilePageComponent
@@ -583,63 +580,63 @@ function Page() {
             </div>
         </div>*/
 
-        /*
-        <Layout>
-            <div className='flex flex-row mt-5'>
-                <div className='w-1/4 p-4 bg-white rounded shadow'>
-                    <div className='flex flex-col items-center justify-center'>
-                        <div className='rounded-full bg-slate-800 h-40 w-40 flex items-center justify-center text-white text-xl mb-4'>
-                            Profile Photo
-                        </div>
-                        <h2 className='text-lg font-bold mb-2'>{profile.fullName}</h2>
-                        <p className='text-md mb-1'>{profile.major}</p>
-                        <a href={profile.githubUrl} className='text-sm text-blue-500 mb-2'>{profile.githubUrl}</a>
-                        <p className='text-sm bg-gray-200 p-3 rounded'>{profile.bio}</p>
-                        <button onClick={toggleAcquiredDropdown} className="px-4 py-2 bg-yellow-500 text-white font-semibold rounded hover:bg-blue-700">
-                            Skills I Have
-                        </button>
-                        <SkillsDropdown isOpen={isAcquiredDropdownOpen} statusType="acquiring" allSkills={allSkills} userSkills={userSkills} toggleSkillStatus={toggleSkillStatus} />
-                        <SkillBubbles statusType="acquiring" />
-                        <button onClick={toggleSearchingDropdown} className="px-4 py-2 bg-yellow-500  text-white font-semibold rounded hover:bg-green-700">
-                            Skills Im Searching For
-                        </button>
-                        
-                        <SkillsDropdown isOpen={isSearchingDropdownOpen} statusType="searching" allSkills={allSkills} userSkills={userSkills} toggleSkillStatus={toggleSkillStatus} />
-                        <SkillBubbles statusType="searching" />
-                        <div className="flex justify-center space-x-4 py-2">
-                <a href="/mainpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Home</a>
-                 <a href="/matches" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Matches</a>
-                 <a href="/profile" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Profile</a>
-                <a href="/setpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Settings</a>
+/*
+<Layout>
+    <div className='flex flex-row mt-5'>
+        <div className='w-1/4 p-4 bg-white rounded shadow'>
+            <div className='flex flex-col items-center justify-center'>
+                <div className='rounded-full bg-slate-800 h-40 w-40 flex items-center justify-center text-white text-xl mb-4'>
+                    Profile Photo
                 </div>
-                    </div>
-                </div>
-                <div className='flex-grow p-4 ml-5 bg-white rounded shadow'>
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div>
-                            <label className="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
-                            <input type="text" name="fullName" value={profile.fullName} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                        </div>
-                        <div>
-                            <label className="block text-gray-700 text-sm font-bold mb-2">Major</label>
-                            <input type="text" name="major" value={profile.major} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                        </div>
-                        <div>
-                            <label className="block text-gray-700 text-sm font-bold mb-2">GitHub URL</label>
-                            <input type="text" name="githubUrl" value={profile.githubUrl} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                        </div>
-                        <div>
-                            <label className="block text-gray-700 text-sm font-bold mb-2">Bio</label>
-                            <textarea name="bio" value={profile.bio} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" rows="3"></textarea>
-                        </div>
-                        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                            Save Changes
-                        </button>
-                    </form>
-                </div>
+                <h2 className='text-lg font-bold mb-2'>{profile.fullName}</h2>
+                <p className='text-md mb-1'>{profile.major}</p>
+                <a href={profile.githubUrl} className='text-sm text-blue-500 mb-2'>{profile.githubUrl}</a>
+                <p className='text-sm bg-gray-200 p-3 rounded'>{profile.bio}</p>
+                <button onClick={toggleAcquiredDropdown} className="px-4 py-2 bg-yellow-500 text-white font-semibold rounded hover:bg-blue-700">
+                    Skills I Have
+                </button>
+                <SkillsDropdown isOpen={isAcquiredDropdownOpen} statusType="acquiring" allSkills={allSkills} userSkills={userSkills} toggleSkillStatus={toggleSkillStatus} />
+                <SkillBubbles statusType="acquiring" />
+                <button onClick={toggleSearchingDropdown} className="px-4 py-2 bg-yellow-500  text-white font-semibold rounded hover:bg-green-700">
+                    Skills Im Searching For
+                </button>
+                
+                <SkillsDropdown isOpen={isSearchingDropdownOpen} statusType="searching" allSkills={allSkills} userSkills={userSkills} toggleSkillStatus={toggleSkillStatus} />
+                <SkillBubbles statusType="searching" />
+                <div className="flex justify-center space-x-4 py-2">
+        <a href="/mainpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Home</a>
+         <a href="/matches" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Matches</a>
+         <a href="/profile" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Profile</a>
+        <a href="/setpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Settings</a>
+        </div>
             </div>
-        </Layout>
-    );
+        </div>
+        <div className='flex-grow p-4 ml-5 bg-white rounded shadow'>
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
+                    <input type="text" name="fullName" value={profile.fullName} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                </div>
+                <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">Major</label>
+                    <input type="text" name="major" value={profile.major} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                </div>
+                <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">GitHub URL</label>
+                    <input type="text" name="githubUrl" value={profile.githubUrl} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                </div>
+                <div>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">Bio</label>
+                    <textarea name="bio" value={profile.bio} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" rows="3"></textarea>
+                </div>
+                <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Save Changes
+                </button>
+            </form>
+        </div>
+    </div>
+</Layout>
+);
 }
 
 export default Page;

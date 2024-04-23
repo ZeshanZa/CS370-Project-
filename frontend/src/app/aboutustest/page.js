@@ -7,8 +7,9 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useRouter } from 'next/navigation';
 import Marquee from 'react-fast-marquee'
+import Layout from '../Layouts/Layout';
 function ProjectsPage() {
-    const router = useRouter();
+    /*const router = useRouter();
     const [ProfileDrawer, setProfileDrawer] = useState(false);
     const [NotificationsDrawer, setNotificationsDrawer] = useState(false);
 
@@ -24,7 +25,7 @@ function ProjectsPage() {
         const fetchProfileData = async () => {
             const token = localStorage.getItem('access_token');
             try {
-                const response = await axios.get('https://ecsconnectbackend.com:8000/profile/', {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}:8000/profile/`, {
                     headers: {
                         'Authorization': `Token ${token}`,
                     },
@@ -42,22 +43,22 @@ function ProjectsPage() {
         };
 
         fetchProfileData();
-    }, []);
+    }, []);*/
 
     // Define team members here or load them from an API or external source
     const teamMembers = [
         { name: "Zeshan Zahid", role: "Scrum Master / Developer", image: "/images/zeshan.jpg", Major: "Placeholder Major" },
-        { name: "Artem Linde", role: "Developer", image: "/images/artem.jpg", Major: "Placeholder Major" },
+        { name: "Artem Linde", role: "Developer", image: "/images/artem.jpg", Major: "ECON + CS" },
         { name: "Michael Abebe", role: "Developer", image: "/images/michael.jpg", Major: "ECON/CS + Math Minor" },
         { name: "Esme Richardson", role: "Developer", image: "/images/esme.jpg", Major: "Placeholder Major" },
         { name: "Elijah Ting", role: "Developer", image: "/images/elijah.jpg", Major: "Placeholder Major" },
         { name: "Nicole Zhou", role: "Developer", image: "/images/nicole.jpg", Major: "Placeholder Major" }
     ];
 
-    return (
+    /*return (
         <>
             <Drawer open={NotificationsDrawer} anchor='left' onClose={() => setNotificationsDrawer(false)}>
-            <Box width={350}>
+                <Box width={350}>
                     <div className='h-[100dvh] p-2'>
                         <div className='w-full text-xl font-bold p-3 border-b-2 border-slate-900'>
                             Notifications
@@ -123,7 +124,7 @@ function ProjectsPage() {
             </Drawer>
 
             <Drawer open={ProfileDrawer} anchor='right' onClose={() => setProfileDrawer(false)}>
-            <Box width={350}>
+                <Box width={350}>
                     <div className='p-2 h-[100dvh]'>
                         <div className='w-full h-full rounded-lg px-4 flex flex-col'>
                             <div className='w-full items-center justify-center flex'>
@@ -169,12 +170,11 @@ function ProjectsPage() {
                                     </div>
                                 </div>
                                 <div className="flex justify-center space-x-4 py-2">
-                                <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/mainpage") }}> Home </button>
-                                <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/startMatching") }}> Matching </button>
-                                <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/friendsList") }}> Friends </button>
-                                <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/profile") }}> Profile </button>
-                                <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/setpage") }}> Settings </button>
-                                <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/aboutustest") }}> AboutUs </button>
+                                    <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/mainpage") }}> Home </button>
+                                    <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/matching") }}> Matching </button>
+                                    <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/friendsList") }}> Friends </button>
+                                    <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/profile") }}> Profile </button>
+                                    <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/setpage") }}> Settings </button>
                                 </div>
                             </div>
                             <div className='flex flex-grow items-center justify-center'>
@@ -187,7 +187,7 @@ function ProjectsPage() {
 
             <div className='w-full h-full overflow-x-hidden'>
                 <div className='flex flex-row justify-between px-5 py-6 items-center'>
-                <text className='relative text-3xl'> <span className='text-blue-600'>Emory</span> <span className='text-blue-400'>Connect</span> </text>
+                    <text className='relative text-3xl'> <span className='text-blue-600'>Emory</span> <span className='text-blue-400'>Connect</span> </text>
                     <div className='flex flex-row text-slate-600 items-center'>
                         <div className='cursor-pointer' onClick={() => setNotificationsDrawer(true)}><NotificationsNoneOutlinedIcon style={{ width: 30, height: 30 }} /></div>
                         <div className='mx-2' />
@@ -252,29 +252,44 @@ function ProjectsPage() {
                     <text className='text-3xl text-slate-600 max-[750px]:mb-2'> Meet Our Team </text>
                     <div className='max-[750px]:justify-around flex max-[750px]:w-full'>
                         <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/mainpage") }}> Home </button>
-                        <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/startMatching") }}> Matching </button>
+                        <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/matching") }}> Matching </button>
                         <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/friendsList") }}> Friends </button>
                         <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/profile") }}> Profile </button>
                         <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/setpage") }}> Settings </button>
                         <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/aboutustest") }}> AboutUs </button>
                     </div>
-                </div>
-                <div className='px-5 py-6'>
-                    {/* <Typography variant="h3" className="text-center text-blue-600">Meet Our Team</Typography> */}
-                    <Box className="flex flex-wrap justify-center">
-                        {teamMembers.map(member => (
-                            <Box key={member.name} className="p-4 max-w-sm w-1/3">
-                                <Avatar src={member.image} className="w-24 h-24 mx-auto" alt={`Image of ${member.name}`} />
-                                <Typography variant="h6" className="mt-2 text-center">{member.name}</Typography>
-                                <Typography className="text-center text-blue-400">{member.role}</Typography>
-                                <Typography className="text-center">{member.Major}</Typography>
-                            </Box>
-                        ))}
+                </div>*/
+    //<div className='px-5 py-6'>
+    {/* <Typography variant="h3" className="text-center text-blue-600">Meet Our Team</Typography> */ }
+    /*<Box className="flex flex-wrap justify-center">
+        {teamMembers.map(member => (
+            <Box key={member.name} className="p-4 max-w-sm w-1/3">
+                <Avatar src={member.image} className="w-24 h-24 mx-auto" alt={`Image of ${member.name}`} />
+                <Typography variant="h6" className="mt-2 text-center">{member.name}</Typography>
+                <Typography className="text-center text-blue-400">{member.role}</Typography>
+                <Typography className="text-center">{member.Major}</Typography>
+            </Box>
+        ))}
+    </Box>
+</div>*/
+    //</div>
+    //</>
+    //);
+    return (
+        <Layout>
+            <text className='text-3xl text-slate-600 max-[750px]:mb-2'> Meet Our Team </text>
+            <Box className="flex flex-wrap justify-center">
+                {teamMembers.map(member => (
+                    <Box key={member.name} className="p-4 max-w-sm w-1/3">
+                        <Avatar src={member.image} className="w-24 h-24 mx-auto" alt={`Image of ${member.name}`} />
+                        <Typography variant="h6" className="mt-2 text-center">{member.name}</Typography>
+                        <Typography className="text-center text-blue-400">{member.role}</Typography>
+                        <Typography className="text-center">{member.Major}</Typography>
                     </Box>
-                </div>
-            </div>
-        </>
-    );
+                ))}
+            </Box>
+        </Layout>
+    )
 }
 
 export default ProjectsPage;
