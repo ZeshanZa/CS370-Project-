@@ -1,4 +1,5 @@
 from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
 from requests import Response
 from .serializers import FriendRequestSerializer, UserDetailSerializer
@@ -14,6 +15,10 @@ from rest_framework import generics, permissions
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+
 
 
 # Create your views here.
@@ -271,14 +276,28 @@ class IncomingPendingRequestsView(generics.ListAPIView):
         return get_user_model().objects.filter(id__in=request_ids)
 '''
 
-def removeFriend(request, username):
+@require_POST
+@csrf_exempt
+def removeFriend(request, self_username, friend_username):
+    current_user = get_object_or_404(User, username=self_username)
+    friend_user = get_object_or_404(User, username=friend_username)
+
+    # Attempt to retrieve the friendship where the current user is either friend1 or friend2
     try:
-        friend = get_object_or_404(Friend, friend1=get_object_or_404(User, username=username), friend2=request.user)
-    except: 
-        friend = get_object_or_404(Friend, friend2=request.user, friend1=get_object_or_404(User, username=username))
-    
+        friend = Friend.objects.get(
+            (Q(friend1=current_user) & Q(friend2__username=friend_username)) |
+            (Q(friend2=current_user) & Q(friend1__username=friend_username))
+        )
+    except Friend.DoesNotExist:
+        return JsonResponse({'error': 'Friendship not found.'}, status=404)
+
+    # Check if the user is part of this friendship
+    if friend.friend1 != current_user and friend.friend2 != current_user:
+        raise PermissionDenied("You do not have permission to delete this friendship.")
+
+    # Delete the friend relationship
     friend.delete()
-    return HttpResponse('Friend removed.')
+    return JsonResponse({'message': 'Friendship deleted successfully.'})
 
 
 class DetailedFriendListView(generics.ListAPIView):

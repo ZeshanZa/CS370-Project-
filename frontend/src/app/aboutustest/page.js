@@ -47,7 +47,7 @@ function ProjectsPage() {
 
     // Define team members here or load them from an API or external source
     const teamMembers = [
-        { name: "Zeshan Zahid", role: "Scrum Master / Developer", image: "/images/zeshan.jpg", Major: "Placeholder Major" },
+        { name: "Zeshan Zahid", role: "Developer", image: "/images/zeshan.jpg", Major: "Placeholder Major" },
         { name: "Artem Linde", role: "Developer", image: "/images/artem.jpg", Major: "ECON + CS" },
         { name: "Michael Abebe", role: "Developer", image: "/images/michael.jpg", Major: "ECON/CS + Math Minor" },
         { name: "Esme Richardson", role: "Developer", image: "/images/esme.jpg", Major: "CS" },
