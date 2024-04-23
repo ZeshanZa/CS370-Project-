@@ -213,8 +213,8 @@ const SearchBar: React.FC = () => {
     // make friend requests a fixed size and have a scroll bar
     return (
         <Layout>
-            <div className='flex w-full h-full'>
-                <div id="search-container" className="relative mr-12">
+            <div className='w-full h-full items-center flex justify-center flex-wrap'>
+                <div id="search-container" className="relative mr-12 mt-10">
                     <input
                         id="searchbox"
                         type="text"
@@ -238,7 +238,7 @@ const SearchBar: React.FC = () => {
                         </ul>
                     )}
                 </div>
-                <div className="p-4 flex flex-col border w-4/12 border-gray-300 rounded-md">
+                <div className="p-4 flex flex-col border w-4/12 min-w-[400px] mt-10 border-gray-300 rounded-md">
                     <h1 className='flex justify-center font-sans font-bold'>Friend Requests</h1>
                     {friend_requests.map(request => (
                     <div className='flex flex-row justify-between' key={request.id}>
