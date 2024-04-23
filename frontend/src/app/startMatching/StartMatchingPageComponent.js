@@ -101,6 +101,10 @@ const StartMatchingPageComponent = () => {
       //if (uuid) { getUserSkills(uuid).then((skills) => console.log(skills)) }
       const myskills = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/skills/${uuid}/get-complete-skills/`); //fetched my own skills
       const allSkills = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/skills/`)
+      const MatchesTotal = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user-matches/`, {
+        headers: { 'Authorization': `Token ${localStorage.getItem('access_token')}` }
+      })
+      //console.log(MatchesTotal)
       //console.log(allSkills.data)
       let SkillMap = {}
       for (let i = 0; i < allSkills.data.length; i++){
@@ -121,7 +125,7 @@ const StartMatchingPageComponent = () => {
       //step 1 - sort through all users
       for (let i = 0; i < profiles.length; i++) {
         //console.log(profiles[i].name)
-        console.log(`${(i+1)/profiles.length*100}% is complete`)
+        //console.log(`${(i+1)/profiles.length*100}% is complete`)
         setLPercent((i+1)/profiles.length*100)
         let score = 0 //assign a score to each potential match
         //step 2 - get the user's id and fetch the skills
@@ -129,6 +133,16 @@ const StartMatchingPageComponent = () => {
         //console.log(targetId)
         if (targetId.data == uuid) {
           continue; //we make sure we dont collect out of skills and thus dont match to ourself
+        }
+
+        let Flag = false
+        for (let imt = 0; imt < MatchesTotal.data.length; imt++) {
+          if (MatchesTotal.data[imt].other_user == profiles[i].name){
+            Flag = true
+          }
+        }
+        if (Flag){
+          continue;
         }
 
         //const targetSkills = await axios.get(`http://127.0.0.1:8000/skills/${targetId.data}/get-complete-skills/`);
@@ -234,8 +248,8 @@ const StartMatchingPageComponent = () => {
       }
       //END OF MATCHING ALGORYTHM
 
-      console.log(usernames)
-      console.log([user1, user2, user3])
+      //console.log(usernames)
+      //console.log([user1, user2, user3])
 
       return [user1, user2, user3]
     }
