@@ -1,11 +1,11 @@
 "use client"
 
 import React, { useState } from 'react'
-import Matches from "../startMatching/Page"
 import { Tab, Tabs } from '@mui/material'
 import Layout from '../Layouts/Layout'
-import MatchesList from "../match-requests/Page"
-import MatchesList2 from '../matches/Page'
+import MatchRequestsPageComponent from '../match-requests/MatchRequestsPageComponent'
+import StartMatchingPageComponent from '../startMatching/StartMatchingPageComponent'
+import MatchesPageComponent from '../matches/MatchesPageComponent'
 
 function page() {
     const [tabValue, setTabValue] = useState(0)
@@ -21,13 +21,13 @@ function page() {
                     <Tab label="Matches"/>
                 </Tabs>
                 {tabValue == 0 ? <div className='w-full h-full mt-10 flex justify-center flex-col'>
-                    <Matches />
+                    <StartMatchingPageComponent />
                 </div> : ""}
                 {tabValue == 1 ? <div className='w-full h-full mt-10 flex justify-center flex-col'>
-                    <MatchesList />
+                    <MatchRequestsPageComponent />
                 </div> : ""}
                 {tabValue == 2 ? <div className='w-full h-full mt-10 flex justify-center flex-col'>
-                    <MatchesList2 />
+                    <MatchesPageComponent />
                 </div> : ""}
             </div>
         </Layout>

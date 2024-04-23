@@ -11,7 +11,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-const Matches = () => {
+const StartMatchingPageComponent = () => {
   console.log("PAGE LOADED")
   const [usernames, setUsernames] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -315,4 +315,4 @@ const Matches = () => {
   }
 };
 
-export default Matches;
+export default StartMatchingPageComponent;
