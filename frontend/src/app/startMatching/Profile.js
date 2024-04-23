@@ -96,7 +96,7 @@ function Profile({ profile }) {
       <text className="w-full my-2 px-2">Skills (Experiances): {profile.skills.Exp.join(", ")}</text>
       <text className="w-full my-2 px-2">Skills (Languages): {profile.skills.Lang.join(", ")}</text>
       <text className="w-full my-2 px-2">Skills (Personal): {profile.skills.Pers.join(", ")}</text>
-      <text className="w-full px-2">Interested in: {profile.interests.join(", ")}</text>
+      {/*<text className="w-full px-2">Interested in: {profile.interests.join(", ")}</text>*/}
       <div className="flex flex-row justify-center w-full px-6 my-2">
         <button onClick={sendMatchRequest} className="bg-sky-500 text-white font-semibold p-1 rounded-lg">
           Send Match Request

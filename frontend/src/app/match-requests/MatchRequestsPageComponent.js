@@ -8,6 +8,15 @@ const MatchRequestsPageComponent = () => {
   const [matches, setMatches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [skills, setSkills] = useState([])
+
+  async function getUserSkills(name) {
+    const user_id = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user-id/${name}/`);
+    //console.log(user_id)
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/skills/${user_id.data}/get-complete-skills/`);
+    const { acquired, search } = response.data;
+    return [search, acquired]
+  }
 
   useEffect(() => {
     setIsLoading(true);
@@ -18,6 +27,7 @@ const MatchRequestsPageComponent = () => {
     })
     .then(response => {
       setMatches(response.data);
+      //getUserSkills(response.data[0].sender).then((skills) => console.log(skills))
       setIsLoading(false);
     })
     .catch(error => {
@@ -43,6 +53,16 @@ const MatchRequestsPageComponent = () => {
     interests: ["Web Development", "Machine Learning"], // Temporary interests, replace with actual data if available
     imageUrl: "https://via.placeholder.com/150" // Temporary image URL, replace with actual data if available
   }));
+
+  /*async function GetALLSkills() {
+    for (let i = 0; i < profiles.length; i++) {
+      //console.log(profiles[i].name)
+      const skills = await getUserSkills(profiles[i].name)
+      profiles[i].skills = skills
+      //console.log(skills)
+    }
+  }
+  GetALLSkills();*/
 
   return (
     /* <div className="App">

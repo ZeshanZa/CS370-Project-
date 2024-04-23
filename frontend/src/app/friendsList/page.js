@@ -4,8 +4,10 @@ import axios from 'axios';
 //import "./App.css";
 import FriendComponent from "../components/FriendComponent"
 import Layout from '../Layouts/Layout';
+import { useRouter } from 'next/navigation';
 
 function FriendsList() {
+  const router = useRouter()
   const [friends, putFriends] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -66,16 +68,20 @@ function FriendsList() {
   );*/
   return (
     <Layout>
-      <div className='w-full items-center flex justify-center flex-wrap'>
-        {friends.map(friend => (
-          <FriendComponent
-            key={friend.id}  // Ensure each friend has a unique id
-            name={friend.username}
-            skills={["Java ", "Python ", "CSS "]}
-            github={friend.email}
-          />
-        ))}
-
+      <div className='w-full flex flex-col items-center'>
+        <div className='items-center flex justify-center flex-wrap'>
+          {friends.map(friend => (
+            <FriendComponent
+              key={friend.id}  // Ensure each friend has a unique id
+              name={friend.username}
+              skills={["Java ", "Python ", "CSS "]}
+              github={friend.email}
+            />
+          ))}
+        </div>
+        <button onClick={() => router.push('/find_friends')} className="bg-sky-500 text-white font-semibold p-1 rounded-lg">
+          Find new friends
+        </button>
       </div>
     </Layout>
   )
