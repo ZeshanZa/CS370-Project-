@@ -177,9 +177,11 @@ function Page() {
         keys.forEach(function (key) {
             result.push(json[key].title);
         });
+        result.push("Juggling")
         return result;
     }
     const inputskills = json2array(data)
+    MasterSkills.Lang = inputskills //remove to revert to original
 
     /*return(
       <Layout>
@@ -216,6 +218,7 @@ function Page() {
 
 
     return (
+        <Layout>
         <div>
             <div className="flex flex-wrap justify-center w-full">
                 <DisplaySkills title="Acquired Skills" skillsDict={skillsHave} />
@@ -251,6 +254,7 @@ function Page() {
                 </div>
             ))}
         </div>
+        </Layout>
     );
 }
 //   return (
