@@ -331,7 +331,7 @@ function ProjectsPage() {
                                 </div>
                             </div>
                             <div className='flex flex-grow items-center justify-center'>
-                                <button className='bg-gray-300 py-1 w-full rounded-md text-slate-700 hover:bg-gray-500 hover:text-slate-200'> Sign Out </button>
+                                <button className='bg-gray-300 py-1 w-full rounded-md text-slate-700 hover:bg-gray-500 hover:text-slate-200' onClick={() => router.push('/')}> Sign Out </button>
                             </div>
                         </div>
                     </div>
