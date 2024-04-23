@@ -24,6 +24,7 @@ const SearchBar: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [friendRequests, setFriendRequests] = useState([]); 
     const [token, setToken] = useState<string | null>(null);
+    
 
 
     useEffect(() => {
@@ -94,10 +95,6 @@ const SearchBar: React.FC = () => {
                 console.log(data);
                 alert(`Friends request sent to: ${receiver}`);
             })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error sending match request');
-            });
         }
     };
 
@@ -141,7 +138,7 @@ const SearchBar: React.FC = () => {
           alert(`Friend request with ${username} accepted.`);
         } catch (error) {
           console.error('Error:', error);
-          alert('Error acceptingg match request');
+          setFriendRequests(prevRequests => prevRequests.filter(request => request.sender !== username));
         }
       };
 
@@ -170,6 +167,7 @@ const SearchBar: React.FC = () => {
         } catch (error) {
           console.error('Error:', error);
           alert('Error declining friend request');
+          setFriendRequests(prevRequests => prevRequests.filter(request => request.sender !== username));
         }
       };
 
