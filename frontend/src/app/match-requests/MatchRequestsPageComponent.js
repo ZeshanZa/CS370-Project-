@@ -54,7 +54,7 @@ const MatchRequestsPageComponent = () => {
     imageUrl: "https://via.placeholder.com/150" // Temporary image URL, replace with actual data if available
   }));
 
-  async function GetALLSkills() {
+  /*async function GetALLSkills() {
     for (let i = 0; i < profiles.length; i++) {
       //console.log(profiles[i].name)
       const skills = await getUserSkills(profiles[i].name)
@@ -62,7 +62,7 @@ const MatchRequestsPageComponent = () => {
       //console.log(skills)
     }
   }
-  GetALLSkills();
+  GetALLSkills();*/
 
   return (
     /* <div className="App">
