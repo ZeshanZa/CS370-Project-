@@ -52,6 +52,7 @@ const AuthForm = () => {
       }
     } catch (error) {
       console.error(`${formType} error`, error.response?.data || error);
+      alert(error.response.data.password1)
     }
   };
 
