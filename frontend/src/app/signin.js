@@ -113,17 +113,7 @@ const AuthForm = () => {
                   placeholder="Username..."
                   variant="outlined"
                 />
-                <text className="font-bold text-lg mt-3"> Email </text>
-                <TextField
-                  fullWidth
-                  label="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  size="small"
-                  placeholder="Email..."
-                  variant="outlined"
-                  type="email"
-                />
+                <div className="mb-2"></div>
                 <text className=" font-bold text-lg mt-3"> Password </text>
                 <TextField
                   fullWidth
@@ -137,6 +127,19 @@ const AuthForm = () => {
                 />
                 {formType === "signup" && (
                   <>
+                    <div className="mb-2"></div>
+                    <text className="font-bold text-lg mt-3"> Email </text>
+                    <TextField
+                      fullWidth
+                      label="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      size="small"
+                      placeholder="Email..."
+                      variant="outlined"
+                      type="email"
+                    />
+                    <div className="mb-2"></div>
                     <text className=" font-bold text-lg mt-3">
                       {" "}
                       Confirm Password{" "}
@@ -242,18 +245,6 @@ const AuthForm = () => {
                   variant="outlined"
                 />
                 <div className="mb-2"></div>
-                <text className="font-bold text-lg"> Email </text>
-                <TextField
-                  fullWidth
-                  label="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  size="small"
-                  placeholder="Email..."
-                  variant="outlined"
-                  type="email"
-                />
-                <div className="mb-2"></div>
                 <text className=" font-bold text-lg"> Password </text>
                 <TextField
                   fullWidth
@@ -267,6 +258,18 @@ const AuthForm = () => {
                 />
                 {formType === "signup" && (
                   <>
+                    <div className="mb-2"></div>
+                    <text className="font-bold text-lg"> Email </text>
+                    <TextField
+                      fullWidth
+                      label="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      size="small"
+                      placeholder="Email..."
+                      variant="outlined"
+                      type="email"
+                    />
                     <div className="mb-4"></div>
                     <text className=" font-bold text-lg mt-3">
                       {" "}
