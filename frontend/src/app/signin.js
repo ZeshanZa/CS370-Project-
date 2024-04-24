@@ -98,7 +98,6 @@ const AuthForm = () => {
                     : "Switch to Sign In"}
                 </button>
               </div>
-              {/* Form Fields */}
               <form
                 onSubmit={handleFormSubmit}
                 className="space-y-4 max-w-[400px]"
@@ -112,18 +111,6 @@ const AuthForm = () => {
                   size="small"
                   placeholder="Username..."
                   variant="outlined"
-                />
-                <div className="mb-2"></div>
-                <text className=" font-bold text-lg mt-3"> Password </text>
-                <TextField
-                  fullWidth
-                  label="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  size="small"
-                  placeholder="Password..."
-                  variant="outlined"
-                  type="password"
                 />
                 {formType === "signup" && (
                   <>
@@ -139,8 +126,24 @@ const AuthForm = () => {
                       variant="outlined"
                       type="email"
                     />
+                  </>
+                )}
+                <div className="mb-2"></div>
+                <text className="font-bold text-lg mt-3"> Password </text>
+                <TextField
+                  fullWidth
+                  label="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  size="small"
+                  placeholder="Password..."
+                  variant="outlined"
+                  type="password"
+                />
+                {formType === "signup" && (
+                  <>
                     <div className="mb-2"></div>
-                    <text className=" font-bold text-lg mt-3">
+                    <text className="font-bold text-lg mt-3">
                       {" "}
                       Confirm Password{" "}
                     </text>
@@ -231,37 +234,26 @@ const AuthForm = () => {
               {/* Form Fields */}
               <form
                 onSubmit={handleFormSubmit}
-                className="space-y-2 max-w-[400px]"
+                className="space-y-4 max-w-[400px]"
               >
-                <div className="mb-2"></div>
-                <text className="font-bold text-lg"> Username </text>
-                <TextField
-                  fullWidth
-                  label="Username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  size="small"
-                  placeholder="Username..."
-                  variant="outlined"
-                />
-                <div className="mb-2"></div>
-                <text className=" font-bold text-lg"> Password </text>
-                <TextField
-                  fullWidth
-                  label="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  size="small"
-                  placeholder="Password..."
-                  variant="outlined"
-                  type="password"
-                />
                 {formType === "signup" && (
                   <>
-                    <div className="mb-2"></div>
-                    <text className="font-bold text-lg"> Email </text>
+                    <text className="font-bold text-lg">Username</text>
                     <TextField
                       fullWidth
+                      id="margin-normal"
+                      label="Username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      size="small"
+                      placeholder="Username..."
+                      variant="outlined"
+                    />
+                    <div className="mb-1"></div>
+                    <text className="font-bold text-lg ">Email</text>
+                    <TextField
+                      fullWidth
+                      id="margin-normal"
                       label="Email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -270,13 +262,26 @@ const AuthForm = () => {
                       variant="outlined"
                       type="email"
                     />
-                    <div className="mb-4"></div>
-                    <text className=" font-bold text-lg mt-3">
-                      {" "}
-                      Confirm Password{" "}
+                    <div className="mb-1"></div>
+                    <text className="font-bold text-lg mt-3">Password</text>
+                    <TextField
+                      fullWidth
+                      id="margin-normal"
+                      label="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      size="small"
+                      placeholder="Password..."
+                      variant="outlined"
+                      type="password"
+                    />
+                    <div className="mb-1"></div>
+                    <text className="font-bold text-lg mt-3">
+                      Confirm Password
                     </text>
                     <TextField
                       fullWidth
+                      id="margin-normal"
                       label="Confirm Password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
@@ -287,16 +292,40 @@ const AuthForm = () => {
                     />
                   </>
                 )}
-
-                <div className="flex flex-col w-full">
-                  {/* other elements */}
-                  <button
-                    type="submit"
-                    className="mt-4 bg-blue-400 text-white w-full rounded-md p-2 hover:bg-blue-600"
-                  >
-                    {formType === "signin" ? "Sign In" : "Sign Up"}
-                  </button>
-                </div>
+                {formType === "signin" && (
+                  <>
+                    <text className="font-bold text-lg mt-4">Username</text>
+                    <TextField
+                      fullWidth
+                      id="margin-normal"
+                      label="Username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      size="small"
+                      placeholder="Username..."
+                      variant="outlined"
+                    />
+                    <div className="mb-1"></div>
+                    <text className="font-bold text-lg">Password</text>
+                    <TextField
+                      fullWidth
+                      id="margin-normal"
+                      label="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      size="small"
+                      placeholder="Password..."
+                      variant="outlined"
+                      type="password"
+                    />
+                  </>
+                )}
+                <button
+                  type="submit"
+                  className="bg-blue-400 text-white w-full rounded-md mt-3 p-1 hover:bg-blue-600"
+                >
+                  {formType === "signin" ? "Sign In" : "Sign Up"}
+                </button>
               </form>
             </div>
           </div>
