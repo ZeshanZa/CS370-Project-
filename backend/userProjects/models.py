@@ -11,6 +11,7 @@ class Project(models.Model):
     description = models.TextField()
     github_url = models.URLField(max_length=255, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    contributors = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='contributed_projects', blank=True)
 
     def __str__(self):
         return self.title
