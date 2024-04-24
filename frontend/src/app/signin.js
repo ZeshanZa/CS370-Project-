@@ -43,16 +43,26 @@ const AuthForm = () => {
       console.log(`${formType} successful`, response.data);
       console.log(localStorage.getItem("access_token"));
       if (formType === "signup") {
-        if (typeof window !== "undefined") {
-          // Safe to use window here
-          window.location.reload();
-        }
+        //if (typeof window !== "undefined") {
+        // Safe to use window here
+        //window.location.reload();
+        //}
+        const loginResponse = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login/`,
+          {
+            username,
+            email,
+            password,
+          }
+        );
+        localStorage.setItem("access_token", loginResponse.data.key);
+        router.push("/tutorial");
       } else {
         router.push("/mainpage"); // Redirect on successful form submission
       }
     } catch (error) {
       console.error(`${formType} error`, error.response?.data || error);
-      alert(error.response.data.password1)
+      alert(error.response.data.password1);
     }
   };
 
