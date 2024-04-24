@@ -612,7 +612,7 @@ function ProjectsPage() {
               }}
             >
               {" "}
-              Profile{" "}
+              Skills & Profile{" "}
             </button>
             <button
               className="text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md"
@@ -697,41 +697,27 @@ function ProjectsPage() {
                 )}
 
                 <div>
-                  <div className="w-full flex-wrap flex justify-center">
-                    {projects.slice(0, itemsToShow).map(
-                      (project) =>
-                        ProjectComponent(
-                          project.title,
-                          project.description,
-                          "https://github.com/username/secure-file-sharing-system",
-                          "https://i.ytimg.com/vi/gYrpk8ntc94/maxresdefault.jpg",
-                          project
-                        )
-                      /* <div key={project.id} className='bg-slate-300 m-3 p-2 rounded-xl flex flex-col w-5/12 relative'>
-                                                <div className='flex flex-row justify-between font-bold text-xl'>
-                                                    <text> {project.title} </text>
-                                                    <div>
-                                                        <StarIcon />
-                                                        <text
-                                                            onClick={() => handleEditProject(project)}
-                                                            className="text-sm cursor-pointer underline italic mr-2"
-                                                            style={{ fontStyle: 'italic' }}
-                                                        >
-                                                            Edit
-                                                        </text>
-                                                        <text
-                                                            onClick={() => handleDeleteProject(project.id)}
-                                                            className="text-sm cursor-pointer underline italic"
-                                                            style={{ fontStyle: 'italic' }}
-                                                        >
-                                                            Delete
-                                                        </text>
-                                                    </div>
-                                                </div>
-                                                <text className='font-light text-sm whitespace-pre-line break-words'> {project.description} </text>
-                                            </div> */
-                    )}
-                  </div>
+                  {projects.length === 0 && !showAddProjectForm ? (
+                    <div className="w-full p-4 text-center text-gray-600">
+                      <p>
+                        No projects to display. Start by adding a new project!
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="w-full flex-wrap flex justify-center">
+                      {projects
+                        .slice(0, itemsToShow)
+                        .map((project) =>
+                          ProjectComponent(
+                            project.title,
+                            project.description,
+                            "https://github.com/username/secure-file-sharing-system",
+                            "https://i.ytimg.com/vi/gYrpk8ntc94/maxresdefault.jpg",
+                            project
+                          )
+                        )}
+                    </div>
+                  )}
                   <button
                     className="underline"
                     hidden={
