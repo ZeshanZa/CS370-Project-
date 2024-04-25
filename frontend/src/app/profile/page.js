@@ -155,7 +155,7 @@ function UpdateProfilePageComponent() {
 
   const DisplaySkills = ({ title, skillsDict }) => {
     return (
-      <div className="flex flex-col w-full md:w-1/2 p-4">
+      <div className="flex flex-col w-full md:w-1/2 p-z ">
         <h2 className="text-lg font-bold mb-2">{title}</h2>
         <div className="flex flex-wrap">
           {Object.entries(skillsDict).map(([category, skills]) => (
@@ -163,10 +163,7 @@ function UpdateProfilePageComponent() {
               <h3 className="font-semibold">{category}</h3>
               <ul className="list-none">
                 {skills.map((skill) => (
-                  <li
-                    key={skill}
-                    className="rounded p-1 my-3 flex ring-1 ring-gray-500/50"
-                  >
+                  <li key={skill} className="rounded p-1 my-3 flex ">
                     {skill}
                   </li>
                 ))}
@@ -182,7 +179,7 @@ function UpdateProfilePageComponent() {
     <>
       {}
       <Layout>
-        <div className="flex flex-col lg:flex-row">
+        <div className="flex flex-col lg:flex-row justify-center">
           <div className="flex-col">
             <div className="flex flex-row w-full max-w-4xl shadow-lg rounded-lg ">
               <DisplaySkills title="Your Skills" skillsDict={skillsHave} />
