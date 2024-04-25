@@ -182,9 +182,9 @@ function UpdateProfilePageComponent() {
     <>
       {}
       <Layout>
-        <div className="flex">
+        <div className="flex flex-col lg:flex-row">
           <div className="flex-col">
-            <div className="flex flex-col md:flex-row w-full max-w-4xl shadow-lg rounded-lg ">
+            <div className="flex flex-row w-full max-w-4xl shadow-lg rounded-lg ">
               <DisplaySkills title="Your Skills" skillsDict={skillsHave} />
               <DisplaySkills
                 title="Skills You're Looking For"
