@@ -69,7 +69,10 @@ function FriendsList() {
   return (
     <Layout>
       <div className='w-full flex flex-col items-center'>
-        <div className='items-center flex justify-center flex-wrap'>
+        <div className='w-4/12 flex flex-col flex-wrap'>
+          <div className='border rounded-tl-lg rounded-tr-lg flex justify-center p-2'>
+            <text className='text-xl font-bold'>Your friends</text>
+          </div>
           {friends.map(friend => (
             <FriendComponent
               key={friend.id}  // Ensure each friend has a unique id
@@ -79,11 +82,18 @@ function FriendsList() {
             />
           ))}
         </div>
-        <button onClick={() => router.push('/find_friends')} className="bg-sky-500 text-white font-semibold p-1 rounded-lg">
-          Find new friends
-        </button>
+        <div className='flex flex-col justify-center' style={{width:'10%'}}>
+          <br></br>
+          <button className='flex justify-center bg-blue-500 border rounded-lg ' onClick={() => router.push('/find_friends')}>find friends</button>
+        </div>
       </div>
     </Layout>
   )
 };
 export default FriendsList;
+
+/*
+<button onClick={() => router.push('/find_friends')} className="bg-sky-500 text-white font-semibold p-1 rounded-lg">
+          Find new friends
+        </button>
+*/

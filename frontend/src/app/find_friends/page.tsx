@@ -102,7 +102,12 @@ const SearchBar: React.FC = () => {
         if (token) {
             const fetchUsernames = async () => {
                 try {
-                    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user-list/`);
+                    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/friendsList/searchFriends/`, {
+                        headers: {
+                            'Authorization': `Token ${token}`, 
+                            'Content-Type': 'application/json'
+                        }
+                    });
                     setUsernames(response.data);
                     setIsLoading(false);
                 } catch (err: any) {
@@ -166,7 +171,6 @@ const SearchBar: React.FC = () => {
           alert(`Friend request with ${username} declined.`);
         } catch (error) {
           console.error('Error:', error);
-          alert('Error declining friend request');
           setFriendRequests(prevRequests => prevRequests.filter(request => request.sender !== username));
         }
       };
@@ -213,7 +217,7 @@ const SearchBar: React.FC = () => {
     // make friend requests a fixed size and have a scroll bar
     return (
         <Layout>
-            <div className='w-full h-full items-center flex justify-center flex-wrap'>
+            <div className='w-full h-full flex justify-center flex-wrap'>
                 <div id="search-container" className="relative mr-12 mt-10">
                     <input
                         id="searchbox"
@@ -224,14 +228,14 @@ const SearchBar: React.FC = () => {
                         onChange={handleInputChange}
                     />
                     {searchQuery && (
-                        <ul className="absolute z-10 mt-2 w-80 bg-white border border-gray-300 rounded-md shadow-lg">
+                        <ul className="absolute z-10 mt-2 w-80 bg-white border border-gray-300 rounded-md shadow-lg overflow-y-auto max-h-60">
                             {searchResults.map((result) => (
                                 <li key={result.id} className="flex justify-between items-center px-4 py-2 hover:bg-gray-100">
                                     <span onClick={() => handleResultClick(result)}>
                                         {result.name}
                                     </span>
                                     <button onClick={() => sendRequest(result.name)}>
-                                        <FontAwesomeIcon icon={faUserPlus} />
+                                        <FontAwesomeIcon style={{color:'#4299e1'}} icon={faUserPlus} />
                                     </button>
                                 </li>
                             ))}
@@ -251,8 +255,8 @@ const SearchBar: React.FC = () => {
                             </p>
                         </div>
                         <div className='flex flex-row justify-center'>
-                            <button onClick={() => acceptFriend(request.sender)} className='mr-4'><FontAwesomeIcon icon={faCheck} /></button>
-                            <button onClick={() => declineFriendRequest(request.sender)}><FontAwesomeIcon icon={faX} fontSize={'85%'} /></button>
+                            <button onClick={() => acceptFriend(request.sender)} className='mr-4'><FontAwesomeIcon icon={faCheck} style={{color:'green'}}/></button>
+                            <button onClick={() => declineFriendRequest(request.sender)}><FontAwesomeIcon icon={faX} style={{color:'red'}} fontSize={'85%'} /></button>
                         </div>
                     </div>
                     ))}

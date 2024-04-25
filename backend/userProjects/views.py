@@ -13,6 +13,8 @@ from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import PermissionDenied
 from django.db import models
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 def list_pending_requests(request):
     # Assuming 'user1' is the one who sends the request and 'user2' is the recipient
@@ -76,6 +78,13 @@ def view_profile(request, user_id):
     else:
         return HttpResponse("You are not friends with this user")
     
+def get_user_pk(request, username):
+    # Retrieve the user by username
+    user = get_object_or_404(User, username=username)
+    
+    # Return the user's primary key in a JSON response
+    return JsonResponse({'username': username, 'user_pk': user.id})
+    
 # show profile user when matched 
 class MatchedUserProfileView(generics.RetrieveAPIView):
     serializer_class = UserProfileSerializer
@@ -135,3 +144,10 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
         # Ensure a UserProfile exists for the user or create one
         UserProfile.objects.get_or_create(user=self.request.user)
         return self.request.user.userprofile
+    
+class friendProjectView(APIView): 
+    def get(self, request, username): 
+        user = get_object_or_404(User, username=username)
+        projects = Project.objects.filter(user=user)
+        serializer = ProjectSerializer(projects, many=True)
+        return Response(serializer.data)

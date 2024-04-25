@@ -1,5 +1,9 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import axios from 'axios'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faX } from '@fortawesome/free-solid-svg-icons';
+import './projectModal.css';
+import '../matches/App.css';
 
 type Props = {
     name: string;
@@ -8,9 +12,45 @@ type Props = {
   }
 
 
-  
 function FriendComponent({name, skills, github} : Props) {
   const token = localStorage.getItem('access_token');
+
+  const [projects, setProjects] = useState(null);
+  const [friendProfile, setFriendProfile] = useState(null);
+  const [modal, setModal] = useState(false); 
+  const [showProjects, setShowProjects] = useState(false); 
+
+  const toggleModal = () => {
+    setModal(!modal);
+    if (!modal) {
+      // fetchProfileData(profile.name);
+      fetchFriendProfile(); 
+    }
+  };
+
+  const toggleShowProjects = () => {
+    setShowProjects(!showProjects); 
+    if (!showProjects) {
+      friendsProjects(); 
+      console.log(projects); 
+    }
+  }
+
+  const fetchFriendProfile = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/friendsList/friendProfile/${name}`, {
+        headers: { 'Authorization': `Token ${token}` }
+      }); 
+      setFriendProfile(response.data);
+      setModal(!modal); 
+      friendsProjects(); 
+      console.log(projects); 
+
+    } catch (error) {
+        console.error('Error fetching profile:', error); 
+        return null; 
+    }
+  }
 
   const fetchUsername = async () => {
     try {
@@ -25,6 +65,34 @@ function FriendComponent({name, skills, github} : Props) {
         return null;
     }
   };
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+        const token = localStorage.getItem('access_token');
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/projects/`, {
+                headers: {
+                    'Authorization': `Token ${token}`,
+                },
+            });
+            setProjects(response.data); // Projects returned 
+        } catch (error) {
+            console.error('Error fetching projects:', error);
+        }
+    };
+
+    fetchProjects();
+}, []);
+
+  const friendsProjects = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/friend-project/${name}`); 
+      setProjects(response.data); 
+
+    } catch (err) {
+      console.error(err.message); 
+    }
+  }; 
 
   const handleRemoveFriend = async (friend_username) => {
     const self_username = await fetchUsername(); 
@@ -41,15 +109,80 @@ function FriendComponent({name, skills, github} : Props) {
 };
 
   return (
-    <div className='flex flex-col bg-slate-200 rounded-md p-2 items-center justify-center w-min mx-2 my-4'>
-        <text> {name} </text>
+
+    <div className='w-full h-full'>
+
+    {modal && (
+      <div className='modal z-50'>
+        <div className='overlay'></div>
+        <div className='modal-content flex flex-col justify-center'>
+          <div className='flex flex-col'>
+            {showProjects ? (
+              <>
+                <div className='flex flex-row w-full justify-start'>
+                  <button onClick={toggleShowProjects} className='flex justify-start'><FontAwesomeIcon icon={faArrowLeft}/></button><br></br>
+                </div>
+                <div className='overflow-y-auto max-h-96'>
+                <h2 className='flex justify-center font-bold'>Projects</h2><br></br>
+                {projects.map((project) => ( // Fixed this line
+                  <div key={project?.id}> {/* Fixed: was 'projects.id', changed to 'project.id' */}
+                    <p>Title: {project?.title} </p>{/* Removed optional chaining */}
+                    <p>Description: {project?.description} </p>{/* Removed optional chaining */}
+                    <p>Github URL: {project?.github_url} </p> <br></br>{/* Removed optional chaining */}
+                  </div>
+                ))}
+                </div>
+              </>
+            ) : (
+              <>
+                <button onClick={toggleModal} className='flex justify-start'><FontAwesomeIcon icon={faX}/></button><br></br>
+                <h2 className='flex justify-center'>{friendProfile?.full_name}</h2>
+                <div className='flex justify-center'><img src="./pfp.jpg" alt="Profile"/></div> {/* Added alt attribute */}
+                <p>Major: {friendProfile?.major}</p><br></br>
+                <p>Bio: {friendProfile?.bio}</p><br></br>
+                <p>Github: {friendProfile?.github_url} </p>
+                <span className='underline' style={{cursor:'pointer'}} onClick={toggleShowProjects}>View projects</span> {/* Changed from <text> to <span> */}
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    )}
+      
+      <div className='flex flex-col'>
+        <div className='flex flex-row border'>
+          <div style={{ flex: '0 0 auto', width: '50px', height: '50px', overflow: 'hidden' }}>
+              <img src="./pfp.jpg" alt='Profile picture' style={{ width: '100%', height: '100%', objectFit: 'cover' }}/>
+          </div>
+          <div className='flex flex-col p-2'>
+            <text className='hover:underline' style={{cursor: 'pointer'}} onClick={() => fetchFriendProfile()}> {name} </text>
+            <text className='text-xs whitespace-nowrap text-gray-500'> Skills: {skills} </text>
+            <text className='text-xs whitespace-nowrap text-gray-500'> Email: {github} </text>
+          </div>
+          <div className='w-full flex justify-end mr-2'>
+            <button className='text-xs hover:underline' onClick={() => handleRemoveFriend(name)}>Remove friend</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default FriendComponent 
+    /*
+<div className='flex flex-row'>
+       <div className='flex flex-col bg-slate-200 rounded-md p-2 items-center justify-center w-min mx-2 my-4'>
+        <text onClick={() => friendsProjects(name)}> {name} </text>
         <text> {skills} </text>
         <text> {github} </text>
         <div>
           <button onClick={() => handleRemoveFriend(name)} className='text-xs mt-4 p-1.5 bg-red-400 border rounded-lg '>Remove friend</button>
         </div>
     </div>
+    </div>
+    
   )
 }
 
 export default FriendComponent
+*/

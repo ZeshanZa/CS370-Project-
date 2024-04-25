@@ -18,6 +18,10 @@ from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from userProjects.serializers import UserProfileSerializer
+from rest_framework.permissions import AllowAny
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 
 
@@ -316,4 +320,44 @@ class DetailedFriendListView(generics.ListAPIView):
             friend_ids.add(relation.friend1.id if relation.friend1 != user else relation.friend2.id)
 
         return get_user_model().objects.filter(id__in=friend_ids)
+    
+class FriendUserProfileView(generics.RetrieveAPIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = [AllowAny]
+
+    def get_object(self):
+        other_username = self.kwargs.get('username')
+        other_user = get_object_or_404(User, username=other_username)
+
+        return other_user.userprofile  # Assuming a related_name 'userprofile' on UserProfile model
+
+class NonFriendsList(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # Get current user
+        current_user = request.user
+
+        # Find all friends of the current user (both friend1 and friend2 relations)
+        friends = Friend.objects.filter(
+            models.Q(friend1=current_user) | models.Q(friend2=current_user)
+        )
+
+        # Extract user IDs of friends
+        friend_ids = set()
+        for friend in friends:
+            if friend.friend1 == current_user:
+                friend_ids.add(friend.friend2.id)
+            else:
+                friend_ids.add(friend.friend1.id)
+
+        # Get all users who are not friends with the current user
+        non_friends = User.objects.exclude(id__in=friend_ids)
+
+        # Prepare a list of usernames
+        usernames = [user.username for user in non_friends]
+
+        return Response(data=usernames)
+    
+
 
