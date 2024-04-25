@@ -1,15 +1,24 @@
-"use client"
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Box, Typography, Avatar, IconButton, Menu, MenuItem, Divider, Drawer } from '@mui/material';
-import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useRouter } from 'next/navigation';
-import Marquee from 'react-fast-marquee'
-import Layout from '../Layouts/Layout';
+"use client";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import {
+  Box,
+  Typography,
+  Avatar,
+  IconButton,
+  Menu,
+  MenuItem,
+  Divider,
+  Drawer,
+} from "@mui/material";
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useRouter } from "next/navigation";
+import Marquee from "react-fast-marquee";
+import Layout from "../Layouts/Layout";
 function ProjectsPage() {
-    /*const router = useRouter();
+  /*const router = useRouter();
     const [ProfileDrawer, setProfileDrawer] = useState(false);
     const [NotificationsDrawer, setNotificationsDrawer] = useState(false);
 
@@ -45,17 +54,47 @@ function ProjectsPage() {
         fetchProfileData();
     }, []);*/
 
-    // Define team members here or load them from an API or external source
-    const teamMembers = [
-        { name: "Zeshan Zahid", role: "Developer", image: "/images/zeshan.jpg", Major: "Placeholder Major" },
-        { name: "Artem Linde", role: "Developer", image: "/images/artem.jpg", Major: "ECON + CS" },
-        { name: "Michael Abebe", role: "Developer", image: "/images/michael.jpg", Major: "ECON/CS + Math Minor" },
-        { name: "Esme Richardson", role: "Developer", image: "/images/esme.jpg", Major: "CS" },
-        { name: "Elijah Ting", role: "Developer", image: "/images/elijah.jpg", Major: "Placeholder Major" },
-        { name: "Nicole Zhou", role: "Developer", image: "/images/nicole.jpg", Major: "Placeholder Major" }
-    ];
+  // Define team members here or load them from an API or external source
+  const teamMembers = [
+    {
+      name: "Zeshan Zahid",
+      role: "Developer",
+      image: "/images/zeshan.jpg",
+      Major: "Placeholder Major",
+    },
+    {
+      name: "Artem Linde",
+      role: "Developer",
+      image: "/images/artem.jpg",
+      Major: "ECON + CS",
+    },
+    {
+      name: "Michael Abebe",
+      role: "Developer",
+      image: "/images/michael.jpg",
+      Major: "ECON/CS + Math Minor",
+    },
+    {
+      name: "Esme Richardson",
+      role: "Developer",
+      image: "/images/esme.jpg",
+      Major: "CS",
+    },
+    {
+      name: "Elijah Ting",
+      role: "Developer",
+      image: "/images/elijah.jpg",
+      Major: "Placeholder Major",
+    },
+    {
+      name: "Nicole Zhou",
+      role: "Developer",
+      image: "/images/nicole.jpg",
+      Major: "Business + CS",
+    },
+  ];
 
-    /*return (
+  /*return (
         <>
             <Drawer open={NotificationsDrawer} anchor='left' onClose={() => setNotificationsDrawer(false)}>
                 <Box width={350}>
@@ -259,9 +298,11 @@ function ProjectsPage() {
                         <button className='text-lg mx-3 hover:bg-slate-200 rounded-sm px-2 py-1 max-[750px]:mx-0 max-[750px]:text-md' onClick={() => { router.push("/aboutustest") }}> AboutUs </button>
                     </div>
                 </div>*/
-    //<div className='px-5 py-6'>
-    {/* <Typography variant="h3" className="text-center text-blue-600">Meet Our Team</Typography> */ }
-    /*<Box className="flex flex-wrap justify-center">
+  //<div className='px-5 py-6'>
+  {
+    /* <Typography variant="h3" className="text-center text-blue-600">Meet Our Team</Typography> */
+  }
+  /*<Box className="flex flex-wrap justify-center">
         {teamMembers.map(member => (
             <Box key={member.name} className="p-4 max-w-sm w-1/3">
                 <Avatar src={member.image} className="w-24 h-24 mx-auto" alt={`Image of ${member.name}`} />
@@ -272,24 +313,35 @@ function ProjectsPage() {
         ))}
     </Box>
 </div>*/
-    //</div>
-    //</>
-    //);
-    return (
-        <Layout>
-            <text className='text-3xl text-slate-600 max-[750px]:mb-2'> Meet Our Team </text>
-            <Box className="flex flex-wrap justify-center">
-                {teamMembers.map(member => (
-                    <Box key={member.name} className="p-4 max-w-sm w-1/3">
-                        <Avatar src={member.image} className="w-24 h-24 mx-auto" alt={`Image of ${member.name}`} />
-                        <Typography variant="h6" className="mt-2 text-center">{member.name}</Typography>
-                        <Typography className="text-center text-blue-400">{member.role}</Typography>
-                        <Typography className="text-center">{member.Major}</Typography>
-                    </Box>
-                ))}
-            </Box>
-        </Layout>
-    )
+  //</div>
+  //</>
+  //);
+  return (
+    <Layout>
+      <text className="text-3xl text-slate-600 max-[750px]:mb-2">
+        {" "}
+        Meet Our Team{" "}
+      </text>
+      <Box className="flex flex-wrap justify-center">
+        {teamMembers.map((member) => (
+          <Box key={member.name} className="p-4 max-w-sm w-1/3">
+            <Avatar
+              src={member.image}
+              className="w-24 h-24 mx-auto"
+              alt={`Image of ${member.name}`}
+            />
+            <Typography variant="h6" className="mt-2 text-center">
+              {member.name}
+            </Typography>
+            <Typography className="text-center text-blue-400">
+              {member.role}
+            </Typography>
+            <Typography className="text-center">{member.Major}</Typography>
+          </Box>
+        ))}
+      </Box>
+    </Layout>
+  );
 }
 
 export default ProjectsPage;
