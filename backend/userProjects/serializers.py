@@ -12,15 +12,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = '__all__'
-
-    def update(self, instance, validated_data):
-        # Correctly checking if 'contributors' is provided in the validated data
-        contributors = validated_data.pop('contributors', None)
-        if contributors is not None:
-            instance.contributors.set(contributors)
-        # Always call the superclass to save the instance and handle other fields
-        return super().update(instance, validated_data)
+        fields = ['user', 'title', 'description', 'github_url', 'contributors', 'created_at']
 
 
 
