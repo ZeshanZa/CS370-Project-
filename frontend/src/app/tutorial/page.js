@@ -11,6 +11,13 @@ const UserProfile = () => {
   const router = useRouter();
 
   useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      router.push("/");
+    }
+  }, [router]);
+
+  useEffect(() => {
     const fetchProfileData = async () => {
       const token = localStorage.getItem("access_token");
       try {
