@@ -1,284 +1,274 @@
-'use client'
+"use client";
 
-import { Box, Divider, Drawer, TextField } from '@mui/material'
-import React, { useState, useEffect } from 'react'
-import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined'
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
-import { useRouter } from 'next/navigation'
-import axios from 'axios';
-import Layout from '../Layouts/Layout'
+import { Box, Divider, Drawer, TextField } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import Layout from "../Layouts/Layout";
 
 function UpdateProfilePageComponent() {
-    const [ProfileDrawer, setProfileDrawer] = useState(false)
-    const [NotificationsDrawer, setNotificationsDrawer] = useState(false)
-    const router = useRouter()
+  const [ProfileDrawer, setProfileDrawer] = useState(false);
+  const [NotificationsDrawer, setNotificationsDrawer] = useState(false);
+  const router = useRouter();
+  const [isEditable, setIsEditable] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
-    const [profile, setProfile] = useState({
-        fullName: '',
-        major: '',
-        githubUrl: '',
-        bio: '',
-        user_id: null,
-    });
+  const toggleEdit = () => {
+    setIsEditable(!isEditable);
+  };
 
-    useEffect(() => {
-        const fetchProfileData = async () => { //Artem I believe for your drawer stuff you were showing you can copy and paste this into it 
-            const token = localStorage.getItem('access_token');
-            // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';
-            try {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/profile/`, {
-                    headers: {
-                        'Authorization': `Token ${token}`,
-                    },
-                });
-                setProfile({
-                    fullName: response.data.full_name || '',
-                    major: response.data.major || '',
-                    githubUrl: response.data.github_url || '',
-                    bio: response.data.bio || '',
-                    user_id: response.data.user || '',
-                });
-                console.log('Fetched user_id:', response.data.user);
-            } catch (error) {
-                console.error('Error fetching profile data:', error);
-            }
-        };
+  const [skillsLooking, setSkillsLooking] = useState({
+    Exp: [],
+    DB: [],
+    Lang: [],
+    Pers: [],
+  });
+  const [skillsHave, setSkillsHave] = useState({
+    Exp: [],
+    DB: [],
+    Lang: [],
+    Pers: [],
+  });
 
-        fetchProfileData();
-    }, []);
+  const [profile, setProfile] = useState({
+    fullName: "",
+    major: "",
+    githubUrl: "",
+    bio: "",
+    user_id: null,
+  });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setProfile(prevState => ({
-            ...prevState,
-            [name]: value,
-        }));
+  useEffect(() => {
+    const fetchUserSkills = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/skills/${profile.user_id}/get-complete-skills/`
+        );
+        const { acquired, search } = response.data;
+        setSkillsLooking(search);
+        setSkillsHave(acquired);
+      } catch (error) {
+        console.error("Error fetching user skills:", error);
+      }
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const token = localStorage.getItem('access_token');
-        // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';
+    if (profile.user_id) {
+      fetchUserSkills();
+    }
+  }, [profile.user_id]);
 
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/user/`, {
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      //Artem I believe for your drawer stuff you were showing you can copy and paste this into it
+      const token = localStorage.getItem("access_token");
+      // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/profile/`,
+          {
             headers: {
-                'Authorization': `Token ${token}`,
+              Authorization: `Token ${token}`,
             },
+          }
+        );
+        setProfile({
+          fullName: response.data.full_name || "",
+          major: response.data.major || "",
+          githubUrl: response.data.github_url || "",
+          bio: response.data.bio || "",
+          user_id: response.data.user || "",
         });
-
-        const userId = response.data.pk; // For this for some reason I had to make the assumption for userid for testing in django the rest framework atores as the pk value which is unique for each user I believe 
-
-        const payload = {
-            user: userId, // Include the user ID in the payload it needs it to make chnages 
-            full_name: profile.fullName,
-            major: profile.major,
-            github_url: profile.githubUrl,
-            bio: profile.bio,
-        };
-
-        try {
-            await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/profile/`, JSON.stringify(payload), {
-                headers: {
-                    'Authorization': `Token ${token}`,
-                    'Content-Type': 'application/json',
-                },
-            });
-            alert('Profile updated successfully');
-        } catch (error) {
-            console.error('Error updating profile:', error.response ? error.response.data : error);
-        }
+        console.log("Fetched user_id:", response.data.user);
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
     };
 
+    fetchProfileData();
+  }, []);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProfile((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const token = localStorage.getItem("access_token");
+    // const token = '8664926ffd6d5e7ab5fc623b8363d28a5a029be5';
+
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/user/`,
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      }
+    );
+
+    const userId = response.data.pk; // For this for some reason I had to make the assumption for userid for testing in django the rest framework atores as the pk value which is unique for each user I believe
+
+    const payload = {
+      user: userId, // Include the user ID in the payload it needs it to make chnages
+      full_name: profile.fullName,
+      major: profile.major,
+      github_url: profile.githubUrl,
+      bio: profile.bio,
+    };
+    if (submitted) {
+      try {
+        await axios.put(
+          `${process.env.NEXT_PUBLIC_API_URL}/profile/`,
+          JSON.stringify(payload),
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+              "Content-Type": "application/json",
+            },
+          },
+          alert("Profile updated successfully"),
+          setSubmitted(false)
+        );
+      } catch (error) {
+        console.error(
+          "Error updating profile:",
+          error.response ? error.response.data : error
+        );
+      }
+    }
+  };
+
+  const DisplaySkills = ({ title, skillsDict }) => {
     return (
-        <>
-            {/*<Drawer open={NotificationsDrawer} anchor='left' onClose={() => setNotificationsDrawer(false)}>
-      <Box width={350}>
-        <div className='h-[100dvh] p-2'>
-            <div className='w-full text-xl font-bold p-3 border-b-2 border-slate-900'>
-                Notifications
+      <div className="flex flex-col w-full md:w-1/2 p-4">
+        <h2 className="text-lg font-bold mb-2">{title}</h2>
+        <div className="flex flex-wrap">
+          {Object.entries(skillsDict).map(([category, skills]) => (
+            <div key={category} className="flex flex-col w-full md:w-1/2 p-2">
+              <h3 className="font-semibold">{category}</h3>
+              <ul className="list-none">
+                {skills.map((skill) => (
+                  <li
+                    key={skill}
+                    className="rounded p-1 my-3 flex ring-1 ring-gray-500/50"
+                  >
+                    {skill}
+                  </li>
+                ))}
+              </ul>
             </div>
-            <div className='w-full'>
-                <div className='w-full flex flex-row border-b-[1px] border-gray-400 p-2'>
-                    <div className='w-2/3 flex flex-col'>
-                        <text className='text-xl font-bold'>New message</text>
-                        <text className='break-words font-light'> Hi Brian, your skills match well fo my project on the... </text>
-                    </div>
-                    <div className='w-1/3 flex flex-col items-center'>
-                        <div className='w-16 h-16 flex justify-center items-center rounded-full text-sm'>
-                            <img src='https://www.svgrepo.com/show/382097/female-avatar-girl-face-woman-user-9.svg'/>
-                        </div>
-                        <text> Selene F. </text>
-                    </div>
-                </div>
-                <div className='w-full flex flex-col border-b-[1px] border-gray-400 p-2'>
-                    <text className='text-xl font-bold'>You matched!</text>
-                    <text className='font-light'>Your skills were a match for:</text>
-                    <text className='underline'>ClosedAI - TalkGPT</text>
-                </div>
-                <div className='w-full flex flex-col border-b-[1px] border-gray-400 p-2'>
-                    <text className='text-xl font-bold'>You matched!</text>
-                    <text className='font-light'>Your skills were a match for:</text>
-                    <text className='underline'>QuantumScribe: Neural Cryptography</text>
-                </div>
-                <div className='w-full flex flex-col border-b-[1px] border-gray-400 p-2'>
-                    <text className='text-xl font-bold'>You matched!</text>
-                    <text className='font-light'>Your skills were a match for:</text>
-                    <text className='underline'>CyberGuard: AI Security</text>
-                </div>
-                <div className='w-full flex flex-col border-b-[1px] border-gray-400 p-2'>
-                    <text className='text-xl font-bold'>You matched!</text>
-                    <text className='font-light'>Your skills were a match for:</text>
-                    <text className='underline'>LogicFlow: WorkFlowAI</text>
-                </div>
-                <div className='w-full flex flex-row border-b-[1px] border-gray-400 p-2'>
-                    <div className='w-2/3 flex flex-col'>
-                        <text className='text-xl font-bold'>New message</text>
-                        <text className='break-words font-light'> Hey Brian, thought u and me could make a great tea... </text>
-                    </div>
-                    <div className='w-1/3 flex flex-col items-center'>
-                        <div className='w-16 h-16 flex justify-center items-center rounded-full text-sm'>
-                            <img src='https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png'/>
-                        </div>
-                        <text> Matt J. </text>
-                    </div>
-                </div>
-                <div className='w-full flex flex-col border-b-[1px] border-gray-400 p-2'>
-                    <text className='text-xl font-bold'>You matched!</text>
-                    <text className='font-light'>Your skills were a match for:</text>
-                    <text className='underline'>NeuralCraft: GameAI</text>
-                </div>
-                <div className='w-full flex flex-col border-b-[1px] border-gray-400 p-2'>
-                    <text className='text-xl font-bold'>You matched!</text>
-                    <text className='font-light'>Your skills were a match for:</text>
-                    <text className='underline'>CodeHive: TeamCode</text>
-                </div>
-            </div>
+          ))}
         </div>
-      </Box>
-    </Drawer>
-    <Drawer open={ProfileDrawer} anchor='right' onClose={() => setProfileDrawer(false)}>
-      <Box width={350}>
-        <div className='p-2 h-[100dvh]'>   
-            <div className='w-full h-full rounded-lg px-4 flex flex-col'>
-                <div className='w-full items-center justify-center flex'>
-                    <div className='rounded-full items-center h-60 w-60 flex justify-center mt-10 text-white'>
-                        <img src='https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745'/>
-                    </div>
-                </div>
-                <div className='flex flex-col'>
-                    <text className='text-lg'>Brian S.</text>
-                    <text className='text-lg'>3rd Year computer science BA</text>
-                    <text className='text-sm font-light'>bsmith@emory.edu</text>
-                    <div className='flex flex-row'>
-                        <text> - </text>
-                        <text className='text-sm'> https://briansmith.github.io </text>
-                    </div>
-                    <div className='whitespace-pre-line p-1 bg-slate-100 font-md rounded-lg break-words'>
-                    Hello, my name is Brian, and I am a 3rd year computer science major at Emory. I enjoy making projects related to:
-Artificial intelligence, Natural Language Processing, and Data Science.
-                    </div>
-                    <div className='w-full mt-2 flex flex-row flex-wrap justify-around text-white'>
-                        <div className='rounded-full bg-slate-400 p-2 m-1 items-center'>
-                            JavaScript
-                        </div>
-                        <div className='rounded-full bg-slate-400 p-2 m-1 items-center'>
-                            Python
-                        </div>
-                        <div className='rounded-full bg-slate-400 p-2 m-1 items-center'>
-                            R
-                        </div>
-                        <div className='rounded-full bg-slate-400 p-2 m-1 items-center'>
-                            Ruby
-                        </div>
-                        <div className='rounded-full bg-slate-400 p-2 m-1 items-center'>
-                            PascalABC
-                        </div>
-                        <div className='rounded-full bg-slate-400 p-2 m-1 items-center'>
-                            TypeScipt
-                        </div>
-                        <div className='rounded-full bg-slate-400 p-2 m-1 items-center'>
-                            HRML
-                        </div>
-                        <div className='rounded-full bg-slate-400 p-2 m-1 items-center'>
-                            Java
-                        </div>
-                        <div className='rounded-full bg-slate-400 p-2 m-1 items-center'>
-                            CSS
-                        </div>
-                        <div className='rounded-full bg-slate-400 p-2 m-1 items-center'>
-                            Ocaml
-                        </div>
-                    </div>
-                    <div className="flex justify-center space-x-4 py-2">
-                        <a href="/mainpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Home</a>
-                        <a href="/matches" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Matches</a>
-                        <a href="/profile" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Profile</a>
-                        <a href="/setpage" className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200">Settings</a>
-                    </div>
-                </div>
-                <div className='flex flex-grow items-center justify-center'>
-                    <button className='bg-gray-300 py-1 w-full rounded-md text-slate-700 hover:bg-gray-500 hover:text-slate-200' onClick={() => router.push('/')}> Sign Out </button>
-                </div>
+      </div>
+    );
+  };
+
+  return (
+    <>
+      {}
+      <Layout>
+        <div className="flex">
+          <div className="flex-col">
+            <div className="flex flex-col md:flex-row w-full max-w-4xl">
+              <DisplaySkills title="Your Skills" skillsDict={skillsHave} />
+              <DisplaySkills
+                title="Skills You're Looking For"
+                skillsDict={skillsLooking}
+              />
             </div>
+            <button
+              type="btton"
+              className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 mx-4 rounded"
+              onClick={() => {
+                router.push("/skills");
+              }}
+            >
+              Edit Skills
+            </button>
+          </div>
+
+          <div className="flex flex-col bg-white shadow-lg rounded-lg p-6 ml-6 w-full max-w-lg">
+            <form className="w-full" onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <TextField
+                  label="Full Name"
+                  type="text"
+                  name="fullName"
+                  variant="outlined"
+                  value={profile.fullName}
+                  onChange={handleChange}
+                  fullWidth
+                  disabled={!isEditable}
+                />
+              </div>
+              <div className="mb-4">
+                <TextField
+                  label="Intended Major"
+                  type="text"
+                  name="major"
+                  variant="outlined"
+                  value={profile.major}
+                  onChange={handleChange}
+                  fullWidth
+                  disabled={!isEditable}
+                />
+              </div>
+              <div className="mb-4">
+                <TextField
+                  label="GitHub URL"
+                  type="text"
+                  name="githubUrl"
+                  variant="outlined"
+                  value={profile.githubUrl}
+                  onChange={handleChange}
+                  fullWidth
+                  disabled={!isEditable}
+                />
+              </div>
+              <div className="mb-4">
+                <TextField
+                  label="Bio"
+                  name="bio"
+                  variant="outlined"
+                  value={profile.bio}
+                  onChange={handleChange}
+                  multiline
+                  rows={4}
+                  fullWidth
+                  disabled={!isEditable}
+                />
+              </div>
+              <button
+                onClick={toggleEdit}
+                className="bg-gray-500 hover:bg-gray-700 text-white py-2 px-4 rounded"
+              >
+                {isEditable ? "Cancel" : "Edit"}
+              </button>
+              {isEditable && (
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 mx-4 rounded"
+                  onClick={setSubmitted}
+                >
+                  Save Changes
+                </button>
+              )}
+            </form>
+          </div>
         </div>
-      </Box>
-    </Drawer>
-    <div className='w-[100dvw] h-[100dvh] overflow-x-hidden'>
-        <div className='flex flex-row justify-between px-5 py-6 items-center'>
-            <text className='relative text-3xl'> <span className='text-blue-600'>Emory</span> <span className='text-blue-400'>Connect</span> </text>
-            <div className='flex flex-row text-slate-600 items-center'>
-            <div className='cursor-pointer' onClick={() => setNotificationsDrawer(true)}><NotificationsNoneOutlinedIcon style={{width: 30, height: 30}}/></div>
-                <div className='mx-2'/>
-                <div className='cursor-pointer' onClick={() => setProfileDrawer(true)}><AccountCircleOutlinedIcon style={{width: 30, height: 30}}/></div>
-            </div>
-        </div>
-        <Divider className='relative mb-5'/>
-        <text className='ml-5 text-3xl text-slate-800 font-semibold'> Profile </text>
-  <div className='ml-12 w-32 border-4 border-blue-400 rounded-full my-2'></div> */}
-            <Layout>
-                <div className='items-center flex justify-center h-4/5 w-full'>
-                    <div className='bg-gray-100 p-3 w-full max-w-[400px] text-center rounded-md max-[750px]:hidden'>
-                        <div className='w-full items-center justify-center flex'>
-                            <div className='rounded-full items-center h-60 w-60 flex justify-center mt-10 text-white'>
-                                <img src='https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745' />
-                            </div>
-                        </div>
-                        <div className='my-10'><text className='text-xl my-10 font-semibold'>{profile.fullName}</text></div>
-                    </div>
-                    <div className='bg-slate-800 h-4/5 mx-16 w-[1px] max-[750px]:hidden'></div>
-                    <div className='border-2 border-slate-200 rounded-2xl px-10 py-6 flex flex-col w-full max-w-[500px]'>
-                        <form className='flex flex-col w-full max-[750px]:items-center' onSubmit={handleSubmit}>
-                            <text className='text-l font-semibold mb-1 mt-4' > Full name </text>
-                            <span className='w-4/5'><TextField type="text" name="fullName" value={profile.fullName} onChange={handleChange} size='small' placeholder='name...' fullWidth /></span>
-                            <text className='text-l font-semibold mb-1 mt-4'> Intended Major </text>
-                            <span className='w-4/5'><TextField type="text" name="major" value={profile.major} onChange={handleChange} fullWidth /></span>
-                            <text className='text-l font-semibold mb-1 mt-4'> Github URL </text>
-                            <span className='w-4/5 mb-4'><TextField
-                                type="text"
-                                name="githubUrl"
-                                value={profile.githubUrl || ''} // Ensure the value is always defined
-                                onChange={handleChange}
-                                fullWidth
-                                minRows={3}
-                                placeholder='something about you...' />
-                            </span>
-                            <text className='text-l font-semibold mb-1 mt-4'> Bio </text>
-                            <span className='w-4/5'><TextField name="bio" value={profile.bio} onChange={handleChange} fullWidth multiline minRows={3} /></span>
-                            <button type="submit" className='bg-blue-400 text-white w-full max-w-[200px] rounded-md mt-8 p-1 hover:bg-blue-600'> Save Changes </button>
-                        </form>
-                        <div className='w-full mt-5 text-white items-center flex justify-center border-t-2 pt-2'>
-                            <button className='mt-2 bg-blue-400 rounded-lg p-2 w-max' onClick={() => router.push('/skills')}> Go to Skills page </button>
-                        </div>
-                    </div>
-                </div>
-            </Layout>
-        </>
-    )
+      </Layout>
+    </>
+  );
 }
 
-export default UpdateProfilePageComponent
-
+export default UpdateProfilePageComponent;
 
 /*
 
