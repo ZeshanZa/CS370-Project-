@@ -42,6 +42,13 @@ function UpdateProfilePageComponent() {
   });
 
   useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      router.push("/");
+    }
+  }, [router]);
+
+  useEffect(() => {
     const fetchUserSkills = async () => {
       try {
         const response = await axios.get(
@@ -223,7 +230,7 @@ function UpdateProfilePageComponent() {
               </div>
               <div className="mb-4">
                 <TextField
-                  label="GitHub URL"
+                  label="GitHub URL ! Must include https://"
                   type="text"
                   name="githubUrl"
                   variant="outlined"
