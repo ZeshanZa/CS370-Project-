@@ -157,38 +157,29 @@ function Page() {
   //     updateSkillsOnServer(category, newSkills, type);
   // };
 
-  const handleRemoveSkill = (category, type) => {
-    const skillToRemove = selectedSkill[category];
-    if (!skillToRemove) return; // No skill selected or found
+  const handleRemoveSkill = (category, type, skillToRemove) => {
+    const targetList = type === "acquired" ? skillsHave : skillsLooking;
+    const updatedSkills = targetList[category].filter(
+      (s) => s !== skillToRemove
+    );
 
-    const currentSkills =
-      type === "acquired" ? skillsHave[category] : skillsLooking[category];
-    const newSkills = currentSkills.filter((skill) => skill !== skillToRemove);
-
-    updateSkillsOnServer(category, newSkills, type)
+    updateSkillsOnServer(category, updatedSkills, type)
       .then(() => {
         const updateFn = type === "acquired" ? setSkillsHave : setSkillsLooking;
-        updateFn((prev) => ({ ...prev, [category]: newSkills }));
+        updateFn((prev) => ({ ...prev, [category]: updatedSkills }));
       })
       .catch((error) => {
-        console.log("Failed to update skills:", error);
-        alert("Failed to update skills.");
+        console.error("Failed to remove skills:", error);
+        alert("Failed to remove skills.");
       });
   };
-
   const updateSkillsOnServer = async (category, newSkills, type) => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}/skills/${profile.user_id}/${type}/${category}/update-skills/`;
     try {
       await axios.post(url, { new_skills: newSkills });
-      // Update local state to reflect changes
-      if (type === "acquired") {
-        setSkillsHave((prev) => ({ ...prev, [category]: newSkills }));
-      } else {
-        setSkillsLooking((prev) => ({ ...prev, [category]: newSkills }));
-      }
-      console.log(`Updated ${type} skills for ${category}:`, newSkills);
     } catch (error) {
-      console.error("Error updating skills:", error);
+      console.error("Error updating skills on server:", error);
+      throw error;
     }
   };
 
@@ -225,21 +216,30 @@ function Page() {
       </Layout>
     )*/
 
-  const DisplaySkills = ({ title, skillsDict }) => {
+  const DisplaySkills = ({ title, skillsDict, onRemove, type }) => {
     return (
       <div className="flex flex-col w-full md:w-1/2 p-4">
         <h2 className="text-lg font-bold mb-2">{title}</h2>
         <div className="flex flex-wrap">
           {Object.entries(skillsDict).map(([category, skills]) => (
-            <div key={category} className="flex flex-col w-full md:w-1/2 p-2">
+            <div
+              key={category}
+              className="flex flex-col w-full md:w-1/2 p-2 overflow-y-scroll h-60"
+            >
               <h3 className="font-semibold">{category}</h3>
               <ul className="list-none">
                 {skills.map((skill) => (
                   <li
                     key={skill}
-                    className="rounded p-1 my-3 flex ring-1 ring-gray-500/50"
+                    className="rounded justify-between p-1 my-3 flex ring-1 ring-gray-500/50  overflow-hidden "
                   >
                     {skill}
+                    <button
+                      onClick={() => onRemove(category, type, skill)}
+                      className=" no-underline text-gray-400 rounded-full mr-4 w-5  "
+                    >
+                      x
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -257,13 +257,20 @@ function Page() {
 
   return (
     <Layout>
-      <div className="md:flex space-x-9 m">
+      <div className="md:flex space-x-9 m justify-center">
         <div className="flex-col">
-          <div className="flex flex-col md:flex-row w-full max-w-4xl shadow-lg rounded-lg ">
-            <DisplaySkills title="Your Skills" skillsDict={skillsHave} />
+          <div className="flex flex-col md:flex-row w-full max-w-4xl shadow-lg rounded-lg">
             <DisplaySkills
-              title="Skills You're Looking For"
+              title="Skills I Have"
+              skillsDict={skillsHave}
+              onRemove={handleRemoveSkill}
+              type="acquired"
+            />
+            <DisplaySkills
+              title="Skills I'm Looking For"
               skillsDict={skillsLooking}
+              onRemove={handleRemoveSkill}
+              type="search"
             />
           </div>
           <button
@@ -276,7 +283,7 @@ function Page() {
             Return to Profile
           </button>
         </div>
-        <div className="flex-col">
+        <div className="flex-col justify-center">
           {categories.map((category) => (
             <div key={category}>
               <h3>{category}</h3>
@@ -298,7 +305,7 @@ function Page() {
                 <Button
                   onClick={() => {
                     handleAddSkill(category, "acquired");
-                    location.reload;
+                    window.location.reload();
                   }}
                   color="primary"
                 >
@@ -306,30 +313,12 @@ function Page() {
                 </Button>
                 <Button
                   onClick={() => {
-                    handleRemoveSkill(category, "acquired");
-                    location.reload;
-                  }}
-                  color="secondary"
-                >
-                  Remove from Your Skills
-                </Button>
-                <Button
-                  onClick={() => {
                     handleAddSkill(category, "search");
-                    location.reload;
+                    window.location.reload();
                   }}
                   color="primary"
                 >
-                  Add to Searching
-                </Button>
-                <Button
-                  onClick={() => {
-                    handleRemoveSkill(category, "search");
-                    location.reload;
-                  }}
-                  color="secondary"
-                >
-                  Remove from Searching
+                  Add to Looking
                 </Button>
               </div>
             </div>
