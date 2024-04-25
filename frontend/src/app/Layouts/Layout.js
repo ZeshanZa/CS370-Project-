@@ -22,6 +22,11 @@ function Layout({ children }) {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    router.push("/");
+  };
+
   const [profile, setProfile] = useState({
     fullName: "",
     major: "",
@@ -162,85 +167,28 @@ function Layout({ children }) {
       >
         <Box width={350}>
           <div className="p-2 h-[100dvh]">
-            <div className="w-full h-full rounded-lg px-4 flex flex-col">
+            <div className="w-full h-full rounded-lg px-4 flex flex-col space-y-8 text-center">
               <div className="w-full items-center justify-center flex">
-                <div className="rounded-full items-center h-60 w-60 flex justify-center mt-10 text-white">
+                <div className="rounded-full items-center h-60 w-60 flex justify-center mt-10">
                   <img src="https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745" />
                 </div>
               </div>
-              <div className="flex flex-col">
-                <h2 className="text-lg font-bold mb-2">{profile.fullName}</h2>
-                <p className="text-md mb-1">{profile.major}</p>
-                <a
-                  href={profile.githubUrl}
-                  className="text-sm text-blue-500 mb-2"
-                >
+              <div className="flex-col justify-center ">
+                <h2 className="text-2xl font-bold mb-2">{profile.fullName}</h2>
+                <p className="text-lg ">Intended Major: {profile.major}</p>
+                <p className="text-sm p-3 rounded text-lg">
                   {profile.githubUrl}
-                </a>
-                <p className="text-sm bg-gray-200 p-3 rounded">{profile.bio}</p>
-                <div className="w-full mt-2 flex flex-row flex-wrap justify-around text-white">
-                  <div className="rounded-full bg-slate-400 p-2 m-1 items-center">
-                    JavaScript
-                  </div>
-                  <div className="rounded-full bg-slate-400 p-2 m-1 items-center">
-                    Python
-                  </div>
-                  <div className="rounded-full bg-slate-400 p-2 m-1 items-center">
-                    R
-                  </div>
-                  <div className="rounded-full bg-slate-400 p-2 m-1 items-center">
-                    Ruby
-                  </div>
-                  <div className="rounded-full bg-slate-400 p-2 m-1 items-center">
-                    PascalABC
-                  </div>
-                  <div className="rounded-full bg-slate-400 p-2 m-1 items-center">
-                    TypeScipt
-                  </div>
-                  <div className="rounded-full bg-slate-400 p-2 m-1 items-center">
-                    HRML
-                  </div>
-                  <div className="rounded-full bg-slate-400 p-2 m-1 items-center">
-                    Java
-                  </div>
-                  <div className="rounded-full bg-slate-400 p-2 m-1 items-center">
-                    CSS
-                  </div>
-                  <div className="rounded-full bg-slate-400 p-2 m-1 items-center">
-                    Ocaml
-                  </div>
-                </div>
-                <div className="flex justify-center space-x-4 py-2">
-                  <a
-                    href="/mainpage"
-                    className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200"
-                  >
-                    Home
-                  </a>
-                  <a
-                    href="/matching"
-                    className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200"
-                  >
-                    Matches
-                  </a>
-                  <a
-                    href="/profile"
-                    className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200"
-                  >
-                    Profile
-                  </a>
-                  <a
-                    href="/setpage"
-                    className="block p-2 text-center text-gray-900 rounded hover:bg-gray-200"
-                  >
-                    Settings
-                  </a>
-                </div>
+                </p>
+                <p className="text-sm p-3 rounded text-lg">
+                  Bio: {profile.bio}
+                </p>
+                <div className="w-full mt-2 flex flex-row flex-wrap justify-around text-white"></div>
+                <div className="flex justify-center space-x-4 py-2"></div>
               </div>
               <div className="flex flex-grow items-center justify-center">
                 <button
-                  className="bg-gray-300 py-1 w-full rounded-md text-slate-700 hover:bg-gray-500 hover:text-slate-200"
-                  onClick={() => router.push("/")}
+                  className="bg-gray-300 py-1 w-full rounded-md text-slate-700 hover:bg-gray-500 hover:text-slate-200 text-base"
+                  onClick={handleLogout}
                 >
                   {" "}
                   Sign Out{" "}
