@@ -134,7 +134,8 @@ function UpdateProfilePageComponent() {
             },
           },
           alert("Profile updated successfully"),
-          setSubmitted(false)
+          setSubmitted(false),
+          setIsEditable(false)
         );
       } catch (error) {
         console.error(
@@ -176,7 +177,7 @@ function UpdateProfilePageComponent() {
       <Layout>
         <div className="flex">
           <div className="flex-col">
-            <div className="flex flex-col md:flex-row w-full max-w-4xl">
+            <div className="flex flex-col md:flex-row w-full max-w-4xl shadow-lg rounded-lg ">
               <DisplaySkills title="Your Skills" skillsDict={skillsHave} />
               <DisplaySkills
                 title="Skills You're Looking For"
@@ -185,7 +186,7 @@ function UpdateProfilePageComponent() {
             </div>
             <button
               type="btton"
-              className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 mx-4 rounded"
+              className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 mx-4 mt-4 rounded"
               onClick={() => {
                 router.push("/skills");
               }}
