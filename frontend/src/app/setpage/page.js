@@ -2,12 +2,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Layout from "../Layouts/Layout";
+import { useRouter } from "next/navigation";
 
 const ChangePasswordForm = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [username, setUsername] = useState(""); // State for storing username
   const [email, setEmail] = useState(""); // State for storing email
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      router.push("/");
+    }
+  }, [router]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -80,7 +89,7 @@ const ChangePasswordForm = () => {
       </text>
       <div className="ml-12 w-32 border-4 border-blue-400 rounded-full my-2"></div>
       <div className="flex w-full flex-col items-center justify-start min-h-screen bg-white-A700 pt-5 md:pt-2">
-        <div className="flex w-[80%] max-w-[600px] flex-col items-center gap-[10px] self-center rounded-[20px] border-2 border-solid border-gray-300 bg-white-A700 p-[30px] ">
+        <div className="flex w-[80%] max-w-[600px] flex-col items-center gap-[10px] self-center rounded-[20px] shadow-lg rounded-lg bg-white-A700 p-[30px] ">
           <div className="p-[20px] m-5 w-full">
             <form onSubmit={handlePasswordChange}>
               <div className="mb-4">
@@ -122,7 +131,6 @@ const ChangePasswordForm = () => {
                 Save Changes
               </button>
             </form>
-
           </div>
         </div>
       </div>
