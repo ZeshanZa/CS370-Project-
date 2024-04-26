@@ -58,9 +58,9 @@ function ProjectsPage() {
   const teamMembers = [
     {
       name: "Zeshan Zahid",
-      role: "Developer",
+      role: "Developer Scrum Master",
       image: "/images/zeshan.jpg",
-      Major: "Placeholder Major",
+      Major: "Computer Science",
     },
     {
       name: "Artem Linde",
