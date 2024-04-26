@@ -19,9 +19,11 @@ function ProjectsPage() {
   const [showAddProjectForm, setShowAddProjectForm] = useState(false);
   const [newProjectTitle, setNewProjectTitle] = useState("");
   const [newProjectDescription, setNewProjectDescription] = useState("");
+  const [newProjectGitHub, setNewProjectGitHub] = useState("");
   const [editingProjectId, setEditingProjectId] = useState(null); //Use state has to be set null
   const [editTitle, setEditTitle] = useState("");
   const [editDescription, setEditDescription] = useState("");
+  const [editGitHub, setEditGitHub] = useState("");
   const [ProfileDrawer, setProfileDrawer] = useState(false);
   const [NotificationsDrawer, setNotificationsDrawer] = useState(false);
 
@@ -213,8 +215,11 @@ function ProjectsPage() {
     e.preventDefault();
     const token = localStorage.getItem("access_token"); //Maybe we should find another way to store token
     const projectData = {
+      user: profile.user_id,
       title: newProjectTitle,
       description: newProjectDescription,
+      github_url: newProjectGitHub,
+      contributors: [],
     };
 
     try {
@@ -231,6 +236,7 @@ function ProjectsPage() {
       );
       setNewProjectTitle("");
       setNewProjectDescription("");
+      setNewProjectGitHub("");
       setShowAddProjectForm(false); // Hide the form upon successful submission
       if (typeof window !== "undefined") {
         // Safe to use window here
@@ -239,6 +245,8 @@ function ProjectsPage() {
       // Force reload the page for some reason it wont reload when I fetch them but this way works same for editing
     } catch (error) {
       console.error("Error adding project:", error);
+      if (error.response.data.github_url)
+        alert(error.response.data.github_url)
     }
   };
 
@@ -272,6 +280,7 @@ function ProjectsPage() {
     setEditingProjectId(project.id);
     setEditTitle(project.title);
     setEditDescription(project.description);
+    setEditGitHub(project.github_url);
     setShowAddProjectForm(true); // Assuming you use the same form for add/edit, show it.
   };
 
@@ -280,6 +289,7 @@ function ProjectsPage() {
     setEditingProjectId(null);
     setEditTitle("");
     setEditDescription("");
+    setEditGitHub("");
     setShowAddProjectForm(false); // Hide the form.
   };
 
@@ -291,8 +301,11 @@ function ProjectsPage() {
       await axios.put(
         `${process.env.NEXT_PUBLIC_API_URL}/projects/${editingProjectId}/`,
         {
+          user: profile.user_id,
           title: editTitle,
           description: editDescription,
+          github_url: editGitHub,
+          contributors: [],
         },
         {
           headers: {
@@ -631,6 +644,17 @@ function ProjectsPage() {
                           }
                           className="mb-2 p-2 rounded border border-gray-300 w-full"
                         ></textarea>
+                        <input
+                          type="text"
+                          placeholder="GitHub"
+                          value={editingProjectId ? editGitHub : newProjectGitHub}
+                          onChange={(e) =>
+                            editingProjectId
+                              ? setEditGitHub(e.target.value)
+                              : setNewProjectGitHub(e.target.value)
+                          }
+                          className="mb-2 p-2 rounded border border-gray-300 w-full"
+                        />
                         <button
                           type="submit"
                           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
@@ -666,8 +690,8 @@ function ProjectsPage() {
                           ProjectComponent(
                             project.title,
                             project.description,
-                            "https://github.com/username/secure-file-sharing-system",
-                            "https://i.ytimg.com/vi/gYrpk8ntc94/maxresdefault.jpg",
+                            project.github_url,
+                            "https://s1.significados.com/foto/software-og.jpg",
                             project
                           )
                         )}
