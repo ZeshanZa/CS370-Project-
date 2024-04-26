@@ -128,6 +128,9 @@ function Profile({ profile }) {
       <text className="w-full my-2 px-2">
         Personal: {profile.skills.Pers.join(", ")}
       </text>
+      {profile.matchedSkills ? <text className="w-full my-2 px-2 font-bold">
+        Matched Skills: {profile.matchedSkills.join(", ")}
+      </text> : <text className="w-full my-2 px-2 font-bold"> No skills matched</text>}
       {/*<text className="w-full px-2">Interested in: {profile.interests.join(", ")}</text>*/}
       <div className="flex flex-row justify-center w-full px-6 my-2">
         <button
