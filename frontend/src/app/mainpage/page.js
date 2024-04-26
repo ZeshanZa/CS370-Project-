@@ -46,7 +46,21 @@ function ProjectsPage() {
         <img alt="image" src={isrc} className="rounded-xl mb-1 relative" />
         <div className="flex flex-row justify-between font-bold text-xl">
           <text> {title} </text>
-          <IconButton
+          <div>
+            <button onClick={() => {
+                handleEditProject(project);
+                setAnchorEl(null);
+              }} className="mr-2 bg-blue-400 rounded-md text-white font-semibold py-1 px-2 hover:bg-blue-600">
+              Edit
+            </button>
+            <button onClick={() => {
+                handleDeleteProject(project.id);
+                setAnchorEl(null);
+              }} className="bg-blue-400 rounded-md text-white font-semibold py-1 px-2 hover:bg-blue-600">
+              Delete
+            </button>
+          </div>
+          {/*<IconButton
             id="options-button"
             aria-controls={open ? "options-menu" : undefined}
             aria-haspopup="true"
@@ -84,7 +98,7 @@ function ProjectsPage() {
             >
               {<text>Delete</text>}
             </MenuItem>
-          </Menu>
+            </Menu> -- comented out untill fixed*/}
         </div>
         <text className="font-light text-sm whitespace-pre-line break-words">
           {" "}
