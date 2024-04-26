@@ -12,7 +12,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ['user', 'title', 'description', 'github_url', 'contributors', 'created_at']
+        fields = ['id', 'title', 'description', 'github_url', 'contributors', 'created_at']
 
 
 
