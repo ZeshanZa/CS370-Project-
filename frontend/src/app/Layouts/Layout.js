@@ -286,14 +286,14 @@ function Layout({ children }) {
             {url == "https://ecsconnectbackend.com:8000/mainpage"
               ? "Your Projects"
               : url == "https://ecsconnectbackend.com:8000/startMatching"
-              ? "Matching"
-              : url == "https://ecsconnectbackend.com:8000/friendsList"
-              ? "Friends"
-              : url == "https://ecsconnectbackend.com:8000/profile"
-              ? "Profile"
-              : url == "https://ecsconnectbackend.com:8000/setpage"
-              ? "Settings"
-              : ""}{" "}
+                ? "Matching"
+                : url == "https://ecsconnectbackend.com:8000/friendsList"
+                  ? "Friends"
+                  : url == "https://ecsconnectbackend.com:8000/profile"
+                    ? "Profile"
+                    : url == "https://ecsconnectbackend.com:8000/setpage"
+                      ? "Settings"
+                      : ""}{" "}
           </text>
           <div className="max-[750px]:justify-around flex max-[750px]:w-full">
             <button

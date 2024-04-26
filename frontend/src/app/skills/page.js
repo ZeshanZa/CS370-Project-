@@ -138,8 +138,7 @@ function Page() {
     if (currentSkills.includes(skillToAdd)) {
       console.log("Skill already exists:", skillToAdd);
       alert(
-        `The skill '${skillToAdd}' is already in your ${
-          type === "acquired" ? "Acquired" : "Searching"
+        `The skill '${skillToAdd}' is already in your ${type === "acquired" ? "Acquired" : "Searching"
         } list.`
       );
       return; // Exit the function if the skill is already present

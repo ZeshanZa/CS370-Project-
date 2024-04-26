@@ -326,15 +326,15 @@ const StartMatchingPageComponent = () => {
           user1.skills = targetSkills.data.acquired;
           user1.matchedSkills = matchedSkills
           user1.pscore =
-            (bestscore1 * 2) /
-            (targetSkills.data.acquired.DB.length +
-              targetSkills.data.acquired.Exp.length +
-              targetSkills.data.acquired.Lang.length +
-              targetSkills.data.acquired.Pers.length +
-              myskills.data.acquired.DB.length +
-              myskills.data.acquired.Exp.length +
-              myskills.data.acquired.Lang.length +
-              myskills.data.acquired.Pers.length);
+            (bestscore1) /
+            (targetSkills.data.search.DB.length +
+              targetSkills.data.search.Exp.length +
+              targetSkills.data.search.Lang.length +
+              targetSkills.data.search.Pers.length +
+              myskills.data.search.DB.length +
+              myskills.data.search.Exp.length +
+              myskills.data.search.Lang.length +
+              myskills.data.search.Pers.length);
         } else if (score > bestscore2) {
           bestscore2 = score;
           user3 = user2;
@@ -343,15 +343,15 @@ const StartMatchingPageComponent = () => {
           user2.skills = targetSkills.data.acquired;
           user2.matchedSkills = matchedSkills
           user2.pscore =
-            (bestscore1 * 2) /
-            (targetSkills.data.acquired.DB.length +
-              targetSkills.data.acquired.Exp.length +
-              targetSkills.data.acquired.Lang.length +
-              targetSkills.data.acquired.Pers.length +
-              myskills.data.acquired.DB.length +
-              myskills.data.acquired.Exp.length +
-              myskills.data.acquired.Lang.length +
-              myskills.data.acquired.Pers.length);
+            (bestscore2) /
+            (targetSkills.data.search.DB.length +
+              targetSkills.data.search.Exp.length +
+              targetSkills.data.search.Lang.length +
+              targetSkills.data.search.Pers.length +
+              myskills.data.search.DB.length +
+              myskills.data.search.Exp.length +
+              myskills.data.search.Lang.length +
+              myskills.data.search.Pers.length);
         } else if (score > bestscore3) {
           bestscore3 = score;
           user3 = profiles[i];
@@ -359,15 +359,15 @@ const StartMatchingPageComponent = () => {
           user3.skills = targetSkills.data.acquired;
           user3.matchedSkills = matchedSkills
           user3.pscore =
-            (bestscore1 * 2) /
-            (targetSkills.data.acquired.DB.length +
-              targetSkills.data.acquired.Exp.length +
-              targetSkills.data.acquired.Lang.length +
-              targetSkills.data.acquired.Pers.length +
-              myskills.data.acquired.DB.length +
-              myskills.data.acquired.Exp.length +
-              myskills.data.acquired.Lang.length +
-              myskills.data.acquired.Pers.length);
+            (bestscore3) /
+            (targetSkills.data.search.DB.length +
+              targetSkills.data.search.Exp.length +
+              targetSkills.data.search.Lang.length +
+              targetSkills.data.search.Pers.length +
+              myskills.data.search.DB.length +
+              myskills.data.search.Exp.length +
+              myskills.data.search.Lang.length +
+              myskills.data.search.Pers.length);
         }
       }
       //END OF MATCHING ALGORYTHM
