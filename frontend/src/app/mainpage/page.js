@@ -319,7 +319,7 @@ function ProjectsPage() {
           title: editTitle,
           description: editDescription,
           github_url: editGitHub,
-          contributors: [],
+          contributors: [], //format - id of contributors
         },
         {
           headers: {
@@ -446,10 +446,10 @@ function ProjectsPage() {
               <div className="flex-col justify-center ">
                 <h2 className="text-2xl font-bold mb-2">{profile.fullName}</h2>
                 <p className="text-lg ">Intended Major: {profile.major}</p>
-                <p className="text-sm p-3 rounded text-lg">
-                  {profile.githubUrl}
+                <p className="p-3 rounded text-lg">
+                  Git Hub: {profile.githubUrl}
                 </p>
-                <p className="text-sm p-3 rounded text-lg">
+                <p className="p-3 rounded text-lg">
                   Bio: {profile.bio}
                 </p>
                 <div className="w-full mt-2 flex flex-row flex-wrap justify-around text-white"></div>
