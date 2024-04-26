@@ -98,6 +98,7 @@ const StartMatchingPageComponent = () => {
         interests: ["Web Development", "Machine Learning"],
         imageUrl: "https://via.placeholder.com/150",
         matchscore: -1,
+        matchedSkills: [],
       }));
 
       //const skillsIhave = ["Python", "Java", "Css", "HTML"]
@@ -174,6 +175,7 @@ const StartMatchingPageComponent = () => {
         //3.1 - we looks through skills they want | we have 4 arrays of skills we want and 4 arrays of skills we have, same for them
         //console.log(myskills.data.acquired.DB)
         //console.log(targetSkills.data.search.DB)
+        var matchedSkills = []
         for (let ime = 0; ime < myskills.data.acquired.DB.length; ime++) {
           for (
             let ithem = 0;
@@ -184,6 +186,7 @@ const StartMatchingPageComponent = () => {
               myskills.data.acquired.DB[ime] ==
               targetSkills.data.search.DB[ithem]
             ) {
+              matchedSkills.push(myskills.data.acquired.DB[ime])
               score += 1;
               //console.log(myskills.data.acquired.DB[ime], targetSkills.data.search.DB[ithem])
             }
@@ -199,6 +202,7 @@ const StartMatchingPageComponent = () => {
               myskills.data.acquired.Exp[ime] ==
               targetSkills.data.search.Exp[ithem]
             ) {
+              matchedSkills.push(myskills.data.acquired.Exp[ime])
               score += 1;
             }
           }
@@ -213,6 +217,7 @@ const StartMatchingPageComponent = () => {
               myskills.data.acquired.Lang[ime] ==
               targetSkills.data.search.Lang[ithem]
             ) {
+              matchedSkills.push(myskills.data.acquired.Lang[ime])
               score += 1;
               //console.log(myskills.data.acquired.Lang[ime], targetSkills.data.search.Lang[ithem])
             }
@@ -228,6 +233,7 @@ const StartMatchingPageComponent = () => {
               myskills.data.acquired.Pers[ime] ==
               targetSkills.data.search.Pers[ithem]
             ) {
+              matchedSkills.push(myskills.data.acquired.Pers[ime])
               score += 1;
             }
           }
@@ -245,6 +251,7 @@ const StartMatchingPageComponent = () => {
               myskills.data.search.DB[ime] ==
               targetSkills.data.acquired.DB[ithem]
             ) {
+              matchedSkills.push(myskills.data.search.DB[ime])
               score += 1;
               //console.log(myskills.data.search.DB[ime], targetSkills.data.acquired.DB[ithem])
             }
@@ -260,6 +267,7 @@ const StartMatchingPageComponent = () => {
               myskills.data.search.Exp[ime] ==
               targetSkills.data.acquired.Exp[ithem]
             ) {
+              matchedSkills.push(myskills.data.search.Exp[ime])
               score += 1;
             }
           }
@@ -274,6 +282,7 @@ const StartMatchingPageComponent = () => {
               myskills.data.search.Lang[ime] ==
               targetSkills.data.acquired.Lang[ithem]
             ) {
+              matchedSkills.push(myskills.data.search.Lang[ime])
               score += 1;
               //console.log(myskills.data.search.Lang[ime], targetSkills.data.acquired.Lang[ithem])
             }
@@ -289,6 +298,7 @@ const StartMatchingPageComponent = () => {
               myskills.data.search.Pers[ime] ==
               targetSkills.data.acquired.Pers[ithem]
             ) {
+              matchedSkills.push(myskills.data.search.Pers[ime])
               score += 1;
             }
           }
@@ -307,6 +317,7 @@ const StartMatchingPageComponent = () => {
           user1 = profiles[i];
           user1.matchscore = bestscore1;
           user1.skills = targetSkills.data.acquired;
+          user1.matchedSkills = matchedSkills
           user1.pscore =
             (bestscore1 * 2) /
             (targetSkills.data.acquired.DB.length +
@@ -323,6 +334,7 @@ const StartMatchingPageComponent = () => {
           user2 = profiles[i];
           user2.matchscore = bestscore2;
           user2.skills = targetSkills.data.acquired;
+          user2.matchedSkills = matchedSkills
           user2.pscore =
             (bestscore1 * 2) /
             (targetSkills.data.acquired.DB.length +
@@ -338,6 +350,7 @@ const StartMatchingPageComponent = () => {
           user3 = profiles[i];
           user3.matchscore = bestscore3;
           user3.skills = targetSkills.data.acquired;
+          user3.matchedSkills = matchedSkills
           user3.pscore =
             (bestscore1 * 2) /
             (targetSkills.data.acquired.DB.length +
