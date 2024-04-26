@@ -1,7 +1,7 @@
 from rest_framework import generics, permissions
  # Assuming User is the Django auth user model
 from .models import Project, UserProfile, Match, UserProfile, User
-from .serializers import ProjectSerializer, UserProfileSerializer
+from .serializers import ProjectSerializer, UserProfileSerializer, UserListSerializer
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -15,6 +15,7 @@ from django.core.exceptions import PermissionDenied
 from django.db import models
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.contrib.auth import get_user_model
 
 def list_pending_requests(request):
     # Assuming 'user1' is the one who sends the request and 'user2' is the recipient
@@ -151,3 +152,10 @@ class friendProjectView(APIView):
         projects = Project.objects.filter(user=user)
         serializer = ProjectSerializer(projects, many=True)
         return Response(serializer.data)
+
+
+User = get_user_model()
+
+class UserListView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserListSerializer
