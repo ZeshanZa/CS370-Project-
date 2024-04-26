@@ -667,7 +667,7 @@ function ProjectsPage() {
                             project.title,
                             project.description,
                             "https://github.com/username/secure-file-sharing-system",
-                            "https://i.ytimg.com/vi/gYrpk8ntc94/maxresdefault.jpg",
+                            "https://s1.significados.com/foto/software-og.jpg",
                             project
                           )
                         )}
