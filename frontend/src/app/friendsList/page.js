@@ -90,6 +90,9 @@ function FriendsList() {
               github={friend.email}
             />
           ))}
+          {(friends.length == 0) ? <div className='w-full items-center justify-center flex'>
+            <text className='text-xl font-semibold text-slate-700 mt-3'> Looks like you have no friends yet... </text>
+          </div> : <></>}
         </div>
         <div className="flex flex-col justify-center" style={{ width: "10%" }}>
           <br></br>

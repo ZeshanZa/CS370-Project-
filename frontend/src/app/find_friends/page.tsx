@@ -260,6 +260,9 @@ const SearchBar: React.FC = () => {
                             </div>
                         </div>
                     ))}
+                    {(friend_requests.length == 0) ? <div className='w-full items-center justify-center flex'>
+                        <text className='text-xl font-semibold text-slate-700 mt-3'> Looks like you have no requests yet... </text>
+                    </div> : <></>}
                 </div>
             </div>
         </Layout>
