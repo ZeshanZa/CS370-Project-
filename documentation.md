@@ -44,10 +44,15 @@ Below is an architecture diagram illustrating the major components of Emory Conn
 
 ```mermaid
 graph LR
-  A[Frontend - Next.js] --> B[Backend - Django]
-  B --> C{Database}
-  C --> B
-  A --> D[User Browser]
-  B -.-> E[External APIs]
+    A[Web Browser] --> B[Next.js Frontend]
+    B --> C[Django Backend]
+    C --> D[Database]
+    D --> C
+    C --> B
+    B --> A
 
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#ccf,stroke:#333,stroke-width:2px
+    style C fill:#cfc,stroke:#333,stroke-width:2px
+    style D fill:#fcf,stroke:#333,stroke-width:2px
 
