@@ -8,6 +8,16 @@ function Profile({ profile }) {
   const [profileData, setProfileData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [targetEmail, setTEmail] = useState('');
+
+  useEffect(() => {
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/get-email/${profile.name}`, {
+      headers: { 'Authorization': `Token ${localStorage.getItem('access_token')}` }
+    }).then(emailResponse => {
+      console.log(emailResponse)
+      setTEmail(emailResponse.data.email)
+    })
+  }, [])
 
   const toggleModal = () => {
     setModal(!modal);
@@ -35,7 +45,7 @@ function Profile({ profile }) {
   };
 
   return (
-    <section className="profile-detail">
+    <section className="profile-detail" key={profile.name}>
       {modal && (
         <div className='modal z-50'>
           <div className='overlay'></div>
@@ -51,7 +61,8 @@ function Profile({ profile }) {
                   <div className='flex justify-center'><img src={profile.imageUrl} alt="Profile" className="profile-picture flex justify-center" /></div>
                   <p>Major: {profileData?.major}</p><br></br>
                   <p>Bio: {profileData?.bio}</p><br></br>
-                  <p>Github: {profileData?.github_url} </p>
+                  <p>Github: {profileData?.github_url} </p><br></br>
+                  <p>Email: {targetEmail} </p>
                 </div>
                 <button onClick={toggleModal} className='close-modal'>Close</button>
               </>
@@ -62,7 +73,8 @@ function Profile({ profile }) {
       <img src={profile.imageUrl} alt="Profile" className="profile-picture" />
       <button onClick={toggleModal}>{profile.name}</button>
       <p>Skills: {profile.skills.join(", ")}</p>
-      <p>Interested in: {profile.interests.join(", ")}</p>
+      {/*<p>Interested in: {profile.interests.join(", ")}</p> -- backend dont exist here*/}
+      <p>Email: {targetEmail} </p>
     </section>
   );
 }
