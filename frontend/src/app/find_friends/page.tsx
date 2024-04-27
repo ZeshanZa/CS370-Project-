@@ -1,4 +1,4 @@
-'use client' 
+'use client'
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './App.css';
@@ -22,9 +22,9 @@ const SearchBar: React.FC = () => {
     const [usernames, setUsernames] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [friendRequests, setFriendRequests] = useState([]); 
+    const [friendRequests, setFriendRequests] = useState([]);
     const [token, setToken] = useState<string | null>(null);
-    
+
 
 
     useEffect(() => {
@@ -39,21 +39,21 @@ const SearchBar: React.FC = () => {
             axios.get(`${process.env.NEXT_PUBLIC_API_URL}/friendsList/incomingPendingRequests/`, {
                 headers: { 'Authorization': `Token ${token}` }
             })
-            .then(response => {
-                setFriendRequests(response.data);
-                setIsLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                setError(error.message);
-                setIsLoading(false);
-            });
+                .then(response => {
+                    setFriendRequests(response.data);
+                    setIsLoading(false);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    setError(error.message);
+                    setIsLoading(false);
+                });
         }
     }, [token]);
 
     const friend_requests = friendRequests.map((request, index) => ({
         id: index + 1,
-        sender: request.sender, 
+        sender: request.sender,
     }
     ));
 
@@ -79,22 +79,22 @@ const SearchBar: React.FC = () => {
         const sender = await fetchUsername();
         if (sender && token) {
             fetch(`${process.env.NEXT_PUBLIC_API_URL}/friendsList/sendFriendRequest/${sender}/${receiver}/`, {
-                method: 'POST', 
+                method: 'POST',
                 headers: {
                     'Authorization': `Token ${token}`,
                     'Content-Type': 'application/json'
                 }
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.text();
-            })
-            .then(data => {
-                console.log(data);
-                alert(`Friends request sent to: ${receiver}`);
-            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data);
+                    alert(`Friends request sent to: ${receiver}`);
+                })
         }
     };
 
@@ -104,7 +104,7 @@ const SearchBar: React.FC = () => {
                 try {
                     const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/friendsList/searchFriends/`, {
                         headers: {
-                            'Authorization': `Token ${token}`, 
+                            'Authorization': `Token ${token}`,
                             'Content-Type': 'application/json'
                         }
                     });
@@ -121,59 +121,59 @@ const SearchBar: React.FC = () => {
 
     const acceptFriend = async (username) => {
         if (!token) {
-          console.error('No access token available.');
-          return;
+            console.error('No access token available.');
+            return;
         }
 
         try {
-          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/friendsList/acceptFriendRequest/${username}/`, {
-            method: 'POST',
-            headers: {
-              'Authorization': `Token ${token}`,
-              'Content-Type': 'application/json'
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/friendsList/acceptFriendRequest/${username}/`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Token ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
-          });
 
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-
-          const result = await response.json();
-          console.log(result);
-          alert(`Friend request with ${username} accepted.`);
+            const result = await response.json();
+            console.log(result);
+            alert(`Friend request with ${username} accepted.`);
         } catch (error) {
-          console.error('Error:', error);
-          setFriendRequests(prevRequests => prevRequests.filter(request => request.sender !== username));
+            console.error('Error:', error);
+            setFriendRequests(prevRequests => prevRequests.filter(request => request.sender !== username));
         }
-      };
+    };
 
-      const declineFriendRequest = async (username) => {
+    const declineFriendRequest = async (username) => {
         if (!token) {
-          console.error('No access token available.');
-          return;
+            console.error('No access token available.');
+            return;
         }
 
         try {
-          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/friendsList/rejectFriendRequest/${username}/`, {
-            method: 'POST',
-            headers: {
-              'Authorization': `Token ${token}`,
-              'Content-Type': 'application/json'
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/friendsList/rejectFriendRequest/${username}/`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Token ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
-          });
 
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-
-          const result = await response.json();
-          console.log(result);
-          alert(`Friend request with ${username} declined.`);
+            const result = await response.json();
+            console.log(result);
+            alert(`Friend request with ${username} declined.`);
         } catch (error) {
-          console.error('Error:', error);
-          setFriendRequests(prevRequests => prevRequests.filter(request => request.sender !== username));
+            console.error('Error:', error);
+            setFriendRequests(prevRequests => prevRequests.filter(request => request.sender !== username));
         }
-      };
+    };
 
     const mockResults: SearchResult[] = usernames.map((username, index) => ({
         id: index + 1,
@@ -235,7 +235,7 @@ const SearchBar: React.FC = () => {
                                         {result.name}
                                     </span>
                                     <button onClick={() => sendRequest(result.name)}>
-                                        <FontAwesomeIcon style={{color:'#4299e1'}} icon={faUserPlus} />
+                                        <FontAwesomeIcon style={{ color: '#4299e1' }} icon={faUserPlus} />
                                     </button>
                                 </li>
                             ))}
@@ -245,20 +245,20 @@ const SearchBar: React.FC = () => {
                 <div className="p-4 flex flex-col border w-4/12 min-w-[400px] mt-10 border-gray-300 rounded-md">
                     <h1 className='flex justify-center font-sans font-bold'>Friend Requests</h1>
                     {friend_requests.map(request => (
-                    <div className='flex flex-row justify-between' key={request.id}>
-                        <div style={{ flex: '0 0 auto', width: '50px', height: '50px', overflow: 'hidden' }}>
-                            <img src="./pfp.jpg" alt='Profile picture' style={{ width: '100%', height: '100%', objectFit: 'cover' }}/>
+                        <div className='flex flex-row justify-between' key={request.id}>
+                            <div style={{ flex: '0 0 auto', width: '50px', height: '50px', overflow: 'hidden' }}>
+                                <img src="./pfp.jpg" alt='Profile picture' style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            </div>
+                            <div className='flex flex-col justify-center'>
+                                <p className='text-center'>
+                                    {request.sender} wants to be friends
+                                </p>
+                            </div>
+                            <div className='flex flex-row justify-center'>
+                                <button onClick={() => acceptFriend(request.sender)} className='mr-4'><FontAwesomeIcon icon={faCheck} style={{ color: 'green' }} /></button>
+                                <button onClick={() => declineFriendRequest(request.sender)}><FontAwesomeIcon icon={faX} style={{ color: 'red' }} fontSize={'85%'} /></button>
+                            </div>
                         </div>
-                        <div className='flex flex-col justify-center'>
-                            <p className='text-center'>
-                                {request.sender} wants to be friends
-                            </p>
-                        </div>
-                        <div className='flex flex-row justify-center'>
-                            <button onClick={() => acceptFriend(request.sender)} className='mr-4'><FontAwesomeIcon icon={faCheck} style={{color:'green'}}/></button>
-                            <button onClick={() => declineFriendRequest(request.sender)}><FontAwesomeIcon icon={faX} style={{color:'red'}} fontSize={'85%'} /></button>
-                        </div>
-                    </div>
                     ))}
                 </div>
             </div>

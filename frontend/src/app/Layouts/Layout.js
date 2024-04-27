@@ -176,10 +176,10 @@ function Layout({ children }) {
               <div className="flex-col justify-center ">
                 <h2 className="text-2xl font-bold mb-2">{profile.fullName}</h2>
                 <p className="text-lg ">Intended Major: {profile.major}</p>
-                <p className="text-sm p-3 rounded text-lg">
-                  {profile.githubUrl}
+                <p className="p-3 rounded text-lg">
+                  Git Hub: {profile.githubUrl}
                 </p>
-                <p className="text-sm p-3 rounded text-lg">
+                <p className="p-3 rounded text-lg">
                   Bio: {profile.bio}
                 </p>
                 <div className="w-full mt-2 flex flex-row flex-wrap justify-around text-white"></div>
@@ -286,14 +286,14 @@ function Layout({ children }) {
             {url == "https://ecsconnectbackend.com:8000/mainpage"
               ? "Your Projects"
               : url == "https://ecsconnectbackend.com:8000/startMatching"
-              ? "Matching"
-              : url == "https://ecsconnectbackend.com:8000/friendsList"
-              ? "Friends"
-              : url == "https://ecsconnectbackend.com:8000/profile"
-              ? "Profile"
-              : url == "https://ecsconnectbackend.com:8000/setpage"
-              ? "Settings"
-              : ""}{" "}
+                ? "Matching"
+                : url == "https://ecsconnectbackend.com:8000/friendsList"
+                  ? "Friends"
+                  : url == "https://ecsconnectbackend.com:8000/profile"
+                    ? "Profile"
+                    : url == "https://ecsconnectbackend.com:8000/setpage"
+                      ? "Settings"
+                      : ""}{" "}
           </text>
           <div className="max-[750px]:justify-around flex max-[750px]:w-full">
             <button

@@ -26,6 +26,8 @@ function ProjectsPage() {
   const [editGitHub, setEditGitHub] = useState("");
   const [ProfileDrawer, setProfileDrawer] = useState(false);
   const [NotificationsDrawer, setNotificationsDrawer] = useState(false);
+  const [allUsers, setAllUsers] = useState([])
+  const [user_id_map, setUser_id_map] = useState({})
 
   const [itemsToShow, setItemsToShow] = useState(2);
 
@@ -41,22 +43,69 @@ function ProjectsPage() {
   };
 
   function ProjectComponent(title, description, link, isrc, project) {
+    //console.log(user_id_map)
     return (
       <div className="m-3 p-2 rounded-xl flex flex-col w-[80dvh]">
         <img alt="image" src={isrc} className="rounded-xl mb-1 relative" />
         <div className="flex flex-row justify-between font-bold text-xl">
           <text> {title} </text>
           <div>
+            <button onClick={ async () => {
+              let cusername = prompt("Please enter an existing username")
+              let cid = null
+              let flag = true
+              for (let i = 0; i < allUsers.length; i++) {
+                //console.log(allUsers[i].username)
+                if (cusername == allUsers[i].username) {
+                  cid = allUsers[i].id
+                  flag = false
+                  break
+                }
+              }
+              if (flag) {
+                alert("User not found")
+                return
+              }
+              //alert("User found")
+              let carr = project.contributors
+              carr.push(cid)
+              try {
+                await axios.put(
+                  `${process.env.NEXT_PUBLIC_API_URL}/projects/${project.id}/`,
+                  {
+                    user: profile.user_id,
+                    title: project.title,
+                    description: project.description,
+                    github_url: project.github_url,
+                    contributors: carr, //format - id of contributors
+                  },
+                  {
+                    headers: {
+                      Authorization: `Token ${localStorage.getItem("access_token")}`,
+                      "Content-Type": "application/json",
+                    },
+                  }
+                );
+                if (typeof window !== "undefined") {
+                  // Safe to use window here
+                  window.location.reload();
+                }
+              } catch (error) {
+                console.error("Error updating project contributors:", error);
+              }
+            }} className="m-2 bg-blue-400 rounded-md text-white font-semibold py-1 px-2 hover:bg-blue-600">
+              Add Contributors
+            </button>
             <button onClick={() => {
-                handleEditProject(project);
-                setAnchorEl(null);
-              }} className="mr-2 bg-blue-400 rounded-md text-white font-semibold py-1 px-2 hover:bg-blue-600">
+              handleEditProject(project);
+              setAnchorEl(null);
+            }} className="m-2 bg-blue-400 rounded-md text-white font-semibold py-1 px-2 hover:bg-blue-600">
               Edit
             </button>
             <button onClick={() => {
-                handleDeleteProject(project.id);
-                setAnchorEl(null);
-              }} className="bg-blue-400 rounded-md text-white font-semibold py-1 px-2 hover:bg-blue-600">
+              handleDeleteProject(project.id);
+              setAnchorEl(null);
+            }} className="bg-blue-400 rounded-md text-white font-semibold py-1 px-2 hover:bg-blue-600">
               Delete
             </button>
           </div>
@@ -104,6 +153,47 @@ function ProjectsPage() {
           {" "}
           {description}{" "}
         </text>
+        <text>Contributors:</text>
+        <div className="flex flex-wrap">
+          {project.contributors.map((contributor) =>
+            <div className="mx-1 bg-slate-200 rounded-md py-1 px-3">
+              <text>{user_id_map[contributor]}</text>
+              <button className="ml-2 border-l-[1px] pl-2 border-slate-700" onClick={ async () => {
+                let confirmbtn = confirm(`Are you sure you want to remove ${user_id_map[contributor]} from the project?`)
+                if (confirmbtn){
+                  //console.log("yes")
+                  let carr = project.contributors
+                  let indexofitem = carr.indexOf(contributor)
+                  carr.splice(indexofitem, 1)
+                  try {
+                    await axios.put(
+                      `${process.env.NEXT_PUBLIC_API_URL}/projects/${project.id}/`,
+                      {
+                        user: profile.user_id,
+                        title: project.title,
+                        description: project.description,
+                        github_url: project.github_url,
+                        contributors: carr, //format - id of contributors
+                      },
+                      {
+                        headers: {
+                          Authorization: `Token ${localStorage.getItem("access_token")}`,
+                          "Content-Type": "application/json",
+                        },
+                      }
+                    );
+                    if (typeof window !== "undefined") {
+                      // Safe to use window here
+                      window.location.reload();
+                    }
+                  } catch (error) {
+                    console.error("Error removing project contributors:", error);
+                  }
+                }
+              }}> X </button>
+            </div>
+          )}
+        </div>
         <text className="font-bold"> {link} </text>
       </div>
     );
@@ -185,7 +275,29 @@ function ProjectsPage() {
       }
     };
 
+    const fetchAllUser = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/userslist/`,
+          {
+            headers: {
+              Authorization: `Token ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
+        setAllUsers(response.data); // Projects returned
+        let tempMap = {}
+        for (let i = 0; i < response.data.length; i++){
+          tempMap[response.data[i].id] = response.data[i].username
+        }
+        setUser_id_map(tempMap)
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
     fetchProjects();
+    fetchAllUser();
   }, []);
 
   const [profile, setProfile] = useState({
@@ -319,7 +431,7 @@ function ProjectsPage() {
           title: editTitle,
           description: editDescription,
           github_url: editGitHub,
-          contributors: [],
+          contributors: [], //format - id of contributors
         },
         {
           headers: {
@@ -446,10 +558,10 @@ function ProjectsPage() {
               <div className="flex-col justify-center ">
                 <h2 className="text-2xl font-bold mb-2">{profile.fullName}</h2>
                 <p className="text-lg ">Intended Major: {profile.major}</p>
-                <p className="text-sm p-3 rounded text-lg">
-                  {profile.githubUrl}
+                <p className="p-3 rounded text-lg">
+                  Git Hub: {profile.githubUrl}
                 </p>
-                <p className="text-sm p-3 rounded text-lg">
+                <p className="p-3 rounded text-lg">
                   Bio: {profile.bio}
                 </p>
                 <div className="w-full mt-2 flex flex-row flex-wrap justify-around text-white"></div>

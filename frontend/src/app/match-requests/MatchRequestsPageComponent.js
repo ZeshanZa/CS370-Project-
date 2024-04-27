@@ -21,20 +21,20 @@ const MatchRequestsPageComponent = () => {
   useEffect(() => {
     setIsLoading(true);
     const token = localStorage.getItem('access_token');
-    
+
     axios.get(`${process.env.NEXT_PUBLIC_API_URL}/view-match-requests/`, { // Ensure the endpoint matches your Django URL
       headers: { 'Authorization': `Token ${token}` }
     })
-    .then(response => {
-      setMatches(response.data);
-      //getUserSkills(response.data[0].sender).then((skills) => console.log(skills))
-      setIsLoading(false);
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-      setError(error.message);
-      setIsLoading(false);
-    });
+      .then(response => {
+        setMatches(response.data);
+        //getUserSkills(response.data[0].sender).then((skills) => console.log(skills))
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setError(error.message);
+        setIsLoading(false);
+      });
   }, []);
 
   if (isLoading) {

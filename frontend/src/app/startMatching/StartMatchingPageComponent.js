@@ -91,15 +91,17 @@ const StartMatchingPageComponent = () => {
       //console.log("ALGO LOADED")
       //console.log(usernames)
 
-      const profiles = usernames.map((username, i) => ({
-        id: i,
-        name: username,
+      const profiles = usernames.map((profile_user) => ({
+        id: profile_user.id,
+        name: profile_user.username,
         skills: ["Python", "Django", "JavaScript"],
         interests: ["Web Development", "Machine Learning"],
         imageUrl: "https://via.placeholder.com/150",
         matchscore: -1,
         matchedSkills: [],
       }));
+
+      //console.log(profiles)
 
       //const skillsIhave = ["Python", "Java", "Css", "HTML"]
       //const skillsIwant = ["Python", "Django", "Ruby"]
@@ -149,11 +151,11 @@ const StartMatchingPageComponent = () => {
         setLPercent(((i + 1) / profiles.length) * 100);
         let score = 0; //assign a score to each potential match
         //step 2 - get the user's id and fetch the skills
-        const targetId = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/user-id/${profiles[i].name}/`
-        );
+        //const targetId = await axios.get(
+        //  `${process.env.NEXT_PUBLIC_API_URL}/user-id/${profiles[i].name}/`
+        //);
         //console.log(targetId)
-        if (targetId.data == uuid) {
+        if (profiles[i].id == uuid) {
           continue; //we make sure we dont collect out of skills and thus dont match to ourself
         }
 
@@ -168,7 +170,12 @@ const StartMatchingPageComponent = () => {
         }
 
         //const targetSkills = await axios.get(`http://127.0.0.1:8000/skills/${targetId.data}/get-complete-skills/`);
-        const targetSkills = SkillMap[targetId.data];
+        //console.log(SkillMap[profiles[i].id])
+        //console.log(SkillMap)
+        //console.log(profiles.id)
+        //console.log("---")
+        //console.log(profiles)
+        const targetSkills = SkillMap[profiles[i].id];
 
         //console.log(targetSkills.data)
         //step 3 - the matching begins
@@ -319,15 +326,15 @@ const StartMatchingPageComponent = () => {
           user1.skills = targetSkills.data.acquired;
           user1.matchedSkills = matchedSkills
           user1.pscore =
-            (bestscore1 * 2) /
-            (targetSkills.data.acquired.DB.length +
-              targetSkills.data.acquired.Exp.length +
-              targetSkills.data.acquired.Lang.length +
-              targetSkills.data.acquired.Pers.length +
-              myskills.data.acquired.DB.length +
-              myskills.data.acquired.Exp.length +
-              myskills.data.acquired.Lang.length +
-              myskills.data.acquired.Pers.length);
+            (bestscore1) /
+            (targetSkills.data.search.DB.length +
+              targetSkills.data.search.Exp.length +
+              targetSkills.data.search.Lang.length +
+              targetSkills.data.search.Pers.length +
+              myskills.data.search.DB.length +
+              myskills.data.search.Exp.length +
+              myskills.data.search.Lang.length +
+              myskills.data.search.Pers.length);
         } else if (score > bestscore2) {
           bestscore2 = score;
           user3 = user2;
@@ -336,15 +343,15 @@ const StartMatchingPageComponent = () => {
           user2.skills = targetSkills.data.acquired;
           user2.matchedSkills = matchedSkills
           user2.pscore =
-            (bestscore1 * 2) /
-            (targetSkills.data.acquired.DB.length +
-              targetSkills.data.acquired.Exp.length +
-              targetSkills.data.acquired.Lang.length +
-              targetSkills.data.acquired.Pers.length +
-              myskills.data.acquired.DB.length +
-              myskills.data.acquired.Exp.length +
-              myskills.data.acquired.Lang.length +
-              myskills.data.acquired.Pers.length);
+            (bestscore2) /
+            (targetSkills.data.search.DB.length +
+              targetSkills.data.search.Exp.length +
+              targetSkills.data.search.Lang.length +
+              targetSkills.data.search.Pers.length +
+              myskills.data.search.DB.length +
+              myskills.data.search.Exp.length +
+              myskills.data.search.Lang.length +
+              myskills.data.search.Pers.length);
         } else if (score > bestscore3) {
           bestscore3 = score;
           user3 = profiles[i];
@@ -352,15 +359,15 @@ const StartMatchingPageComponent = () => {
           user3.skills = targetSkills.data.acquired;
           user3.matchedSkills = matchedSkills
           user3.pscore =
-            (bestscore1 * 2) /
-            (targetSkills.data.acquired.DB.length +
-              targetSkills.data.acquired.Exp.length +
-              targetSkills.data.acquired.Lang.length +
-              targetSkills.data.acquired.Pers.length +
-              myskills.data.acquired.DB.length +
-              myskills.data.acquired.Exp.length +
-              myskills.data.acquired.Lang.length +
-              myskills.data.acquired.Pers.length);
+            (bestscore3) /
+            (targetSkills.data.search.DB.length +
+              targetSkills.data.search.Exp.length +
+              targetSkills.data.search.Lang.length +
+              targetSkills.data.search.Pers.length +
+              myskills.data.search.DB.length +
+              myskills.data.search.Exp.length +
+              myskills.data.search.Lang.length +
+              myskills.data.search.Pers.length);
         }
       }
       //END OF MATCHING ALGORYTHM
@@ -373,8 +380,16 @@ const StartMatchingPageComponent = () => {
     //
     fetchUsername().then((uuid) => {
       axios
-        .get(`${process.env.NEXT_PUBLIC_API_URL}/user-list/`, {})
+        .get(
+          `${process.env.NEXT_PUBLIC_API_URL}/userslist/`,
+          {
+            headers: {
+              Authorization: `Token ${localStorage.getItem("access_token")}`,
+            },
+          }
+        )
         .then((response) => {
+          //console.log(response.data)
           FilterMatches(response.data, uuid).then((newProfiles) =>
             setMatchProfiles(newProfiles)
           );
