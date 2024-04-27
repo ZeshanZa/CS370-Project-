@@ -156,7 +156,7 @@ function ProjectsPage() {
         <text>Contributors:</text>
         <div className="flex flex-wrap">
           {project.contributors.map((contributor) =>
-            <div className="mx-1 bg-slate-200 rounded-md py-1 px-3">
+            <div className="mx-1 bg-slate-200 rounded-md py-1 px-3" key={contributor}>
               <text>{user_id_map[contributor]}</text>
               <button className="ml-2 border-l-[1px] pl-2 border-slate-700" onClick={ async () => {
                 let confirmbtn = confirm(`Are you sure you want to remove ${user_id_map[contributor]} from the project?`)
