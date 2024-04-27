@@ -1,4 +1,4 @@
-"use client" 
+"use client"
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "./App.css";
@@ -13,19 +13,19 @@ const MatchesPageComponent = () => {
   useEffect(() => {
     setIsLoading(true);
     const token = localStorage.getItem('access_token');
-    
+
     axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user-matches/`, {
       headers: { 'Authorization': `Token ${token}` }
     })
-    .then(response => {
-      setMatches(response.data);
-      setIsLoading(false);
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-      setError(error.message);
-      setIsLoading(false);
-    });
+      .then(response => {
+        setMatches(response.data);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setError(error.message);
+        setIsLoading(false);
+      });
   }, []);
 
   if (isLoading) {
@@ -45,31 +45,39 @@ const MatchesPageComponent = () => {
     imageUrl: match.imageUrl || "https://via.placeholder.com/150" // Temporary image URL, replace with actual data
   }));
 
-  return (
-    /* <div className="App">
-      <header>
-        <nav>
-          <ul>
-            <li><a href="/mainpage">Home</a></li>
-            <li><a href="/startMatching">Start Matching</a></li>
-            <li><a href="/match-requests">Your Requests</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="/setpage">Settings</a></li>
-          </ul>
-        </nav>
-      </header>
-      <main className="profiles-container">
+  if (profiles.length > 0) {
+    return (
+      /* <div className="App">
+        <header>
+          <nav>
+            <ul>
+              <li><a href="/mainpage">Home</a></li>
+              <li><a href="/startMatching">Start Matching</a></li>
+              <li><a href="/match-requests">Your Requests</a></li>
+              <li><a href="/profile">Profile</a></li>
+              <li><a href="/setpage">Settings</a></li>
+            </ul>
+          </nav>
+        </header>
+        <main className="profiles-container">
+          {profiles.map(profile => (
+            <Profile key={profile.id} profile={profile}/>
+          ))}
+        </main>
+      </div> */
+      <div className='w-full items-center justify-center flex flex-wrap'>
         {profiles.map(profile => (
-          <Profile key={profile.id} profile={profile}/>
+          <Profile key={profile.id} profile={profile} />
         ))}
-      </main>
-    </div> */
-    <div className='w-full items-center justify-center flex flex-wrap'>
-      {profiles.map(profile => (
-          <Profile key={profile.id} profile={profile}/>
-        ))}
-    </div>
-  );
+      </div>
+    );
+  } else {
+    return (
+      <div className='w-full items-center justify-center flex'>
+        <text className='text-xl font-semibold text-slate-700'> Looks like you have no matches yet... </text>
+      </div>
+    )
+  }
 };
 
 export default MatchesPageComponent;

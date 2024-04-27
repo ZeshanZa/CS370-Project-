@@ -64,32 +64,40 @@ const MatchRequestsPageComponent = () => {
   }
   GetALLSkills();*/
 
-  return (
-    /* <div className="App">
-      <header>
-        <nav>
-          <ul>
-            <li><a href="/mainpage">Home</a></li>
-            <li><a href="/startMatching">Start Matching</a></li>
-            <li><a href="/matches">Your Matches</a></li>
-            <li><a href="/match-requests">Your Requests</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="/setpage">Settings</a></li>
-          </ul>
-        </nav>
-      </header>
-      <main className="profiles-container">
+  if (profiles.length > 0) {
+    return (
+      /* <div className="App">
+        <header>
+          <nav>
+            <ul>
+              <li><a href="/mainpage">Home</a></li>
+              <li><a href="/startMatching">Start Matching</a></li>
+              <li><a href="/matches">Your Matches</a></li>
+              <li><a href="/match-requests">Your Requests</a></li>
+              <li><a href="/profile">Profile</a></li>
+              <li><a href="/setpage">Settings</a></li>
+            </ul>
+          </nav>
+        </header>
+        <main className="profiles-container">
+          {profiles.map(profile => (
+            <Profile key={profile.id} profile={profile} />
+          ))}
+        </main>
+      </div> */
+      <div className='w-full items-center justify-center flex flex-wrap'>
         {profiles.map(profile => (
           <Profile key={profile.id} profile={profile} />
         ))}
-      </main>
-    </div> */
-    <div className='w-full items-center justify-center flex flex-wrap'>
-      {profiles.map(profile => (
-        <Profile key={profile.id} profile={profile} />
-      ))}
-    </div>
-  );
+      </div>
+    )
+  } else {
+    return(
+      <div className='w-full items-center justify-center flex'>
+        <text className='text-xl font-semibold text-slate-700'> Looks like you have no requests yet... </text>
+      </div>
+    )
+  }
 };
 
 export default MatchRequestsPageComponent;
