@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import (ProjectCreateView, UserProfileView, ProjectListView, ProjectDetailView, UserListView)
+from .views import (ProjectCreateView, UserProfileView, ProjectListView, ProjectDetailView, UserListView, UserEmailView)
 from . import views
 
 urlpatterns = [ 
@@ -21,5 +21,6 @@ urlpatterns = [
     # path('user-matches/', UserMatchesView.as_view(), name='user-matches'),
     # path('templates/', template, name='templates'),
     # path('get-username/', views.get_username, name='get_username'),
-     path('userslist/', UserListView.as_view(), name='user-list'),
+    path('userslist/', UserListView.as_view(), name='user-list'),
+    path('get-email/<str:username>/', UserEmailView.as_view(), name='get_user_email'),
 ]

@@ -1,7 +1,7 @@
 from rest_framework import generics, permissions
  # Assuming User is the Django auth user model
 from .models import Project, UserProfile, Match, UserProfile, User
-from .serializers import ProjectSerializer, UserProfileSerializer, UserListSerializer
+from .serializers import ProjectSerializer, UserProfileSerializer, UserListSerializer, UserEmailSerializer
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -159,3 +159,9 @@ User = get_user_model()
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserListSerializer
+
+
+class UserEmailView(generics.RetrieveAPIView):
+    queryset = get_user_model().objects.all()
+    serializer_class = UserEmailSerializer
+    lookup_field = 'username'
