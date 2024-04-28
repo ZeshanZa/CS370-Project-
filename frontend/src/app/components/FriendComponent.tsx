@@ -19,6 +19,8 @@ function FriendComponent({name, skills, github} : Props) {
   const [friendProfile, setFriendProfile] = useState(null);
   const [modal, setModal] = useState(false); 
   const [showProjects, setShowProjects] = useState(false); 
+  const [usernameById, setUsernameById] = useState<string>(''); 
+  const [Contributors, setContributors] = useState([]); 
 
   const toggleModal = () => {
     setModal(!modal);
@@ -28,11 +30,19 @@ function FriendComponent({name, skills, github} : Props) {
     }
   };
 
-  const toggleShowProjects = () => {
+  const toggleShowProjects = async () => {
     setShowProjects(!showProjects); 
     if (!showProjects) {
       friendsProjects(); 
       console.log(projects); 
+      const contributors = projects[0].contributors;
+      const result = [] 
+      for (let i = 0; i < contributors.length; i++) {
+        await idToUsername(contributors[i]);
+        result[i] = usernameById;
+      }
+      setContributors(result); 
+      console.log(Contributors); 
     }
   }
 
@@ -88,11 +98,19 @@ function FriendComponent({name, skills, github} : Props) {
     try {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/friend-project/${name}`); 
       setProjects(response.data); 
-
     } catch (err) {
       console.error(err.message); 
     }
   }; 
+
+  const idToUsername = async (id) => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/get-username/${id}/`); 
+      setUsernameById(response.data); 
+    } catch (err) {
+        console.error(err.message); 
+    }
+  }
 
   const handleRemoveFriend = async (friend_username) => {
     const self_username = await fetchUsername(); 
@@ -125,10 +143,11 @@ function FriendComponent({name, skills, github} : Props) {
                 <div className='overflow-y-auto max-h-96'>
                 <h2 className='flex justify-center font-bold'>Projects</h2><br></br>
                 {projects.map((project) => ( // Fixed this line
-                  <div key={project?.id}> {/* Fixed: was 'projects.id', changed to 'project.id' */}
-                    <p>Title: {project?.title} </p>{/* Removed optional chaining */}
-                    <p>Description: {project?.description} </p>{/* Removed optional chaining */}
-                    <p>Github URL: {project?.github_url} </p> <br></br>{/* Removed optional chaining */}
+                  <div key={project?.id}> 
+                    <p>Title: {project?.title} </p>
+                    <p>Description: {project?.description} </p>
+                    <p>Contributors: {Contributors.map((contributor, index) => <span key={index}>{contributor.username}</span>)}</p>
+                    <p>Github URL: {project?.github_url} </p> <br></br>
                   </div>
                 ))}
                 </div>

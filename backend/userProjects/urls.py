@@ -23,4 +23,5 @@ urlpatterns = [
     # path('get-username/', views.get_username, name='get_username'),
     path('userslist/', UserListView.as_view(), name='user-list'),
     path('get-email/<str:username>/', UserEmailView.as_view(), name='get_user_email'),
+    path('get-username/<int:user_id>/', views.get_username_by_id, name='get_username_by_id'),
 ]

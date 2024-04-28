@@ -67,6 +67,14 @@ def accept_friend_request(request, match_id):
     return HttpResponse('Friend request accepted')
 
 
+def get_username_by_id(request, user_id):
+    try:
+        user = User.objects.get(id=user_id)
+        username = user.username
+        return JsonResponse({'username': username})
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+
 def view_profile(request, user_id):
     # Assume user_id is the ID of the profile being viewed
     profile_owner = get_object_or_404(UserProfile, id=user_id)
