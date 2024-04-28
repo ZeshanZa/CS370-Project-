@@ -15,6 +15,7 @@ class FriendRequest(models.Model):
     reqSender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='reqSender', on_delete=models.CASCADE)
     reqReceiver = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='reqReceiver', on_delete=models.CASCADE)
     status = models.CharField(max_length=10, choices=(('pending', 'Pending'), ('accepted', 'Accepted'), ('rejected', 'Rejected')), default='pending')
-
+    notification_interacted = models.BooleanField(default=False)
+    notification_pending = models.BooleanField(default=True)
     def __str__(self):
         return f"{self.reqSender.username} and {self.reqReceiver.username} - {self.status}"

@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
  # Assuming User is the Django auth user model
 from .models import Match
-from .serializers import MatchSerializer, UserSerializer
+from .serializers import MatchSerializer, UserSerializer , MatchDetailSerializer
 from userProjects.serializers import UserProfileSerializer
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
@@ -141,3 +141,61 @@ class UserListView(APIView):
         users = User.objects.all()
         usernames = [user.username for user in users]
         return Response(usernames)
+   
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def view_pending_matching_requests(request, user_id):
+    if request.user.id != int(user_id):
+        return JsonResponse({'error': 'Unauthorized access'}, status=403)
+
+    pending_requests = Match.objects.filter(receiver_id=user_id, status='pending', notification_pending = True)
+    if pending_requests.exists():
+        
+        serializer = MatchDetailSerializer(pending_requests, many=True)
+        
+        return JsonResponse(serializer.data, safe=False)
+    else:
+        return JsonResponse({'message': 'None pending'}, status=204)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def mark_notification_as_sent_interaction(request, match_id):
+    try:
+        match_request = Match.objects.get(id=match_id, sender_id=request.user, notification_interacted=False)
+        match_request.notification_interacted = True
+        match_request.save()
+        return JsonResponse({'message': 'Notification marked as sent'}, status=200)
+    except Match.DoesNotExist:
+        return JsonResponse({'error': 'Match request not found or already marked'}, status=404)
+    
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def mark_notification_as_sent_pending(request, match_id):
+    try:
+        match_request = Match.objects.get(id=match_id, receiver_id=request.user, notification_pending=True)
+        match_request.notification_pending = False
+        match_request.save()
+        return JsonResponse({'message': 'Notification marked as sent'}, status=200)
+    except Match.DoesNotExist:
+        return JsonResponse({'error': 'Match request not found or already marked'}, status=404)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_match_request_status(request, user_id):
+    # Convert user_id from string to integer for comparison (if needed)
+    user_id = int(user_id)
+    # Ensure the request.user.id matches the provided user_id to avoid unauthorized access
+    if request.user.id != user_id:
+        return JsonResponse({'error': 'Unauthorized'}, status=403)
+
+    # Fetch only the friend requests where notification has not been sent yet
+    match_requests = Match.objects.filter(receiver_id=user_id, notification_interacted=False).exclude(status='pending')
+
+    if match_requests.exists():
+        # Serialize the data
+        serializer = MatchDetailSerializer(match_requests, many=True)
+        
+        return JsonResponse(serializer.data, safe=False, context={'request': request})
+    else:
+        return JsonResponse({'message': 'No updates'}, status=204)

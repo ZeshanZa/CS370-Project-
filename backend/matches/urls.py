@@ -9,5 +9,9 @@ urlpatterns = [
     path('user-matches/', views.UserMatchesView.as_view(), name='user-matches'),
     path('user-list/', views.UserListView.as_view(), name='user-list'),
     path('decline-match/<str:sender_username>/', views.decline_match_request, name='decline-match-request'),
-    path('accept-match-request/<str:sender_username>/', views.accept_match_request, name='accept-match-request')
+    path('accept-match-request/<str:sender_username>/', views.accept_match_request, name='accept-match-request'),
+    path('pending_requests/<int:user_id>/', views.view_pending_matching_requests, name='pending-requests'),
+    path('mark_notification_as_sent_interacted/<int:match_id>/', views.mark_notification_as_sent_interaction, name='mark-notification-as-sent-interacted'),
+    path('mark_notification_as_sent_pending/<int:match_id>/', views.mark_notification_as_sent_pending, name='mark-notification-as-sent-pending'),
+    path('check_friend_request_status/<int:user_id>/', views.check_match_request_status, name='check-friend-request-status'),
 ]

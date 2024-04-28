@@ -19,6 +19,14 @@ class MatchSerializer(serializers.ModelSerializer):
             other_user = obj.sender
         return other_user.username
     
+class MatchDetailSerializer(serializers.ModelSerializer):
+    sender_id = serializers.ReadOnlyField(source='sender.id')
+    receiver_id = serializers.ReadOnlyField(source='receiver.id')
+
+    class Meta:
+        model = Match
+        fields = ['id', 'sender_id', 'receiver_id', 'status']
+    
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

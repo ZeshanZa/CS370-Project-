@@ -359,5 +359,60 @@ class NonFriendsList(APIView):
 
         return Response(data=usernames)
     
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def view_pending_friend_requests(request, user_id):
+    if request.user.id != int(user_id):
+        return JsonResponse({'error': 'Unauthorized access'}, status=403)
 
+    pending_requests = FriendRequest.objects.filter(reqReceiver_id=user_id, status='pending', notification_pending = True)
+    if pending_requests.exists():
+        
+        serializer = FriendRequestSerializer(pending_requests, many=True)
+        
+        return JsonResponse(serializer.data, safe=False)
+    else:
+        return JsonResponse({'message': 'None pending'}, status=204)
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def mark_notification_as_sent_interaction(request, friend_request_id):
+    try:
+        friend_request = FriendRequest.objects.get(friendRequest_id=friend_request_id, reqSender=request.user, notification_interacted=False)
+        friend_request.notification_interacted = True
+        friend_request.save()
+        return JsonResponse({'message': 'Notification marked as sent'}, status=200)
+    except FriendRequest.DoesNotExist:
+        return JsonResponse({'error': 'Friend request not found or already marked'}, status=404)
+    
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def mark_notification_as_sent_pending(request, friend_request_id):
+    try:
+        friend_request = FriendRequest.objects.get(friendRequest_id=friend_request_id, reqReceiver=request.user, notification_pending=True)
+        friend_request.notification_pending = False
+        friend_request.save()
+        return JsonResponse({'message': 'Notification marked as sent'}, status=200)
+    except FriendRequest.DoesNotExist:
+        return JsonResponse({'error': 'Friend request not found or already marked'}, status=404)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_friend_request_status(request, user_id):
+    # Convert user_id from string to integer for comparison (if needed)
+    user_id = int(user_id)
+    # Ensure the request.user.id matches the provided user_id to avoid unauthorized access
+    if request.user.id != user_id:
+        return JsonResponse({'error': 'Unauthorized'}, status=403)
+
+    # Fetch only the friend requests where notification has not been sent yet
+    friend_requests = FriendRequest.objects.filter(reqSender_id=user_id, notification_interacted=False).exclude(status='pending')
+
+    if friend_requests.exists():
+        # Serialize the data
+        serializer = FriendRequestSerializer(friend_requests, many=True)
+        
+        return JsonResponse(serializer.data, safe=False)
+    else:
+        return JsonResponse({'message': 'No updates'}, status=204)

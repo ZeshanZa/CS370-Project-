@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path
 from skills import views as skill_views
 from rest_framework.routers import DefaultRouter
+from django.urls import get_resolver
 
 # Add Django site authentication urls (for login, logout, password management)
 
@@ -35,3 +36,5 @@ urlpatterns = [
     path('', include(router.urls)),
 ]
 
+# all_urls = list(get_resolver().reverse_dict.keys())
+# print(all_urls)

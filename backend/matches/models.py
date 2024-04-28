@@ -7,6 +7,9 @@ class Match(models.Model):
     receiver = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='match_requests_received', on_delete=models.CASCADE)
     matched_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=(('pending', 'Pending'), ('accepted', 'Accepted')), default='pending')
-
+    
+    notification_interacted = models.BooleanField(default=False)
+    notification_pending = models.BooleanField(default=True)
+    
     def __str__(self):
         return f"{self.sender.username} and {self.receiver.username} - {self.status}"

@@ -13,6 +13,10 @@ urlpatterns = [
     path('rejectFriendRequest/<str:sender_username>/', views.reject_friend_request, name='rejectFriendRequest'),
     path('removeFriend/<str:self_username>/<str:friend_username>/', views.removeFriend, name='removeFriend'),
     path('friendProfile/<str:username>', views.FriendUserProfileView.as_view(), name='friend-profile'),
-    path('searchFriends/', views.NonFriendsList.as_view(), name='non-friends')
+    path('searchFriends/', views.NonFriendsList.as_view(), name='non-friends'),
+    path('pending_requests/<int:user_id>/', views.view_pending_friend_requests, name='pending-requests'),
+    path('mark_notification_as_sent_interacted/<str:friend_request_id>/', views.mark_notification_as_sent_interaction, name='mark-notification-as-sent-interacted'),
+    path('mark_notification_as_sent_pending/<str:friend_request_id>/', views.mark_notification_as_sent_pending, name='mark-notification-as-sent-pending'),
+    path('check_friend_request_status/<int:user_id>/', views.check_friend_request_status, name='check-friend-request-status'),
 
 ]
