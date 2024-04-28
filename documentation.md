@@ -22,7 +22,7 @@ Emory Connect is accessible through any modern web browser. Users can interact w
 ### Navigating the Interface
 Upon logging in, users will find the following main sections:
 
-- **Dashboard**: Provides a quick overview of ongoing projects and place to then add their projects as well as contributors.
+- **Home**: Provides a quick overview of ongoing projects and place to then add their projects as well as contributors.
 - **Profile**: Here users can edit their profile that will be displayed to their matches and will also be able to add their skills.
 - **Matches**: This section uses the platform's matching algorithm to suggest potential collaborators based on the skills by the user.
 - **Skills**: Users can update their skills inventory and specify what skills they are looking to find in potential collaborators.
