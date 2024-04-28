@@ -523,7 +523,7 @@ useEffect(() => {
           console.log('Interval triggered to check friend requests');
           checkFriendRequests();
           checkPendingRequests();
-      }, 600000); // 10 seconds interval
+      }, 10000); // 10 seconds interval
 
       return () => {
           clearInterval(intervalId);
@@ -648,7 +648,7 @@ if (profile.user_id) {
         console.log('Interval triggered to check friend requests');
         checkMatchRequests();
         checkPendingMatches();
-    }, 600000); // 10 seconds interval
+    }, 10000); // 10 seconds interval
 
     return () => {
         clearInterval(intervalId);
