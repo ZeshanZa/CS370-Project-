@@ -22,10 +22,11 @@ Emory Connect is accessible through any modern web browser. Users can interact w
 ### Navigating the Interface
 Upon logging in, users will find the following main sections:
 
-- **Dashboard**: Provides a quick overview of ongoing projects and place to then add their projects.
+- **Dashboard**: Provides a quick overview of ongoing projects and place to then add their projects as well as contributors.
 - **Profile**: Here users can edit their profile that will be displayed to their matches and will also be able to add their skills.
 - **Matches**: This section uses the platform's matching algorithm to suggest potential collaborators based on the skills by the user.
 - **Skills**: Users can update their skills inventory and specify what skills they are looking to find in potential collaborators.
+- **Friends**: Users can add their friends by username and once accepted view their friends profiles and projects
 
 
 
@@ -36,7 +37,31 @@ To create a new project:
 2. Click on `Create New Project`.
 3. Fill in the project details such as the title, description, URLS, and then once created add contributors by username.
 
+### Adding Skills
+To begin adding your skills:
 
+1. Navigate to the 'Profile' page
+2. There you will see your profile on one side and the view of your skills on the other
+3. From their click add skills
+4. There are 4 categories DB are skills related to databases Lang are programming-based languages Exp are skills related to different fields that one may have experience in and Pers are personal skills related to ones personal characteristics that describe their person 
+
+### Start Matching
+To Begin Matching:
+
+1. To ensure the best matching be sure to have your profile fully updated along with skills
+2. From there go to the 'Matching' page and on the loading page under the matching subcategory our matching algorithm will begin and present the User with their top 3 matches
+3. From here you can send requests to that person to then match with them
+4. Under the requests subcategory is where all match requests will display for you and others to then accept
+5. Under the matches is where the people who have accepted your matches will display and their profile and contact information will display for you to contact and begin collaborating
+
+### Adding Friends 
+To begin adding friends:
+
+1. Go to the 'Friends' page
+2. From here all your friends will be displayed and you can click their names to view their profiles and then in their profile you can click view projects to view their projects along with collaborators
+3. To get more friends simply click Find friends and search for users with their username and send requests by clicking the button next to their name to then send a friend request
+
+   
 ## Technical Documentation
 
 ### System Architecture
