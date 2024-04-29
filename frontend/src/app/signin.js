@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { TextField } from "@mui/material"; // Ensuring TextField is correctly imported
@@ -12,10 +12,13 @@ const AuthForm = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
-  const token = localStorage.getItem("access_token")
-  if (token){
-    router.push('/mainpage')
-  }
+
+  useEffect(() => {
+    const token = localStorage.getItem("access_token")
+    if (token) {
+      router.push('/mainpage')
+    }
+  }, [])
 
   const toggleFormType = () => {
     setFormType(formType === "signin" ? "signup" : "signin");
@@ -36,9 +39,8 @@ const AuthForm = () => {
       payload = { username, email, password };
     }
 
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/${
-      formType === "signup" ? "register" : "login"
-    }/`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/${formType === "signup" ? "register" : "login"
+      }/`;
 
     try {
       const response = await axios.post(url, payload);
