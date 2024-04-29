@@ -445,8 +445,9 @@ const StartMatchingPageComponent = () => {
     return (
       <div className="w-full items-center flex justify-center flex-wrap">
         {newProfiles.map((profile) => (
-          <Profile key={profile.id} profile={profile} />
+          <Profile key={profile?.id} profile={profile} />
         ))}
+        {(!newProfiles[0] && !newProfiles[1] && !newProfiles[2]) ? <text className="font-semibold text-xl text-slate-700">Look you ran out of matches. Come back later.</text> : <></>}
       </div>
     );
   } else {

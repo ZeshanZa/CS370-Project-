@@ -8,7 +8,7 @@ const MatchRequestsPageComponent = () => {
   const [matches, setMatches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [skills, setSkills] = useState([])
+  /*const [skills, setSkills] = useState([])
 
   async function getUserSkills(name) {
     const user_id = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user-id/${name}/`);
@@ -16,7 +16,7 @@ const MatchRequestsPageComponent = () => {
     const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/skills/${user_id.data}/get-complete-skills/`);
     const { acquired, search } = response.data;
     return [search, acquired]
-  }
+  }*/
 
   useEffect(() => {
     setIsLoading(true);
