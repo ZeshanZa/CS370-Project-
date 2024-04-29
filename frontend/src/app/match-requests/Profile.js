@@ -98,7 +98,6 @@ function Profile({ profile }) {
         <text className="w-full my-2 px-2">Skills (Experiances): {skills.Exp.join(", ")}</text>
         <text className="w-full my-2 px-2">Skills (Languages): {skills.Lang.join(", ")}</text>
         <text className="w-full my-2 px-2">Skills (Personal): {skills.Pers.join(", ")}</text>
-        <text className="w-full px-2">Interested in: {profile.interests.join(", ")}</text>
         <div className="flex flex-row justify-between w-full px-6 my-2">
           <button onClick={declineMatch} className="bg-sky-500 text-white font-semibold p-1 rounded-lg">
             Decline Match
