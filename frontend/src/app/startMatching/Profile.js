@@ -3,12 +3,7 @@ import axios from "axios";
 
 function Profile({ profile }) {
   const [sender, setSender] = useState(null);
-  
-  if (!profile){
-    return(
-      <></>
-    )
-  }
+
   const token = localStorage.getItem("access_token");
 
   useEffect(() => {
@@ -27,8 +22,16 @@ function Profile({ profile }) {
       }
     };
 
+    if (profile){
     fetchUsername();
+    }
   }, [token, profile]);
+
+  if (!profile){
+    return(
+      <></>
+    )
+  }
 
   const sendMatchRequest = () => {
     if (!token) {
