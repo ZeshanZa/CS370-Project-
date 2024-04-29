@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function Profile({ profile }) {
+  const [sender, setSender] = useState(null);
+  
   if (!profile){
     return(
       <></>
     )
   }
-  const [sender, setSender] = useState(null);
   const token = localStorage.getItem("access_token");
 
   useEffect(() => {
