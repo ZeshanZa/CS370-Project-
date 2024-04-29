@@ -24,6 +24,7 @@ function ProjectsPage() {
   const [editTitle, setEditTitle] = useState("");
   const [editDescription, setEditDescription] = useState("");
   const [editGitHub, setEditGitHub] = useState("");
+  const [editContributors, setEditContributors] = useState([])
   const [ProfileDrawer, setProfileDrawer] = useState(false);
   const [NotificationsDrawer, setNotificationsDrawer] = useState(false);
   const [allUsers, setAllUsers] = useState([])
@@ -413,6 +414,7 @@ function ProjectsPage() {
     setEditTitle(project.title);
     setEditDescription(project.description);
     setEditGitHub(project.github_url);
+    setEditContributors(profile.contributor);
     setShowAddProjectForm(true); // Assuming you use the same form for add/edit, show it.
   };
 
@@ -422,6 +424,7 @@ function ProjectsPage() {
     setEditTitle("");
     setEditDescription("");
     setEditGitHub("");
+    setEditContributors([]);
     setShowAddProjectForm(false); // Hide the form.
   };
 
@@ -437,7 +440,7 @@ function ProjectsPage() {
           title: editTitle,
           description: editDescription,
           github_url: editGitHub,
-          contributors: [], //format - id of contributors
+          contributors: editContributors, //format - id of contributors
         },
         {
           headers: {
