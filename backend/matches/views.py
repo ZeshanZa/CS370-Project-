@@ -3,7 +3,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
  # Assuming User is the Django auth user model
-from .models import Match
+from .models import Match, DeclinedMatch
 from .serializers import MatchSerializer, UserSerializer , MatchDetailSerializer
 from userProjects.serializers import UserProfileSerializer
 from django.shortcuts import get_object_or_404, render
@@ -23,6 +23,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie 
 from django.views import View 
+from datetime import datetime 
 
 # Create your views here.
 @api_view(['GET'])
@@ -63,7 +64,12 @@ def decline_match_request(request, sender_username):
         sender__username=sender_username, 
         status='pending'
     )
-
+    
+    DeclinedMatch.objects.create(
+        sender=match_request.sender,
+        receiver=receiver,
+        declined_at=datetime.now()  # Ensure that datetime is imported if you're setting the time manually
+    )
     # Delete the match request
     match_request.delete()
 
