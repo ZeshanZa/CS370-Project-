@@ -12,6 +12,10 @@ const AuthForm = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
+  const token = localStorage.getItem("access_token")
+  if (token){
+    router.push('/mainpage')
+  }
 
   const toggleFormType = () => {
     setFormType(formType === "signin" ? "signup" : "signin");
