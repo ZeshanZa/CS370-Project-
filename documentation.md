@@ -103,8 +103,8 @@ graph LR
     C -->|Returns Data| B
     B -->|Displays Data| A
 
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style B fill:#ccf,stroke:#333,stroke-width:2px
-    style C fill:#cfc,stroke:#333,stroke-width:2px
-    style D fill:#fcf,stroke:#333,stroke-width:2px
+    style A fill:#333,stroke:#fff,stroke-width:2px, color:#fff
+    style B fill:#555,stroke:#fff,stroke-width:2px, color:#fff
+    style C fill:#777,stroke:#fff,stroke-width:2px, color:#fff
+    style D fill:#999,stroke:#fff,stroke-width:2px, color:#fff
 
