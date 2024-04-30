@@ -7,6 +7,20 @@ function Profile({ profile }) {
   const token = localStorage.getItem("access_token");
 
   useEffect(() => {
+    /*const fetchDeclinedMatch = async () => {
+      try {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/decline-match/art123test/`,
+          {
+            headers: { Authorization: `Token ${localStorage.getItem("access_token")}` },
+          }
+        );
+        console.log(response.data)
+      } catch (error) {
+        console.error("Error fetching declined matches:", error);
+      }
+    }
+    fetchDeclinedMatch();*/
     const fetchUsername = async () => {
       try {
         const response = await axios.get(
@@ -141,12 +155,15 @@ function Profile({ profile }) {
         Matched Skills: {profile.matchedSkills.join(", ")}
       </text> : <text className="w-full my-2 px-2 font-bold"> No skills matched</text>}
       {/*<text className="w-full px-2">Interested in: {profile.interests.join(", ")}</text>*/}
-      <div className="flex flex-row justify-center w-full px-6 my-2">
+      <div className="flex flex-row justify-between w-full px-6 my-2">
         <button
           onClick={sendMatchRequest}
-          className="bg-blue-500 text-white font-semibold p-2 rounded-lg"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-semibold p-2 rounded-lg"
         >
           Send Match Request
+        </button>
+        <button onClick={() => {console.log("match declined")}} className="bg-blue-500 hover:bg-blue-700 text-white font-semibold p-1 rounded-lg">
+          Decline Match
         </button>
       </div>
     </div>
