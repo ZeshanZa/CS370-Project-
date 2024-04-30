@@ -103,6 +103,9 @@ We used a Postgre database that's hosted on Amazon RDS through our virtual envir
 
 Our Backend is created on Django a Python web framework that uses the model-template-views architecture and we all created one virtual environment that stores all requirements needed to begin making contributions
 
+## Backend Hosting
+The backend is hosted on an EC2 instance with an established SSL certificate for the backend domain (ecsconnectbackend.com), and is updated regularly in accordance with commits related to the backend. The domain is registered under GoDaddy but the name servers have been changed to point to the EC2 instance's address and necessary AWS servers. In order for this to work with the django server, this uses a combination of nginx and an open source package (django-sslserver) on port 8000 to allow https traffic using that SSL cert. The certificate is kept locally on this instance to maintain the security of the fullchain and key information.
+
 ### How Apps Work
 
 Each major Django component would be considered an app. The necessary components for a functioning app include a URL specific to each app to access. This URL can be used for interaction either locally or when hosted. Afterwards, these URLs can be imported into the main project folder's settings and URLs. This enables access to the apps through the frontend. The following are our Django apps: Django_Proj, Authentication, FriendsSystem, Skills, User Projects, and Matches. 
