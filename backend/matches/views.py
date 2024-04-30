@@ -3,7 +3,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
  # Assuming User is the Django auth user model
-from .models import Match, DeclinedMatch
+from .models import Match, deletedMatches
 from .serializers import MatchSerializer, UserSerializer , MatchDetailSerializer
 from userProjects.serializers import UserProfileSerializer
 from django.shortcuts import get_object_or_404, render
@@ -64,30 +64,35 @@ def decline_match_request(request, sender_username):
         sender__username=sender_username, 
         status='pending'
     )
-    
-    DeclinedMatch.objects.create(
-        sender=match_request.sender,
-        receiver=receiver,
-        declined_at=datetime.now()  # Ensure that datetime is imported if you're setting the time manually
-    )
     # Delete the match request
     match_request.delete()
 
     return JsonResponse({'message': 'Match request declined successfully'})
 
-@permission_classes([IsAuthenticated])
-def delete_match(request, match_username, user_username): 
-    User = get_user_model() 
+@csrf_exempt  # Exempting CSRF for demonstration; in production, use CSRF protection
+def add_removed_match(request, username):
+    # Check if the user exists
+    target_user = get_object_or_404(User, username=username)
     
-    sender = get_object_or_404(User, username=match_username)
-    receiver = get_object_or_404(User, username=user_username)
+    # Fetch the deletedMatches instance for the requesting user
+    # Assume 'request.user' is the user making the request
+    try:
+        deleted_matches_instance, created = deletedMatches.objects.get_or_create(user=request.user)
+    except deletedMatches.DoesNotExist:
+        return JsonResponse({'error': 'No deleted matches profile found for the user'}, status=404)
+
+    # Get the current list of removed matches
+    current_matches = deleted_matches_instance.removed_matches.get('deleted matches', [])
     
-    DeclinedMatch.objects.create(
-        sender=sender,
-        receiver=receiver,
-        declined_at=datetime.now()  # Ensure that datetime is imported if you're setting the time manually
-    )
-    return JsonResponse({'message': 'Match deleted'})
+    # Add the new username if it's not already in the list
+    if target_user.username not in current_matches:
+        current_matches.append(target_user.username)
+        deleted_matches_instance.removed_matches['deleted matches'] = current_matches
+        deleted_matches_instance.save()
+        return JsonResponse({'message': f'User {username} added to removed matches'}, status=200)
+    else:
+        return JsonResponse({'message': f'User {username} is already in the removed matches'}, status=200)
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

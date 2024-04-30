@@ -14,5 +14,5 @@ urlpatterns = [
     path('mark_notification_as_sent_interacted/<int:match_id>/', views.mark_notification_as_sent_interaction, name='mark-notification-as-sent-interacted'),
     path('mark_notification_as_sent_pending/<int:match_id>/', views.mark_notification_as_sent_pending, name='mark-notification-as-sent-pending'),
     path('check_friend_request_status/<int:user_id>/', views.check_match_request_status, name='check-friend-request-status'),
-    path('delete-match/<str:match_username>/<str:user_username>/', views.delete_match, name='delete-match')
+    path('delete-match/<str:username>/', views.add_removed_match, name='delete-match')
 ]
