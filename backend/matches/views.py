@@ -70,6 +70,7 @@ def decline_match_request(request, sender_username):
     return JsonResponse({'message': 'Match request declined successfully'})
 
 @csrf_exempt  # Exempting CSRF for demonstration; in production, use CSRF protection
+@permission_classes([IsAuthenticated])
 def add_removed_match(request, username):
     # Check if the user exists
     target_user = get_object_or_404(User, username=username)
@@ -92,6 +93,18 @@ def add_removed_match(request, username):
         return JsonResponse({'message': f'User {username} added to removed matches'}, status=200)
     else:
         return JsonResponse({'message': f'User {username} is already in the removed matches'}, status=200)
+    
+def view_deleted_matches(request, username):
+    # Find the user by the username
+    user = get_object_or_404(User, username=username)
+    
+    # Retrieve the deletedMatches instance associated with the user
+    deleted_matches_instance = get_object_or_404(deletedMatches, user=user)
+    
+    # Prepare the data to be returned
+    data = deleted_matches_instance.removed_matches
+    # Return the data as JSON
+    return JsonResponse(data)
 
 
 @api_view(['POST'])
