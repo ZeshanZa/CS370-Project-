@@ -78,15 +78,6 @@ const StartMatchingPageComponent = () => {
       }
     };
 
-    async function getUserSkills(user_id) {
-      console.log("SKILLS FOUND");
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/skills/${user_id}/get-complete-skills/`
-      );
-      const { acquired, search } = response.data;
-      return [search, acquired];
-    }
-
     async function FilterMatches(usernames, uuid) {
       //console.log("ALGO LOADED")
       //console.log(usernames)
