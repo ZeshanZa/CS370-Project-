@@ -75,6 +75,20 @@ def decline_match_request(request, sender_username):
 
     return JsonResponse({'message': 'Match request declined successfully'})
 
+@permission_classes([IsAuthenticated])
+def delete_match(request, match_username, user_username): 
+    User = get_user_model() 
+    
+    sender = get_object_or_404(User, username=match_username)
+    receiver = get_object_or_404(User, username=user_username)
+    
+    DeclinedMatch.objects.create(
+        sender=sender,
+        receiver=receiver,
+        declined_at=datetime.now()  # Ensure that datetime is imported if you're setting the time manually
+    )
+    return JsonResponse({'message': 'Match deleted'})
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def accept_match_request(request, sender_username): 
