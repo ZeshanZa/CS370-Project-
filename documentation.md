@@ -96,8 +96,8 @@ Below is an architecture diagram illustrating the major components of Emory Conn
 
 ```mermaid
 graph LR
-  A[User] -->|Accesses| B[Vercel Hosted Frontend]
-    B -->|API Requests| C[AWS EC2 Hosted Django Backend]
+  A[User] -->|Accesses| B[Vercel Hosted Frontend ecsconnectneazme.com]
+    B -->|API Requests| C[AWS EC2 Hosted Django Backend ecsconnectbackend.com:8000]
     C -->|Read/Write| D[PostgreSQL Database]
     D -->|Responds with Data| C
     C -->|Returns Data| B
