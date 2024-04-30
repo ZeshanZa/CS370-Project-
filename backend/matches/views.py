@@ -71,14 +71,15 @@ def decline_match_request(request, sender_username):
 
 @csrf_exempt  # Exempting CSRF for demonstration; in production, use CSRF protection
 @permission_classes([IsAuthenticated])
-def add_removed_match(request, username):
+def add_removed_match(request, self_username, username):
     # Check if the user exists
     target_user = get_object_or_404(User, username=username)
+    user = get_object_or_404(User, username=self_username)
     
     # Fetch the deletedMatches instance for the requesting user
     # Assume 'request.user' is the user making the request
     try:
-        deleted_matches_instance, created = deletedMatches.objects.get_or_create(user=request.user)
+        deleted_matches_instance, created = deletedMatches.objects.get_or_create(user=user)
     except deletedMatches.DoesNotExist:
         return JsonResponse({'error': 'No deleted matches profile found for the user'}, status=404)
 
