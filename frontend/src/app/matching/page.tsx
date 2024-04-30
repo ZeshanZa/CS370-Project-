@@ -31,9 +31,9 @@ function MatchingPage() {
             setTabValue(newValue);
           }}
         >
-          <Tab label="Matching" />
-          <Tab label="Requests" />
-          <Tab label="Matches" />
+          <Tab label="Find Matches" />
+          <Tab label="Pending Matches" />
+          <Tab label="Matched Profiles" />
         </Tabs>
         {tabValue == 0 ? (
           <div className="w-full h-full mt-10 flex justify-center flex-col">
