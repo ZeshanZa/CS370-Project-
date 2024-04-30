@@ -63,7 +63,8 @@ To begin adding friends:
 
    
 ## Technical Documentation
-
+## PostgreSQL
+We used a postgre database thats hosted on amazon RDS through our virutal enviornment and djangoproject settings we have the databases credentials for access to contributors. We utlized the SQLs eazy write and read functions through our models to create tables that correlted with each users credentials for easy retrieval for all of our apps
 ## Backend 
 
 Our Backend is created on Django a python web framemwork that uses the model-template-views architecture and we all created one virtual environement that stores all requriements needed to begin making contributions
