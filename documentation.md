@@ -95,7 +95,7 @@ To begin adding friends:
 The backend is hosted on an EC2 instance with an established SSL certificate for the backend domain (ecsconnectbackend.com), and is updated regularly in accordance with commits related to the backend. The domain is registered under GoDaddy but the name servers have been changed to point to the EC2 instance's address and necessary AWS servers. In order for this to work with the django server, this uses a combination of nginx and an open source package (django-sslserver) on port 8000 to allow https traffic using that SSL cert. The certificate is kept locally on this instance to maintain the security of the fullchain and key information.
 
 ## Frontend Hosting 
-Our Project utilizaed Next.js for the frontend this gave us a easy transition into hosting on the web with Vercel. Vercel allows hosting for Next.js simply by connecting to our Github Repo and Frontend Folder and renders the entire project
+Our Project utilizaed Next.js for the frontend this gave us a easy transition into hosting on the web with Vercel. Vercel allows hosting for Next.js simply by connecting to our Github Repo and Frontend Folder and renders the entire project and updates automatically with commits to the frontend
 ## PostgreSQL
 
 We used a Postgre database that's hosted on Amazon RDS through our virtual environment and Djangoproject settings where we have the database's credentials for access to contributors. We utilized the SQLs eazy write and read functions through our models to create tables that correlated with each user's credentials for easy retrieval for all of our apps.
