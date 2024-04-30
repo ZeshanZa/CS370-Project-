@@ -69,6 +69,7 @@ To begin adding your skills:
 
 ### Start Matching
 
+
 To Begin Matching:
 
 1. To ensure the best matching be sure to have your profile fully updated along with skills.
@@ -91,43 +92,42 @@ To begin adding friends:
 
 ## Technical Documentation
 
-### PostgreSQL
+## PostgreSQL
 
 We used a Postgre database that's hosted on Amazon RDS through our virtual environment and Djangoproject settings where we have the database's credentials for access to contributors. We utilized the SQLs eazy write and read functions through our models to create tables that correlated with each user's credentials for easy retrieval for all of our apps.
 
-### Backend
+## Backend
 
 Our Backend is created on Django a Python web framework that uses the model-template-views architecture and we all created one virtual environment that stores all requirements needed to begin making contributions
 
-#### How Apps Work
+### How Apps Work
 
-Each major Django component would be considered an app. The necessary components for a functioning app include a URL specific to each app to access. This URL can be used for interaction either locally or when hosted. Afterwards, these URLs can be imported into the main project folder's settings and URLs. This enables access to the apps through the frontend. The following are our Django apps: Django_Proj, Authentication, Friends System, Skills, User Projects, 
-Above we explained how these apps work. We created their models and serializers of how they will be manipulated and then a view of how the forms will be displayed for users to send their inputs. With our apps, all that's necessary to get them up and running for interaction is to create a URL specific to each app for access. This URL can be used for interaction either locally or when hosted. Afterwards, we import these URLs into the main project folders' settings and URLs. This enables us to access the apps through our frontend.
+Each major Django component would be considered an app. The necessary components for a functioning app include a URL specific to each app to access. This URL can be used for interaction either locally or when hosted. Afterwards, these URLs can be imported into the main project folder's settings and URLs. This enables access to the apps through the frontend. The following are our Django apps: Django_Proj, Authentication, FriendsSystem, Skills, User Projects, and Matches. 
 
 
-#### Django_Proj
+### Django_Proj
 
 This is the main overview folder for our Django project this is where all imports are stored like premade models as well as where we import our own apps and models to then use through URLS either locally hosted or online
 
-#### Authentication
+### Authentication
 
 This is the first app created in our project it utilizes the Django rest framework to create a Usermodel that we can then manipulate to our needs. This app with its framework came with Django and gives us the ability to allow users to make accounts and sign in to our servers through token-based authentication that we give and all their info such as username is stored in our PostgreSQL database.
 
-#### FriendsSystem
+### Matches
 
-This is our friends app created inside our project. For this we created models
+This app includes all the functionality to matching: send matches, decline matches, store deleted matches (so that a user doesn't get them again) and view match requests. A Match model was created to store every current match with the status of either "accepted" or "declined." Through this model, a serializer is created which allows the creation of each match instance. 
 
-#### Skills
+### FriendsSystem
+
+This is our friends app created inside our project. This app includes the following major functionalities: send friend request, decline friend request, remove friend, and view friend request. A Friend model was created to store each friend instance. Another model called Friend requests was created to store user's existing friend request.  
+
+### Skills
 
 This app is how we do the matching. We created a model that's user-specific where each user has 2 skill sections: skills they have and skills they're looking for. Each section has four arrays for the different skill categories. Through our model, we make a serialize that allows users to add skills from our db of skills to each category and they can add and remove as they please to either section. Once they send or delete the skill we store it on the backend and then run our matching algorithm on those skills to return their matches.
 
-#### User projects
+### User projects
 
 This app is where we created a model that creates a one-to-many relationship with user projects. Here one user can create many projects. In the model, we gave users 4 fields they can add to their project Title, Description, Github, and the contributors on it. Also in the background, we store IDs for each project that tie them to a user so we can retrieve each project for a user specifically. We use a serializer to then manipulate the Python to json how it shows on our frontend and how users will interact.
-
-#### How Apps Work
-
-Above we explained how these apps work. We created their models and serializers of how they will be manipulated and then a view of how the forms will be displayed for users to send their inputs. With our apps, all that's necessary to get them up and running for interaction is to create a URL specific to each app for access. This URL can be used for interaction either locally or when hosted. Afterwards, we import these URLs into the main project folders' settings and URLs. This enables us to access the apps through our frontend.
 
 ### System Architecture
 
