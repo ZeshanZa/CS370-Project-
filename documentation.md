@@ -64,17 +64,44 @@ To begin adding friends:
    
 ## Technical Documentation
 
+## Backend 
+
+Our Backend is created on Django a python web framemwork that uses the model-template-views architecture and we all created one virtual environement that stores all requriements needed to begin making contributions
+
+## Django_Proj
+This is the main overview folder for our django project this is where all imports are stored like premade models as well as where we import our own apps and models to then use through URLS either localy hosted or online 
+
+## Authentication
+This is the first app created in our project it utilizes the django rest framework to creare a Usermodel that we can than manipulate to our needs.This app with its framework came with django and gives us the ability to allow users to make accounts and signin onto or servers through token based authentication that we give and all their info such as username is stored in our PostgreSQL database. 
+
+## FriendsSystem
+This is our friends app created inside our project. For this we created models 
+
+## Matches 
+
+## Skills 
+This app is how we do the matching. We created a model thats user specific where each user has 2 skill section skills they have and skills their looking for. Each section has four array for the different skills categories. Through our model we make a serialize that allows users to add skills from our db of skills to each category and they can add and remove as they please to either section. Once they send or delete the skill we store it on the backend and then run our matching algorithim on those skills to return their matches 
+
+## User projects 
+This app is where we created a model that creates a one to many relationship with user projects. Here one user can create many projects. In the model we gave users 4 fields they can add to their project Title,Description,Github, and the contributors on it. Also in the background we store ids for each project that tie them to a user so we can retrieve each project for a user specifically. We use a serializer to then maniuplate the python to json how itll show on our frontend and how users will interact. 
+
+## How Apps Work 
+Above we explained how these apps works we created their models and serialziers of how they will be manipulated and then a view of how the forms will be displayed for users to send their inputs. With our apps all thats necearry to then get them up and running for interaction all we must do is create a URL that will be that apps URL for access that we can interact with either locslly or hosted and then import that into the main project folders settings and URLS and then we can acess them through our frontend 
+
+
+## Frontend 
+
 ### System Architecture
 Below is an architecture diagram illustrating the major components of Emory Connect and their interactions:
 
 ```mermaid
 graph LR
-    A[Web Browser] --> B[Next.js Frontend]
-    B --> C[Django Backend]
-    C --> D[Database]
-    D --> C
-    C --> B
-    B --> A
+  A[User] -->|Accesses| B[Vercel Hosted Frontend]
+    B -->|API Requests| C[AWS EC2 Hosted Django Backend]
+    C -->|Read/Write| D[PostgreSQL Database]
+    D -->|Responds with Data| C
+    C -->|Returns Data| B
+    B -->|Displays Data| A
 
     style A fill:#f9f,stroke:#333,stroke-width:2px
     style B fill:#ccf,stroke:#333,stroke-width:2px
