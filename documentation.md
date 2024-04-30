@@ -91,7 +91,10 @@ To begin adding friends:
 3. To get more friends simply click `Find friends` and search for users with their username and send requests by clicking the button next to their name to then send a friend request.
 
 ## Technical Documentation
+## Backend Hosting 
 
+## Frontend Hosting 
+Our Project utilizaed Next.js for the frontend this gave us a easy transition into hosting on the web with Vercel. Vercel allows hosting for Next.js simply by connecting to our Github Repo and Frontend Folder and renders the entire project
 ## PostgreSQL
 
 We used a Postgre database that's hosted on Amazon RDS through our virtual environment and Djangoproject settings where we have the database's credentials for access to contributors. We utilized the SQLs eazy write and read functions through our models to create tables that correlated with each user's credentials for easy retrieval for all of our apps.
