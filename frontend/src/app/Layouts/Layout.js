@@ -16,6 +16,12 @@ function Layout({ children }) {
   const [ProfileDrawer, setProfileDrawer] = useState(false);
   const [NotificationsDrawer, setNotificationsDrawer] = useState(false);
 
+  const [friendRequestNotifications, setFriendRequestNotifications] = useState([])
+  const [pendingRequestNotifications, setPendingRequestNotifications] = useState([])
+  const [matchRequestNotifications, setMatchRequestNotifications] = useState([])
+  const [pendingMatchNotifications, setPendingMatchNotifications] = useState([])
+  
+  
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -68,97 +74,366 @@ function Layout({ children }) {
     fetchProfileData();
   }, []);
 
-  return (
-    <>
-      <Drawer
-        open={NotificationsDrawer}
-        anchor="left"
-        onClose={() => setNotificationsDrawer(false)}
-      >
-        <Box width={350}>
-          <div className="h-[100dvh] p-2">
-            <div className="w-full text-xl font-bold p-3 border-b-2 border-slate-900">
-              Notifications
-            </div>
-            <div className="w-full">
-              <div className="w-full flex flex-row border-b-[1px] border-gray-400 p-2">
-                <div className="w-2/3 flex flex-col">
-                  <text className="text-xl font-bold">New message</text>
-                  <text className="break-words font-light">
-                    {" "}
-                    Hi Brian, your skills match well fo my project on the...{" "}
-                  </text>
-                </div>
-                <div className="w-1/3 flex flex-col items-center">
-                  <div className="w-16 h-16 flex justify-center items-center rounded-full text-sm">
-                    <img src="https://www.svgrepo.com/show/382097/female-avatar-girl-face-woman-user-9.svg" />
+  // the start of notifications
+  const fetchUsernameForNotifications = async (notifications, getUserId) => {
+    return Promise.all(notifications.map(async (notification) => {
+      const userId = getUserId(notification);
+      if (!userId) {
+        console.log("Missing user ID for notification:", notification);
+        return { ...notification, username: 'Unkown User' }; 
+      }
+      const username = await fetchUsername(userId);
+      return { ...notification, username };
+    }));
+  };
+  
+  const fetchUsername = async (userId) => {
+    if (!userId) {
+      console.warn("fetchUsername was called with undefined userId");
+      return 'Unknown User';
+    }
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/get-username/${userId}`);
+      console.log("Username fetched for ID:", userId, "Username:", response.data.username);
+      return response.data.username;
+    } catch (error) {
+      console.error("Error fetching username for user ID:", userId, error);
+      return 'Mystery User'; 
+    }
+  };
+
+  useEffect(() => {
+    const checkNotifications = async () => {
+      
+      await checkFriendRequests();
+      await checkPendingRequests();
+      await checkMatchRequests();
+      await checkPendingMatches();
+    };
+
+    // Call the function immediately when the component mounts
+    checkNotifications();
+
+    
+    const intervalId = setInterval(checkNotifications, 10000); // 10 seconds interval
+
+    
+    return () => clearInterval(intervalId);
+  }, [profile.user_id]);
+
+
+  // friend request notif stuff
+
+  const checkFriendRequests = async () => {
+    if (!profile.user_id) {
+        console.log('No user_id available to check friend requests');
+        return;
+    }
+    
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+        console.log('No access token available');
+        return;
+    }
+
+    console.log('Making API call to check friend requests');
+    try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/friendsList/check_friend_request_status/${profile.user_id}`, {
+            headers: { 'Authorization' : `Token ${token}` }
+        });
+        console.log("Friend requests received:", response.data);
+        if (response.data && response.data.length > 0) {
+          const enrichedNotifications = await fetchUsernameForNotifications(response.data, notif => notif.reqReceiver);
+            setFriendRequestNotifications(enrichedNotifications);
+        } else {
+            console.log('No new friend requests');
+        }
+    } catch (error) {
+        console.error("Error checking friend request status:", error);
+    }
+};
+
+const checkPendingRequests = async () => {
+  if (!profile.user_id) {
+      console.log('No user_id available to check friend requests');
+      return;
+  }
+  
+  const token = localStorage.getItem("access_token"); 
+  if (!token) {
+      console.log('No access token available');
+      return;
+  }
+
+  console.log('Making API call to check pending requests');
+  try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/friendsList/pending_requests/${profile.user_id}`, {
+          headers: { 'Authorization' : `Token ${token}` }
+      });
+      console.log("Pending requests received:", response.data);
+      if (response.data && response.data.length > 0) {
+          const enrichedNotifications = await fetchUsernameForNotifications(response.data, notif => notif.reqSender);
+          setPendingRequestNotifications(enrichedNotifications);
+      } else {
+          console.log('No new pending requests');
+      }
+  } catch (error) {
+      console.error("Error checking pending request status:", error);
+  }
+};
+
+const handleNotificationInteractedClick = async (notification) => {
+  const token = localStorage.getItem("access_token"); 
+  const friendRequestId = notification.friendRequest_id; 
+
+  try {
+      await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/friendsList/mark_notification_as_sent_interacted/${friendRequestId}/`,
+          {},
+          {
+              headers: {
+                  'Authorization': `Token ${token}`,
+                  'Content-Type': 'application/json'
+              }
+          }
+      );
+      
+      const updatedNotifications = friendRequestNotifications.filter(notif => notif.friendRequest_id !== friendRequestId);
+      setFriendRequestNotifications(updatedNotifications);
+  } catch (error) {
+      console.error("Error marking interacted notification as sent:", error);
+      alert("Failed to mark interacted notification as seen.");
+  }
+};
+
+const handleNotificationPendingClick = async (notification) => {
+  const token = localStorage.getItem("access_token"); 
+  const friendRequestId = notification.friendRequest_id; 
+
+  try {
+      await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/friendsList/mark_notification_as_sent_pending/${friendRequestId}/`,
+          {},
+          {
+              headers: {
+                  'Authorization': `Token ${token}`,
+                  'Content-Type': 'application/json'
+              }
+          }
+      );
+      
+      const updatedNotifications = pendingRequestNotifications.filter(notif => notif.friendRequest_id !== friendRequestId);
+      setPendingRequestNotifications(updatedNotifications);
+  } catch (error) {
+      console.error("Error marking pending notification as sent:", error);
+      alert("Failed to mark pending notification as seen.");
+  }
+};
+
+
+// matching notification stuff
+
+const checkMatchRequests = async () => {
+  if (!profile.user_id) {
+      console.log('No user_id available to check match requests');
+      return;
+  }
+  
+  const token = localStorage.getItem("access_token");
+  if (!token) {
+      console.log('No access token available');
+      return;
+  }
+
+  console.log('Making API call to check match requests');
+  try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/check_match_request_status/${profile.user_id}`, {
+          headers: { 'Authorization' : `Token ${token}` }
+      });
+      console.log("Match requests received:", response.data);
+      if (response.data && response.data.length > 0) {
+          const enrichedNotifications = await fetchUsernameForNotifications(response.data, notif => notif.receiver_id);
+          setMatchRequestNotifications(enrichedNotifications);
+      } else {
+          console.log('No new match requests');
+      }
+  } catch (error) {
+      console.error("Error checking match request status:", error);
+      alert("Failed to fetch match notifications. Please try again.");
+  }
+};
+
+const checkPendingMatches = async () => {
+if (!profile.user_id) {
+    console.log('No user_id available to check match requests');
+    return;
+}
+
+const token = localStorage.getItem("access_token"); 
+if (!token) {
+    console.log('No access token available');
+    return;
+}
+
+console.log('Making API call to check pending matches');
+try {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/pending_requests/${profile.user_id}`, {
+        headers: { 'Authorization' : `Token ${token}` }
+    });
+    console.log("Pending matches received:", response.data);
+    if (response.data && response.data.length > 0) {
+      const enrichedNotifications = await fetchUsernameForNotifications(response.data, notif => notif.sender_id);
+        setPendingMatchNotifications(enrichedNotifications);
+    } else {
+        console.log('No new pending mctches');
+    }
+} catch (error) {
+    console.error("Error checking pending matches status:", error);
+}
+};
+
+
+const handleMatchNotificationInteractedClick = async (notification) => {
+  const token = localStorage.getItem("access_token"); 
+  const pk = notification.id; 
+  
+  try {
+      await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/mark_notification_as_sent_interacted/${pk}/`,
+          {},
+          {
+              headers: {
+                  'Authorization': `Token ${token}`,
+                  'Content-Type': 'application/json'
+              }
+          }
+      );
+      
+      const updatedNotifications = matchRequestNotifications.filter(notif => notif.id !== pk);
+      setMatchRequestNotifications(updatedNotifications);
+  } catch (error) {
+      console.error("Error marking match interacted notification as sent:", error);
+      alert("Failed to mark match interacted notification as seen.");
+  }
+  };
+
+const handleMatchNotificationPendingClick = async (notification) => {
+const token = localStorage.getItem("access_token"); 
+const pk = notification.id; 
+
+try {
+    await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/mark_notification_as_sent_pending/${pk}/`,
+        {},
+        {
+            headers: {
+                'Authorization': `Token ${token}`,
+                'Content-Type': 'application/json'
+            }
+        }
+    );
+    
+    const updatedNotifications = pendingMatchNotifications.filter(notif => notif.id !== pk);
+    setPendingMatchNotifications(updatedNotifications);
+} catch (error) {
+    console.error("Error marking pending match notification as sent:", error);
+    alert("Failed to mark pending match notification as seen.");
+}
+};
+
+const allNotifications = [
+  ...friendRequestNotifications.map(notif => ({ ...notif, type: 'Friend Request' })),
+  ...pendingRequestNotifications.map(notif => ({ ...notif, type: 'Pending Friend Request' })),
+  ...matchRequestNotifications.map(notif => ({ ...notif, type: 'Match Request' })),
+  ...pendingMatchNotifications.map(notif => ({ ...notif, type: 'Pending Match Request' }))
+];
+
+const handleNotificationClick = (notification) => {
+  switch (notification.type) {
+    case 'Friend Request':
+      handleNotificationInteractedClick(notification);
+      router.push("/find_friends");
+      break;
+    case 'Pending Friend Request':
+      handleNotificationPendingClick(notification);
+      router.push("/find_friends");
+      break;
+    case 'Match Request':
+      handleMatchNotificationInteractedClick(notification);
+      router.push("/matching");
+      break;
+    case 'Pending Match Request':
+      handleMatchNotificationPendingClick(notification);
+      router.push("/matching");
+      break;
+    default:
+      console.error('Unhandled notification type:', notification.type);
+      break;
+  }
+}
+
+const getNotificationContent = (notification) => {
+  let message = '';
+  switch (notification.type) {
+    case 'Friend Request':
+      message = `Your friend request to ${notification.username} has been ${notification.status}.`;
+      break;
+    case 'Pending Friend Request':
+      message = `You have a pending friend request from ${notification.username}.`;
+      break;
+    case 'Match Request':
+      message = `Your match request to ${notification.username} has been ${notification.status}.`;
+      break;
+    case 'Pending Match Request':
+      message = `You have a pending match request from ${notification.username}.`;
+      break;
+    default:
+      message = `Notification type not recognized.`;
+  }
+  return message;
+};
+
+return (
+  <>
+    <Drawer
+      open={NotificationsDrawer}
+      anchor="left"
+      onClose={() => setNotificationsDrawer(false)}
+    >
+      <Box width={350}>
+        <div className="h-[100dvh] p-2">
+          <div className="w-full text-xl font-bold p-3 border-b-2 border-slate-900">
+            Notifications
+          </div>
+          <div className="w-full">
+            <div className="w-full flex flex-col p-2">
+              {allNotifications.length > 0 ? (
+                allNotifications.map((notification, index) => (
+                  <div key={notification.id} className="w-full flex flex-row items-center border-b-[1px] border-gray-400 py-2">
+                    <div className="flex-grow">
+                      <text className="text-xl font-bold">{notification.type} Update</text>
+                      <div className="break-words font-light">
+                        <span>{getNotificationContent(notification)}</span>
+                      </div>
+                    </div>
+                    <div className="ml-4 flex-shrink-0">
+                      <button onClick={() => handleNotificationClick(notification)}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">
+                        View
+                      </button>
+                    </div>
                   </div>
-                  <text> Selene F. </text>
+                ))
+              ) : (
+                <div className="w-full p-4 text-center text-gray-600">
+                  <p>No new notifications.</p>
                 </div>
-              </div>
-              <div className="w-full flex flex-col border-b-[1px] border-gray-400 p-2">
-                <text className="text-xl font-bold">You matched!</text>
-                <text className="font-light">
-                  Your skills were a match for:
-                </text>
-                <text className="underline">ClosedAI - TalkGPT</text>
-              </div>
-              <div className="w-full flex flex-col border-b-[1px] border-gray-400 p-2">
-                <text className="text-xl font-bold">You matched!</text>
-                <text className="font-light">
-                  Your skills were a match for:
-                </text>
-                <text className="underline">
-                  QuantumScribe: Neural Cryptography
-                </text>
-              </div>
-              <div className="w-full flex flex-col border-b-[1px] border-gray-400 p-2">
-                <text className="text-xl font-bold">You matched!</text>
-                <text className="font-light">
-                  Your skills were a match for:
-                </text>
-                <text className="underline">CyberGuard: AI Security</text>
-              </div>
-              <div className="w-full flex flex-col border-b-[1px] border-gray-400 p-2">
-                <text className="text-xl font-bold">You matched!</text>
-                <text className="font-light">
-                  Your skills were a match for:
-                </text>
-                <text className="underline">LogicFlow: WorkFlowAI</text>
-              </div>
-              <div className="w-full flex flex-row border-b-[1px] border-gray-400 p-2">
-                <div className="w-2/3 flex flex-col">
-                  <text className="text-xl font-bold">New message</text>
-                  <text className="break-words font-light">
-                    {" "}
-                    Hey Brian, thought u and me could make a great tea...{" "}
-                  </text>
-                </div>
-                <div className="w-1/3 flex flex-col items-center">
-                  <div className="w-16 h-16 flex justify-center items-center rounded-full text-sm">
-                    <img src="https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png" />
-                  </div>
-                  <text> Matt J. </text>
-                </div>
-              </div>
-              <div className="w-full flex flex-col border-b-[1px] border-gray-400 p-2">
-                <text className="text-xl font-bold">You matched!</text>
-                <text className="font-light">
-                  Your skills were a match for:
-                </text>
-                <text className="underline">NeuralCraft: GameAI</text>
-              </div>
-              <div className="w-full flex flex-col border-b-[1px] border-gray-400 p-2">
-                <text className="text-xl font-bold">You matched!</text>
-                <text className="font-light">
-                  Your skills were a match for:
-                </text>
-                <text className="underline">CodeHive: TeamCode</text>
-              </div>
+              )}
             </div>
           </div>
-        </Box>
-      </Drawer>
+        </div>
+      </Box>
+    </Drawer>
 
       <Drawer
         open={ProfileDrawer}

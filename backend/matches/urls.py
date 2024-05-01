@@ -13,7 +13,8 @@ urlpatterns = [
     path('pending_requests/<int:user_id>/', views.view_pending_matching_requests, name='pending-requests'),
     path('mark_notification_as_sent_interacted/<int:match_id>/', views.mark_notification_as_sent_interaction, name='mark-notification-as-sent-interacted'),
     path('mark_notification_as_sent_pending/<int:match_id>/', views.mark_notification_as_sent_pending, name='mark-notification-as-sent-pending'),
-    path('check_friend_request_status/<int:user_id>/', views.check_match_request_status, name='check-friend-request-status'),
+    path('check_match_request_status/<int:user_id>/', views.check_match_request_status, name='check-match-request-status'),
     path('delete-match/<str:self_username>/<str:username>/', views.add_removed_match, name='delete-match'),
     path('view-deleted-matches/<str:username>/', views.view_deleted_matches, name='view-deleted-matches'), 
+    path('get-username/<int:user_id>/', views.get_username_by_id, name='get-username-by-id'),
 ]

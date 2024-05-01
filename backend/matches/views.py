@@ -32,6 +32,13 @@ def get_username(request):
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def get_username_by_id(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    serializer = UserSerializer(user)
+    # Return the serialized user data
+    return Response(serializer.data)
+
 @csrf_exempt
 def send_match_request(request, sender_username, receiver_username):
     user1 = get_object_or_404(User, username=sender_username)
@@ -217,23 +224,25 @@ def mark_notification_as_sent_pending(request, match_id):
         return JsonResponse({'message': 'Notification marked as sent'}, status=200)
     except Match.DoesNotExist:
         return JsonResponse({'error': 'Match request not found or already marked'}, status=404)
-
+    
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def check_match_request_status(request, user_id):
-    # Convert user_id from string to integer for comparison (if needed)
+    # Convert user_id from string to integer for safe comparison
     user_id = int(user_id)
-    # Ensure the request.user.id matches the provided user_id to avoid unauthorized access
+    # Ensure the request.user.id matches the provided user_id to prevent unauthorized access
     if request.user.id != user_id:
         return JsonResponse({'error': 'Unauthorized'}, status=403)
 
-    # Fetch only the friend requests where notification has not been sent yet
-    match_requests = Match.objects.filter(receiver_id=user_id, notification_interacted=False).exclude(status='pending')
+    # Fetch match requests where the notification has not been interacted with, excluding 'pending' status
+    match_requests = Match.objects.filter(sender_id=user_id, notification_interacted=False).exclude(status='pending')
 
     if match_requests.exists():
-        # Serialize the data
-        serializer = MatchDetailSerializer(match_requests, many=True)
+        # Serialize the data including the request context for proper URL and state handling
+        serializer = MatchDetailSerializer(match_requests, many=True, context={'request': request})
         
-        return JsonResponse(serializer.data, safe=False, context={'request': request})
+        # Return the serialized data
+        return JsonResponse(serializer.data, safe=False)
     else:
+        # Return a message if no updates are available
         return JsonResponse({'message': 'No updates'}, status=204)
