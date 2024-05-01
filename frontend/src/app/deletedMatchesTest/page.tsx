@@ -10,6 +10,34 @@ interface Props {
     username = 'zeshan' 
     const username1 = 'adsf1234'
     const handleAddMatch = async () => {
+      /*try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/view-deleted-matches/art123test/`,
+          {
+            headers: { Authorization: `Token ${localStorage.getItem("access_token")}` },
+          }
+        );
+        console.log(response.data)
+      } catch (error) {
+        console.error("Error fetching declined matches:", error);
+      }*/
+
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/delete-match/art123test/j/`,
+          {
+            headers: { Authorization: `Token ${localStorage.getItem("access_token")}` },
+          }
+        );
+        console.log(response.data)
+      } catch (error) {
+        console.error("Error fetching declined matches:", error);
+      }
+
+
+
+
+      /*
       const url = `${process.env.NEXT_PUBLIC_API_URL}/delete-match/${username}/${username1}/`; // Adjust the URL to match your actual API endpoint
   
       try {
@@ -30,7 +58,7 @@ interface Props {
       } catch (error) {
         console.error('Error:', error);
         alert('Failed to add removed match');
-      }
+      }*/
     };
   
     return (
