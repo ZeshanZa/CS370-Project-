@@ -176,12 +176,7 @@ graph LR
     D -->|Responds with Data| C
     C -->|Returns Data| B
     B -->|Displays Data| A
-  A[User] -->|Accesses| B[Vercel Hosted Frontend ecsconnectneazme.com]
-    B -->|API Requests| C[AWS EC2 Hosted Django Backend ecsconnectbackend.com:8000]
-    C -->|Read/Write| D[PostgreSQL Database]
-    D -->|Responds with Data| C
-    C -->|Returns Data| B
-    B -->|Displays Data| A
+
 
     style A fill:#f9f,stroke:#fff,stroke-width:2px, color:#fff
     style B fill:#ccf,stroke:#fff,stroke-width:2px, color:#fff
