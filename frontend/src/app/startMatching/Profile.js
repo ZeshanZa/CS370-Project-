@@ -140,6 +140,10 @@ function Profile({ profile }) {
         Match Score = <span className="font-bold">{profile.matchscore}</span>
       </text>
       <text>
+        {"(The number of skills matched)"}
+        
+      </text>
+      <text>
         {" "}
         Match % ={" "}
         <span
@@ -151,6 +155,10 @@ function Profile({ profile }) {
         >
           {Math.round(profile.pscore * 100)}
         </span>
+      </text>
+      <text>
+        {"(The % overlap of skills matched)"}
+        
       </text>
       <text className="w-full my-2 px-2 font-bold underline underline-offset-2">
         Skills:{" "}

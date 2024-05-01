@@ -99,6 +99,10 @@ To begin adding friends:
 The main page contains the base layout (located in the LayOuts folder) for all of our pages. This base layout contains tabs at the top of that redirects the user to different pages: Home, Matching, Friends, Skills & Profile, and Settings. 
 The main functionality of the front page is the ability for a user to add projects to their portfolio. An axios put method is used to update and store these projects in the user's database in the backend. Other axios methods allow for the user to add contributors to their projects or even delete their whole project. 
 
+#### Notifications
+The main page layout also includes a notifications tab that has matching and friend request notifications and redirects users to the related page when viewing the notification.
+
+
 ### Profile 
 In the profile page, the user can edit their full name, major, include a GitHub URL, and their bio. All of this is updated and fetched, to and from the backend, with an axios get and axios put method. Another axios method is also used to update the skills in the backend whenever the user makes a change there. 
 
@@ -143,11 +147,11 @@ This is the first app created in our project it utilizes the Django rest framewo
 
 ### Matches
 
-This app includes all the functionality to matching: send matches, decline matches, store deleted matches (so that a user doesn't get them again) and view match requests. A Match model was created to store every current match with the status of either "accepted" or "declined." Through this model, a serializer is created which allows the creation of each match instance. 
+This app includes all the functionality to matching: send matches, decline matches, store deleted matches (so that a user doesn't get them again) and view match requests. A Match model was created to store every current match with the status of either "accepted" or "declined." Through this model, a serializer is created which allows the creation of each match instance. This app also includes the minor functionalities for matching related notifications: handling notifications for pending matching requests and handling notifications for accepted match requests.
 
 ### FriendsSystem
 
-This is our friends app created inside our project. This app includes the following major functionalities: send friend request, decline friend request, remove friend, and view friend request. A Friend model was created to store each friend instance. Another model called Friend requests was created to store user's existing friend request.  
+This is our friends app created inside our project. This app includes the following major functionalities: send friend request, decline friend request, remove friend, and view friend request. A Friend model was created to store each friend instance. Another model called Friend requests was created to store user's existing friend request.  This app also includes the minor functionalities for friend related notifications: handling notifications for pending friend requests and handling notifications for accepted/rejected friend requests.
 
 ### Skills
 
