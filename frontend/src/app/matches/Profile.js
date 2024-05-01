@@ -28,7 +28,7 @@ function Profile({ profile }) {
       //console.log(acquired)
       return acquired
     }
-    getUserSkills(profile.name).then((skills) => {setSkills(skills), setPLoading(false)})
+    getUserSkills(profile.name).then((skills) => { setSkills(skills), setPLoading(false) })
   }, [])
 
   const toggleModal = () => {
@@ -75,7 +75,7 @@ function Profile({ profile }) {
                 <>
                   <h2 className='flex justify-center'>{profileData?.full_name}</h2>
                   <div className='flex flex-col'>
-                    <div className='flex justify-center'><img src={profile.imageUrl} alt="Profile" className="profile-picture flex justify-center" /></div>
+                    <div className='flex justify-center'>{/*<img src={profile.imageUrl} alt="Profile" className="profile-picture flex justify-center" />*/}<img src="./pfp.jpg" alt='Profile picture' style={{ width: '100%', height: '100%', objectFit: 'cover' }} className="max-w-[300px] max-h-[300px]" /></div>
                     <p>Major: {profileData?.major}</p><br></br>
                     <p>Bio: {profileData?.bio}</p><br></br>
                     <p>Github: {profileData?.github_url} </p><br></br>
@@ -91,7 +91,8 @@ function Profile({ profile }) {
             </div>
           </div>
         )}
-        <img src={profile.imageUrl} alt="Profile" className="profile-picture" />
+        {/*<img src={profile.imageUrl} alt="Profile" className="profile-picture" />*/}
+        <img src="./pfp.jpg" alt='Profile picture' style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         <div className="flex flex-col">
           <button onClick={toggleModal}>{profile.name}</button>
           <text className="w-full my-2 px-2">Skills (DB): {skills.DB.join(", ")}</text>

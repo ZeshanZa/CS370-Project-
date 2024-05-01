@@ -170,7 +170,8 @@ function Layout({ children }) {
             <div className="w-full h-full rounded-lg px-4 flex flex-col space-y-8 text-center">
               <div className="w-full items-center justify-center flex">
                 <div className="rounded-full items-center h-60 w-60 flex justify-center mt-10">
-                  <img src="https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745" />
+                  {/*<img src="https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745" />*/}
+                  <img src="./pfp.jpg" alt='Profile picture' style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
               </div>
               <div className="flex-col justify-center ">
