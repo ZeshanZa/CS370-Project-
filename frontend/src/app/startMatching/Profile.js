@@ -88,6 +88,21 @@ function Profile({ profile }) {
       });
   };
 
+  const handleDeleteMatch = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/delete-match/${sender}/${profile.name}/`,
+        {
+          headers: { Authorization: `Token ${localStorage.getItem("access_token")}` },
+        }
+      );
+      console.log(response.data)
+      alert(`Match declined: ${profile.name}`);
+    } catch (error) {
+      console.error("Error sending declined match:", error);
+    }
+  }
+
   return (
     /*<section className="profile-detail">
       <img src={profile.imageUrl} alt="Profile" className="profile-picture" />
@@ -162,7 +177,7 @@ function Profile({ profile }) {
         >
           Send Match Request
         </button>
-        <button onClick={() => {console.log("match declined")}} className="bg-blue-500 hover:bg-blue-700 text-white font-semibold p-1 rounded-lg">
+        <button onClick={handleDeleteMatch} className="bg-blue-500 hover:bg-blue-700 text-white font-semibold p-1 rounded-lg">
           Decline Match
         </button>
       </div>

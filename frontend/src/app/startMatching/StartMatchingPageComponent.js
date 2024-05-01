@@ -13,7 +13,6 @@ import Box from "@mui/material/Box";
 
 const StartMatchingPageComponent = () => {
   console.log("PAGE LOADED");
-  const [usernames, setUsernames] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [token, setToken] = useState(null);
@@ -134,6 +133,29 @@ const StartMatchingPageComponent = () => {
       let bestscore3 = -1;
       let user3;
 
+      let currentUsername = ""
+
+      for (let i = 0; i < profiles.length; i++) {
+        if (profiles[i].id == uuid){
+          currentUsername = profiles[i].name
+        }
+      }
+
+      let deleted = []
+
+      try {
+        const responseDeleted = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/view-deleted-matches/${currentUsername}/`,
+          {
+            headers: { Authorization: `Token ${localStorage.getItem("access_token")}` },
+          }
+        );
+        deleted = responseDeleted.data["deleted matches"]
+      } catch (error) {
+        console.error("Error fetching declined matches:", error);
+      }
+      //console.log(deleted)
+
       //MATCHING ALGORYTHM
       //step 1 - sort through all users
       for (let i = 0; i < profiles.length; i++) {
@@ -149,8 +171,16 @@ const StartMatchingPageComponent = () => {
         if (profiles[i].id == uuid) {
           continue; //we make sure we dont collect out of skills and thus dont match to ourself
         }
-
         let Flag = false;
+
+        if (deleted.length > 0){
+          for (let q = 0; q < deleted.length; q++) {
+            if (deleted[q] == profiles[i].name){
+              Flag = true;
+            }
+          }
+        }
+
         for (let imt = 0; imt < MatchesTotal.data.length; imt++) {
           if (MatchesTotal.data[imt].other_user == profiles[i].name) {
             Flag = true;
