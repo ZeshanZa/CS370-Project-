@@ -36,13 +36,13 @@ function Profile({ profile }) {
       }
     };
 
-    if (profile){
-    fetchUsername();
+    if (profile) {
+      fetchUsername();
     }
   }, [token, profile]);
 
-  if (!profile){
-    return(
+  if (!profile) {
+    return (
       <></>
     )
   }
@@ -132,7 +132,8 @@ function Profile({ profile }) {
     </div>*/
 
     <div className="w-96 m-2 p-3 items-center flex-col flex justify-center break-words rounded-2xl border-[1px] border-slate-200 shadow-sm">
-      <img src={profile.imageUrl} alt="Profile_picture" />
+      {/*<img src={profile.imageUrl} alt="Profile_picture" />*/}
+      <img src="./pfp.jpg" alt='Profile picture' style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
       <text className="text-xl font-semibold">{profile.name}</text>
       <text>
         {" "}
