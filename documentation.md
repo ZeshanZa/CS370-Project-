@@ -99,6 +99,12 @@ To begin adding friends:
 The main page contains the base layout (located in the LayOuts folder) for all of our pages. This base layout contains tabs at the top of that redirects the user to different pages: Home, Matching, Friends, Skills & Profile, and Settings. 
 The main functionality of the front page is the ability for a user to add projects to their portfolio. An axios put method is used to update and store these projects in the user's database in the backend. Other axios methods allow for the user to add contributors to their projects or even delete their whole project. 
 
+### Profile 
+In the profile page, the user can edit their full name, major, include a GitHub URL, and their bio. All of this is updated and fetched, to and from the backend, with an axios get and axios put method. Another axios method is also used to update the skills in the backend whenever the user makes a change there. 
+
+### Settings 
+Here, the user can change their password. A local storage constant used as an authentication token is used to verify the user and axios is able to retrieve that user's old password and make changes to the backend to update the new password
+
 ### Matching 
 
 Three apps were created to deploy all the utilities of Match. In all the apps, a Profile component is used to have a base design for a matched user's profile. 
