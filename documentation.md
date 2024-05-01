@@ -91,11 +91,29 @@ To begin adding friends:
 3. To get more friends simply click `Find friends` and search for users with their username and send requests by clicking the button next to their name to then send a friend request.
 
 ## Technical Documentation
-## Backend Hosting 
-The backend is hosted on an EC2 instance with an established SSL certificate for the backend domain (ecsconnectbackend.com), and is updated regularly in accordance with commits related to the backend. The domain is registered under GoDaddy but the name servers have been changed to point to the EC2 instance's address and necessary AWS servers. In order for this to work with the django server, this uses a combination of nginx and an open source package (django-sslserver) on port 8000 to allow https traffic using that SSL cert. The certificate is kept locally on this instance to maintain the security of the fullchain and key information.
 
-## Frontend Hosting 
-Our Project utilizaed Next.js for the frontend this gave us a easy transition into hosting on the web with Vercel. Vercel allows hosting for Next.js simply by connecting to our Github Repo and Frontend Folder and renders the entire project and updates automatically with commits to the frontend
+## Frontend 
+
+### main page 
+
+The main page contains the base layout (located in the LayOuts folder) for all of our pages. This base layout contains tabs at the top of that redirects the user to different pages: Home, Matching, Friends, Skills & Profile, and Settings. 
+The main functionality of the front page is the ability for a user to add projects to their portfolio. An axios put method is used to update and store these projects in the user's database in the backend. Other axios methods allow for the user to add contributors to their projects or even delete their whole project. 
+
+### Matching 
+
+Three apps were created to deploy all the utilities of Match. In all the apps, a Profile component is used to have a base design for a matched user's profile. 
+The first app is startMatching. Within the startMatching file, we utilize an algorithm that matches users based on the similarity of another person's skill to the skills you are seeking. An axios method fetches the skills of users in the backend/database and the user receives the top three highest score that measures compatibility. 
+The second app is matches. Here, an axios method was used to pull any match status saying "accepted" with the user from the backend. Additionally, another axios method was used to fetch the skills and email of these users. 
+The third app is match-requests. Here, an axios method was used to fetch any match status, "pending," involving the user so that it shows all the user's match requests. Two more axios method was implemented, which is linked to an accept or decline button so that the function of accepting or declining the match request is stored/performed in the backend. 
+All of these apps are neatly formatted into one matches file that contains all three of these apps as tabs on one page in the matching folder. 
+
+### Friends 
+
+Two apps were created to deploy all the utilities of the Friends function. 
+The first app is find_friends. Here, an axios method was used to fetch all users that aren't currently friends with the user. This shows up in the frontend as a searchbar where the user can search for a friend to add. An axios method was also used to fetch the user's friend requests from the backend. This friend request is displayed to the right of the search bar
+The second app is friendsList. Here, an axios method is used to retrieve all of the user's current friends. Another axios method is used to pull the friends' profiles so that they are viewable upon clicking on their name. All of this is displayed as a flex-box at the center of the webpage where the user can see their friends list. At the bottom of the friends list, the user has the option to click on Find Friends, where they will be redirected to the first app: "find_friends." 
+
+
 ## PostgreSQL
 
 We used a Postgre database that's hosted on Amazon RDS through our virtual environment and Djangoproject settings where we have the database's credentials for access to contributors. We utilized the SQLs eazy write and read functions through our models to create tables that correlated with each user's credentials for easy retrieval for all of our apps.
@@ -133,6 +151,12 @@ This app is how we do the matching. We created a model that's user-specific wher
 
 This app is where we created a model that creates a one-to-many relationship with user projects. Here one user can create many projects. In the model, we gave users 4 fields they can add to their project Title, Description, Github, and the contributors on it. Also in the background, we store IDs for each project that tie them to a user so we can retrieve each project for a user specifically. We use a serializer to then manipulate the Python to json how it shows on our frontend and how users will interact.
 
+## Backend Hosting 
+The backend is hosted on an EC2 instance with an established SSL certificate for the backend domain (ecsconnectbackend.com), and is updated regularly in accordance with commits related to the backend. The domain is registered under GoDaddy but the name servers have been changed to point to the EC2 instance's address and necessary AWS servers. In order for this to work with the django server, this uses a combination of nginx and an open source package (django-sslserver) on port 8000 to allow https traffic using that SSL cert. The certificate is kept locally on this instance to maintain the security of the fullchain and key information.
+
+## Frontend Hosting 
+Our Project utilizaed Next.js for the frontend this gave us a easy transition into hosting on the web with Vercel. Vercel allows hosting for Next.js simply by connecting to our Github Repo and Frontend Folder and renders the entire project and updates automatically with commits to the frontend
+
 ### System Architecture
 
 
@@ -146,11 +170,15 @@ graph LR
     D -->|Responds with Data| C
     C -->|Returns Data| B
     B -->|Displays Data| A
- 
+  A[User] -->|Accesses| B[Vercel Hosted Frontend ecsconnectneazme.com]
+    B -->|API Requests| C[AWS EC2 Hosted Django Backend ecsconnectbackend.com:8000]
+    C -->|Read/Write| D[PostgreSQL Database]
+    D -->|Responds with Data| C
+    C -->|Returns Data| B
+    B -->|Displays Data| A
 
     style A fill:#f9f,stroke:#fff,stroke-width:2px, color:#fff
     style B fill:#ccf,stroke:#fff,stroke-width:2px, color:#fff
     style C fill:#cfc,stroke:#fff,stroke-width:2px, color:#fff
     style D fill:#fcf,stroke:#fff,stroke-width:2px, color:#fff
-
 ```
