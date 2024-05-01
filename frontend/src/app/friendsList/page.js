@@ -86,7 +86,6 @@ function FriendsList() {
             <FriendComponent
               key={friend.id} // Ensure each friend has a unique id
               name={friend.username}
-              skills={["Java ", "Python ", "CSS "]}
               github={friend.email}
             />
           ))}

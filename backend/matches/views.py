@@ -77,7 +77,6 @@ def add_removed_match(request, self_username, username):
     user = get_object_or_404(User, username=self_username)
     
     # Fetch the deletedMatches instance for the requesting user
-    # Assume 'request.user' is the user making the request
     try:
         deleted_matches_instance, created = deletedMatches.objects.get_or_create(user=user)
     except deletedMatches.DoesNotExist:
@@ -126,7 +125,7 @@ def view_match_requests(request):
 
     # Filter Match objects where the current user is the receiver and the status is 'pending'
     match_requests = Match.objects.filter(receiver=current_user, status='pending')
-    # Prepare the data to be returned, showing only relevant information
+    # Prepare the data to be returned showing only relevant information
     data = [
         {
             'sender': match_request.sender.username,
@@ -153,7 +152,7 @@ class MatchedUserProfileView(generics.RetrieveAPIView):
         ).exists()
 
         if match_exists:
-            return other_user.userprofile  # Assuming a related_name 'userprofile' on UserProfile model
+            return other_user.userprofile 
         else:
             raise PermissionDenied('You are not matched with this user.')
         

@@ -97,8 +97,9 @@ function Profile({ profile }) {
         }
       );
       console.log(response.data)
+      alert(`Match declined: ${profile.name}`);
     } catch (error) {
-      console.error("Error fetching declined matches:", error);
+      console.error("Error sending declined match:", error);
     }
   }
 
