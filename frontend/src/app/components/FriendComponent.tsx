@@ -175,7 +175,6 @@ function FriendComponent({name, skills, github} : Props) {
           </div>
           <div className='flex flex-col p-2'>
             <text className='hover:underline' style={{cursor: 'pointer'}} onClick={() => fetchFriendProfile()}> {name} </text>
-            <text className='text-xs whitespace-nowrap text-gray-500'> Skills: {skills} </text>
             <text className='text-xs whitespace-nowrap text-gray-500'> Email: {github} </text>
           </div>
           <div className='w-full flex justify-end mr-2'>
